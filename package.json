@@ -1,0 +1,23 @@
+{
+  "name": "battleship",
+  "version": "0.1.0",
+  "description": "Browser-based implementation of battleship (LHL side project)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pgoshulak/battleship.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pgoshulak/battleship/issues"
+  },
+  "homepage": "https://github.com/pgoshulak/battleship#readme",
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-lighthouselabs": "github:lighthouse-labs/eslint-config-lighthouselabs"
+  }
+}
