@@ -1,0 +1,12 @@
+.board {
+  background: #235;
+  padding: 20px;
+  display: inline-grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr)
+}
+
+.board-square {
+  background: #AAA;
+  border: 1px solid #222;
+}
