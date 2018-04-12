@@ -4,12 +4,12 @@ class Board {
     this.spaces = [1,2,3]
   }
   log() {
-    console.log('hello from the board')
+    console.log(`hello from player ${this.playerNum}'s board`)
   }
 }
 
 var state = {
-  playerBoards = [
+  playerBoards: [
     new Board(0),
     new Board(1)
   ],
