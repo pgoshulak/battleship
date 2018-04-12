@@ -1,7 +1,19 @@
 // Generate JQuery object containing CSS grid of a board
-generateBoard(board) {
-
-}
+const generateBoard = (boardData) => {
+  let allSpaces = boardData.spaces;
+  let board = $('<div></div>')
+    .addClass('board');
+  
+  allSpaces.forEach((row, rowIndex) => {
+    row.forEach((square, colIndex) => {
+      let space = $('<div></div>')
+        .addClass('board-square')
+        .text(`R${rowIndex}C${colIndex}`);
+      board.append(space);
+    });
+  });
+  return board;
+};
 
 define((require, exports, module) => {
   module.exports = {
