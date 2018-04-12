@@ -19,3 +19,5 @@ Please note: original Lighthous Labs eslint settings have been overridden to all
 
 # External Resources Used
 - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes
+- https://stackoverflow.com/questions/16512182/how-to-create-empty-2d-array-in-javascript
+- https://css-tricks.com/snippets/css/complete-guide-grid/
