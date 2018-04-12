@@ -1,4 +1,6 @@
 {
-  "extends": "eslint-config-lighthouselabs"
+  "extends": "eslint-config-lighthouselabs",
+  "parserOptions": {
+    "ecmaVersion": 2015
+  }
 }
-
