@@ -8,6 +8,8 @@ const generateBoard = (boardData) => {
     row.forEach((square, colIndex) => {
       let space = $('<div></div>')
         .addClass('board-square')
+        .data('row', rowIndex)
+        .data('col', colIndex)
         .text(`R${rowIndex}C${colIndex}`);
       board.append(space);
     });
