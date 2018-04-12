@@ -1,5 +1,5 @@
 requirejs(['render', 'store'], function (render, store) {
-  var state = store.state();
+  let state = store.state();
   render.renderBoards(state);
   console.log(state);
 

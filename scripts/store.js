@@ -22,7 +22,7 @@ define((require, exports, module) => {
     },
 
     swapCurrentPlayers(state) {
-      var temp = state.currentOpponent;
+      let temp = state.currentOpponent;
       state.currentOpponent = state.currentPlayer;
       state.currentPlayer = temp;
     }
