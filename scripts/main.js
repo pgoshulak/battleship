@@ -1,11 +1,11 @@
-requirejs(['board', 'store'], function (board, store) {
+requirejs(['render', 'store'], function (render, store) {
   var state = store.state();
-  board.renderBoards(state);
+  render.renderBoards(state);
   console.log(state);
 
   $('#swapPlayers').click(function () {
     store.swapCurrentPlayers(state);
-    board.renderBoards(state);
+    render.renderBoards(state);
   });
 
 });
