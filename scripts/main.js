@@ -3,9 +3,14 @@ requirejs(['render', 'store'], function (render, store) {
   render.renderBoards(state);
   console.log(state);
 
-  $('#swapPlayers').click(function () {
-    store.swapCurrentPlayers(state);
-    render.renderBoards(state);
+  $(document).ready(() => {
+    $('#swapPlayers').click(function () {
+      store.swapCurrentPlayers(state);
+      render.renderBoards(state);
+    });
+    
+    $('.board-square').click(function () {
+      console.log('Board square R#C# clicked!');
+    });
   });
-
 });
