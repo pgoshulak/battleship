@@ -24,11 +24,11 @@ class BoardSpace {
   }
 }
 
-// A player's full 10x10 board
-class PlayerBoard {
-  constructor(playerNum, spaces) {
-    // Assign player id
-    this.playerNum = playerNum;
+// A user's full 10x10 board
+class UserBoard {
+  constructor(userId, spaces) {
+    // Assign user id
+    this.userId = userId;
     if (!spaces) {
       // Initialize 10x10 array of empty squares
       this.spaces = [...Array(10).fill(Array(10).fill(new BoardSpace))];
@@ -39,7 +39,7 @@ class PlayerBoard {
     }
   }
   log() {
-    console.log(`hello from player ${this.playerNum}'s board`);
+    console.log(`hello from player ${this.userId}'s board`);
   }
 }
 define((require, exports, module) => {
@@ -49,8 +49,8 @@ define((require, exports, module) => {
       return {
         // The boards for the two players
         playerBoards: [
-          new PlayerBoard(0),
-          new PlayerBoard(1)
+          new UserBoard(0),
+          new UserBoard(1)
         ],
         currentPlayer: 0,
         currentOpponent: 1
