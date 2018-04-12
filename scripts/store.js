@@ -1,7 +1,7 @@
 class Board {
-  constructor(playerNum) {
+  constructor(playerNum, spaces) {
     this.playerNum = playerNum;
-    this.spaces = [1, 2, 3];
+    this.spaces = spaces;
   }
   log() {
     console.log(`hello from player ${this.playerNum}'s board`);
@@ -13,8 +13,8 @@ define((require, exports, module) => {
     state() {
       return {
         playerBoards: [
-          new Board(0),
-          new Board(1)
+          new Board(0, [1, 2, 3]),
+          new Board(1, [4, 5, 6])
         ],
         currentPlayer: 0,
         currentOpponent: 1
