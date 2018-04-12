@@ -34,7 +34,7 @@ define((require, exports, module) => {
         .append(generateBoard(playerBoard));
 
       // Write the boards to the page
-      $('#board').empty().append(opponentBoardRendered).append(playerBoardRendered);
+      $('#game-area').empty().append(opponentBoardRendered).append(playerBoardRendered);
     }
   };
 });
