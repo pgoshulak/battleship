@@ -16,3 +16,4 @@ A browser-based battleship implementation. This project was started as a side-pr
 # Roadmap
 
 # External Resources Used
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes
