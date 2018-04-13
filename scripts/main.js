@@ -12,9 +12,13 @@ requirejs(['render', 'store'], function (render, store) {
     
     // Get the coordinates of a clicked square
     $('.board-square').click(function () {
-      let row = $(this).data('row');
-      let col = $(this).data('col');
-      console.log(`Board square R${row}C${col} clicked!`);
+      let squareCoords = {
+        userId: $(this).data('user-id'),
+        row: $(this).data('row'),
+        col: $(this).data('col')
+      };
+      
+      store.getSquareInfo(state, squareCoords);
     });
   });
 });

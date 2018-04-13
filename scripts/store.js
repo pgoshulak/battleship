@@ -62,6 +62,21 @@ define((require, exports, module) => {
       let temp = state.currentOpponent;
       state.currentOpponent = state.currentPlayer;
       state.currentPlayer = temp;
+    },
+
+    // Get info of square
+    getSquareInfo(state, squareCoords) {
+      let userId = squareCoords.userId;
+      let row = squareCoords.row;
+      let col = squareCoords.col;
+
+      let squareInfo = state.playerBoards[userId].spaces[row][col];
+      let ship = squareInfo.ship;
+      let status = squareInfo.status;
+
+      console.log(`User ${userId}'s square R${row}C${col} clicked!`);
+      console.log(`--> Ship type = ${ship}`);
+      console.log(`--> Status = ${status}`);
     }
   };
 });
