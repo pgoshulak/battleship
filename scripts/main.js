@@ -19,6 +19,12 @@ requirejs(['render', 'store'], function (render, store) {
       };
       
       store.getSquareInfo(state, squareCoords);
+
+      // Test: immediately sets new square info
+      store.setSquareInfo(state, squareCoords, {
+        ship: 1,
+        status: 1
+      });
     });
   });
 });

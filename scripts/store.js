@@ -78,6 +78,18 @@ define((require, exports, module) => {
       console.log(`User ${userId}'s square R${row}C${col} clicked!`);
       console.log(`--> Ship type = ${ship}`);
       console.log(`--> Status = ${status}`);
+    },
+
+    // Set info of square
+    setSquareInfo(state, squareCoords, squareInfo) {
+      let userId = squareCoords.userId;
+      let row = squareCoords.row;
+      let col = squareCoords.col;
+
+      state.playerBoards[userId].spaces[row][col] = {
+        ship: squareInfo.ship,
+        status: squareInfo.status
+      };
     }
   };
 });
