@@ -1,5 +1,5 @@
 .board {
-  background: #235;
+  background: #666;
   padding: 20px;
   display: inline-grid;
   grid-template-columns: repeat(10, 1fr);
@@ -7,9 +7,14 @@
 }
 
 .board-square {
-  background: #AAA;
+  background: #8CF;
   border: 1px solid #222;
   width: 24px;
   height: 24px;
   font-size: 0.6em;
+  cursor: crosshair
+}
+
+.board-square:hover {
+  background: #4DF
 }

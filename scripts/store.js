@@ -11,9 +11,10 @@ const SHIP = {
 // Constants defining a square's status
 const STATUS = {
   EMPTY: 0,
-  ALIVE: 1,
-  HIT: 2,
-  SUNK: 3
+  MISS: 1,
+  ALIVE: 2,
+  HIT: 3,
+  SUNK: 4
 };
 
 // A single square on the board
