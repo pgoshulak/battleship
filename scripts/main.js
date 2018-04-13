@@ -22,6 +22,7 @@ requirejs(['render', 'store'], function (render, store) {
         status: 1
       });
     });
+    console.log(state);
   };
 
   $(document).ready(() => {

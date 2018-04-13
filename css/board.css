@@ -15,6 +15,10 @@
   cursor: crosshair
 }
 
+.board-square-miss {
+  background: #9DF;
+}
+
 .board-square:hover {
   background: #4DF
 }

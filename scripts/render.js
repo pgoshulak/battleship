@@ -4,15 +4,28 @@ const generateBoard = (boardData) => {
   let allSpaces = boardData.spaces;
   let board = $('<div></div>')
     .addClass('board');
-  
+
   allSpaces.forEach((row, rowIndex) => {
     row.forEach((square, colIndex) => {
+      // console.log(square);
+      // Basic square render
       let space = $('<div></div>')
         .addClass('board-square')
         .data('user-id', userId)
         .data('row', rowIndex)
         .data('col', colIndex)
         .text(`R${rowIndex}C${colIndex}`);
+
+      // Color based on status
+      switch (square.status) {
+      case 0:
+        break;
+      case 1:
+        space.addClass('board-square-miss');
+        break;
+      default:
+        break;
+      }
       board.append(space);
     });
   });
