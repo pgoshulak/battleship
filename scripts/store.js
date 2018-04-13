@@ -45,9 +45,6 @@ class UserBoard {
       this.spaces = spaces;
     }
   }
-  log() {
-    console.log(`hello from player ${this.userId}'s board`);
-  }
 }
 define((require, exports, module) => {
   module.exports = {
