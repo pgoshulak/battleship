@@ -18,12 +18,18 @@ const STATUS = {
 };
 
 // A single square on the board
-class BoardSpace {
+/* class BoardSpace {
   constructor() {
     this.ship = SHIP.NONE;
     this.status = STATUS.EMPTY;
   }
-}
+} */
+const newBoardSpace = () => {
+  return {
+    ship: SHIP.NONE,
+    status: STATUS.EMPTY
+  };
+};
 
 // A user's full 10x10 board
 class UserBoard {
@@ -32,7 +38,7 @@ class UserBoard {
     this.userId = userId;
     if (!spaces) {
       // Initialize 10x10 array of empty squares
-      this.spaces = [...Array(10).fill(Array(10).fill(new BoardSpace))];
+      this.spaces = [...Array(10).fill(Array(10).fill(newBoardSpace()))];
       console.log(this.spaces);
     } else {
       // Initialize a 10x10 array of predetermined squares
@@ -86,10 +92,11 @@ define((require, exports, module) => {
       let row = squareCoords.row;
       let col = squareCoords.col;
 
-      state.playerBoards[userId].spaces[row][col] = {
-        ship: squareInfo.ship,
-        status: squareInfo.status
-      };
+      console.log(`setting info on R${row} C${col}`);
+      state.playerBoards[userId].spaces[row][col].ship = squareInfo.ship;
+      state.playerBoards[userId].spaces[row][col].status = squareInfo.status;
+      console.log(state.playerBoards[userId].spaces);
+      // console.log(state);
     }
   };
 });
