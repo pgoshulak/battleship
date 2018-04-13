@@ -18,12 +18,12 @@ const STATUS = {
 };
 
 // A single square on the board
-/* class BoardSpace {
+class BoardSpace {
   constructor() {
     this.ship = SHIP.NONE;
     this.status = STATUS.EMPTY;
   }
-} */
+}
 const newBoardSpace = () => {
   return {
     ship: SHIP.NONE,
@@ -38,7 +38,15 @@ class UserBoard {
     this.userId = userId;
     if (!spaces) {
       // Initialize 10x10 array of empty squares
-      this.spaces = [...Array(10).fill(Array(10).fill(newBoardSpace()))];
+      // this.spaces = [...Array(10).fill(Array(10).fill(new BoardSpace))];
+      let arr = [];
+      for (let i = 0; i < 10; i ++) {
+        arr.push([]);
+        for (let j = 0; j < 10; j ++) {
+          arr[i][j] = new BoardSpace;
+        }
+      }
+      this.spaces = arr;
       console.log(this.spaces);
     } else {
       // Initialize a 10x10 array of predetermined squares
@@ -46,6 +54,21 @@ class UserBoard {
     }
   }
 }
+/* const newUserBoard = (userId, spaces) => {
+  if (!spaces) {
+    // Initialize 10x10 array of empty squares
+    filledSpaces = [...Array(10).fill(Array(10).fill(new BoardSpace()))];
+  } else {
+    // Initialize a 10x10 array of predetermined squares
+    filledSpaces = spaces;
+  }
+  return {
+    userId: userId,
+    spaces: filledSpaces
+  };
+}; */
+
+
 define((require, exports, module) => {
   module.exports = {
     // Full game state
@@ -92,7 +115,8 @@ define((require, exports, module) => {
       console.log(`setting info on R${row} C${col}`);
       state.playerBoards[userId].spaces[row][col].ship = squareInfo.ship;
       state.playerBoards[userId].spaces[row][col].status = squareInfo.status;
-      console.log(state.playerBoards[userId].spaces);
+      console.log(state.playerBoards[userId].spaces[row][col]);
+      console.log(state.playerBoards[userId].spaces[row + 1][col + 1]);
       // console.log(state);
     }
   };
