@@ -24,12 +24,6 @@ class BoardSpace {
     this.status = STATUS.EMPTY;
   }
 }
-const newBoardSpace = () => {
-  return {
-    ship: SHIP.NONE,
-    status: STATUS.EMPTY
-  };
-};
 
 // A user's full 10x10 board
 class UserBoard {
@@ -47,27 +41,12 @@ class UserBoard {
         }
       }
       this.spaces = arr;
-      console.log(this.spaces);
     } else {
       // Initialize a 10x10 array of predetermined squares
       this.spaces = spaces;
     }
   }
 }
-/* const newUserBoard = (userId, spaces) => {
-  if (!spaces) {
-    // Initialize 10x10 array of empty squares
-    filledSpaces = [...Array(10).fill(Array(10).fill(new BoardSpace()))];
-  } else {
-    // Initialize a 10x10 array of predetermined squares
-    filledSpaces = spaces;
-  }
-  return {
-    userId: userId,
-    spaces: filledSpaces
-  };
-}; */
-
 
 define((require, exports, module) => {
   module.exports = {
@@ -115,9 +94,6 @@ define((require, exports, module) => {
       console.log(`setting info on R${row} C${col}`);
       state.playerBoards[userId].spaces[row][col].ship = squareInfo.ship;
       state.playerBoards[userId].spaces[row][col].status = squareInfo.status;
-      console.log(state.playerBoards[userId].spaces[row][col]);
-      console.log(state.playerBoards[userId].spaces[row + 1][col + 1]);
-      // console.log(state);
     }
   };
 });
