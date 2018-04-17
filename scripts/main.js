@@ -12,13 +12,16 @@ requirejs(['render', 'store'], function (render, store) {
         col: $(this).data('col')
       };
       
-      store.getSquareInfo(state, squareCoords);
+      /* store.getSquareInfo(state, squareCoords);
   
       // Test: immediately sets new square info
       store.setSquareInfo(state, squareCoords, {
         ship: 1,
         status: 1
-      });
+      }); */
+
+      store.registerShot(state, squareCoords);
+
       render.renderBoards(state);
       refreshBoardBindings();
     });

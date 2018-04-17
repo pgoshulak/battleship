@@ -34,9 +34,9 @@ class UserBoard {
       // Initialize 10x10 array of empty squares
       // this.spaces = [...Array(10).fill(Array(10).fill(new BoardSpace))];
       let arr = [];
-      for (let i = 0; i < 10; i ++) {
+      for (let i = 0; i < 10; i++) {
         arr.push([]);
-        for (let j = 0; j < 10; j ++) {
+        for (let j = 0; j < 10; j++) {
           arr[i][j] = new BoardSpace;
         }
       }
@@ -83,6 +83,12 @@ define((require, exports, module) => {
       console.log(`User ${userId}'s square R${row}C${col} clicked!`);
       console.log(`--> Ship type = ${ship}`);
       console.log(`--> Status = ${status}`);
+
+      return {
+        squareInfo: squareInfo,
+        ship: ship,
+        status: status
+      };
     },
 
     // Set info of square
@@ -94,6 +100,30 @@ define((require, exports, module) => {
       console.log(`setting info on R${row} C${col}`);
       state.playerBoards[userId].spaces[row][col].ship = squareInfo.ship;
       state.playerBoards[userId].spaces[row][col].status = squareInfo.status;
+    },
+
+    // Register a shot to a square
+    registerShot(state, squareCoords) {
+      let squareInfo = this.getSquareInfo(state, squareCoords);
+
+      // Player has clicked on their own square (TODO: Factor this out???)
+      if (squareCoords.userId === state.currentPlayer) {
+        return;
+      }
+
+      let newSquareInfo = {};
+      // Check if the square is a hit (ie. there is an alive ship)
+      if (squareInfo.status === 2) {
+        newSquareInfo = Object.assign({}, squareInfo, {
+          status: 3
+        });
+      } else {
+        // The shot is a miss
+        newSquareInfo = Object.assign({}, squareInfo, {
+          status: 1
+        });
+      }
+      this.setSquareInfo(state, squareCoords, newSquareInfo);
     }
   };
 });
