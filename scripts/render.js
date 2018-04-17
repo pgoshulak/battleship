@@ -23,6 +23,15 @@ const generateBoard = (boardData) => {
       case 1:
         space.addClass('board-square-miss');
         break;
+      case 2:
+        space.addClass('board-square-alive');
+        break;
+      case 3:
+        space.addClass('board-square-hit');
+        break;
+      case 4:
+        space.addClass('board-square-sunk');
+        break;
       default:
         break;
       }

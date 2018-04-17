@@ -18,6 +18,15 @@
 .board-square-miss {
   background: #DEF;
 }
+.board-square-alive {
+  background: #AAA;
+}
+.board-square-hit {
+  background: #D22;
+}
+.board-square-sunk {
+  background: #112;
+}
 
 .board-square:hover {
   background: #4DF
