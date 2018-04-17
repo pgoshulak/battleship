@@ -19,6 +19,8 @@ requirejs(['render', 'store'], function (render, store) {
         ship: 1,
         status: 1
       });
+      render.renderBoards(state);
+      refreshBoardBindings();
     });
   };
 
