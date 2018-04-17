@@ -55,8 +55,8 @@ define((require, exports, module) => {
       return {
         // The boards for the two players
         playerBoards: [
-          new UserBoard(0, JSON.parse(randomBoard1)),
-          new UserBoard(1, JSON.parse(randomBoard2))
+          new UserBoard(0, JSON.parse(randomBoardNoShots)),
+          new UserBoard(1, JSON.parse(randomBoardWithShots))
         ],
         currentPlayer: 0,
         currentOpponent: 1
