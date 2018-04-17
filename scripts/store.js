@@ -42,11 +42,12 @@ class UserBoard {
   }
   // Returns a dict with each ship's
   get shipSquaresAlive () {
-    let ships = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0};
+    let ships = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, 'total': 0};
     for (let row of this.spaces) {
       for (let space of row) {
         if (space.status === STATUS.ALIVE) {
           ships[space.ship] += 1;
+          ships['total'] += 1;
         }
       }
     }
