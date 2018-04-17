@@ -32,15 +32,9 @@ class UserBoard {
     this.userId = userId;
     if (!spaces) {
       // Initialize 10x10 array of empty squares
-      // this.spaces = [...Array(10).fill(Array(10).fill(new BoardSpace))];
-      let arr = [];
-      for (let i = 0; i < 10; i++) {
-        arr.push([]);
-        for (let j = 0; j < 10; j++) {
-          arr[i][j] = new BoardSpace;
-        }
-      }
-      this.spaces = arr;
+      this.spaces = Array(10).fill().map(() => {
+        return Array(10).fill().map(() => new BoardSpace);
+      });
     } else {
       // Initialize a 10x10 array of predetermined squares
       this.spaces = spaces;
