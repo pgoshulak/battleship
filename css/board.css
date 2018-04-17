@@ -1,5 +1,5 @@
 .board {
-  background: #666;
+  background: #444;
   padding: 20px;
   display: inline-grid;
   grid-template-columns: repeat(10, 1fr);
@@ -7,7 +7,7 @@
 }
 
 .board-square {
-  background: #8CF;
+  background: #ADF;
   border: 1px solid #222;
   width: 24px;
   height: 24px;
@@ -16,10 +16,10 @@
 }
 
 .board-square-miss {
-  background: #DEF;
+  background: #EFF;
 }
 .board-square-alive.board-square-revealed {
-  background: #AAA;
+  background: #999;
 }
 .board-square-hit, .board-square-sunk.board-square-obscured {
   background: #D22;
