@@ -1,5 +1,7 @@
-requirejs(['render', 'store'], function (render, store) {
+requirejs(['render', 'store', 'gameEngine'], function (render, store, gameEngine) {
   let state = store.state();
+  let game = gameEngine.game(state);
+  game.logState();
   render.renderBoards(state);
 
   // Various tasks to perform when board is re-rendered
@@ -25,6 +27,7 @@ requirejs(['render', 'store'], function (render, store) {
       render.renderBoards(state);
       refreshBoardBindings();
       console.log(state.playerBoards[0].shipSquaresAlive);
+      game.logState();
     });
   };
 
