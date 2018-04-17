@@ -1,5 +1,5 @@
 // Generate JQuery object containing CSS grid of a board
-const generateBoard = (boardData) => {
+const generateBoard = (boardData, visibility) => {
   let userId = boardData.userId;
   let allSpaces = boardData.spaces;
   let board = $('<div></div>')
@@ -11,6 +11,7 @@ const generateBoard = (boardData) => {
       // Basic square render
       let space = $('<div></div>')
         .addClass('board-square')
+        .addClass(`board-square-${visibility}`)
         .data('user-id', userId)
         .data('row', rowIndex)
         .data('col', colIndex)
@@ -54,10 +55,10 @@ define((require, exports, module) => {
       // Generate JQuery elements with the two boards
       let opponentBoardRendered = $('<div></div>')
         .text(`this is the Opponent board, showing Player ${opponentId}`)
-        .append(generateBoard(opponentBoard));
+        .append(generateBoard(opponentBoard, 'obscured'));
       let playerBoardRendered = $('<div></div>')
         .text(`this is the Player board, showing Player ${playerId}`)
-        .append(generateBoard(playerBoard));
+        .append(generateBoard(playerBoard, 'revealed'));
 
       // Write the boards to the page
       $('#game-area').empty().append(opponentBoardRendered).append(playerBoardRendered);

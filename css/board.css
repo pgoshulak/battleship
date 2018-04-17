@@ -18,13 +18,13 @@
 .board-square-miss {
   background: #DEF;
 }
-.board-square-alive {
+.board-square-alive.board-square-revealed {
   background: #AAA;
 }
-.board-square-hit {
+.board-square-hit, .board-square-sunk.board-square-obscured {
   background: #D22;
 }
-.board-square-sunk {
+.board-square-sunk.board-square-revealed {
   background: #112;
 }
 
