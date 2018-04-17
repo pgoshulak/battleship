@@ -14,20 +14,34 @@
   font-size: 0.6em;
   cursor: crosshair
 }
+.board-square:hover {
+  background: #4DF;
+}
 
 .board-square-miss {
-  background: #EFF;
+  background: #DEF;
 }
+.board-square-miss:hover {
+  background: #FFF;
+}
+
 .board-square-alive.board-square-revealed {
   background: #999;
 }
+.board-square-alive.board-square-revealed:hover {
+  background: #BBB;
+}
+
 .board-square-hit, .board-square-sunk.board-square-obscured {
   background: #D22;
 }
+.board-square-hit:hover, .board-square-sunk.board-square-obscured:hover {
+  background: #F66;
+}
+
 .board-square-sunk.board-square-revealed {
   background: #112;
 }
-
-.board-square:hover {
-  background: #4DF
+.board-square-sunk.board-square-revealed:hover {
+  background: #224;
 }
