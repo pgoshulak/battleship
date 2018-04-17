@@ -1,7 +1,7 @@
 // Constants defining the ship inside a square
 const SHIP = {
   NONE: 0,
-  CRUISER: 1,
+  PATROL: 1,
   SUBMARINE: 2,
   DESTROYER: 3,
   BATTLESHIP: 4,
