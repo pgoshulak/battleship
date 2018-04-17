@@ -24,6 +24,7 @@ requirejs(['render', 'store'], function (render, store) {
 
       render.renderBoards(state);
       refreshBoardBindings();
+      console.log(state.playerBoards[0].shipSquaresAlive);
     });
   };
 

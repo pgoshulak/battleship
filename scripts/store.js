@@ -46,6 +46,20 @@ class UserBoard {
       this.spaces = spaces;
     }
   }
+  get shipSquaresAlive () {
+    let ships = {};
+    ships = this.spaces.reduce(function(acc, curRow) {
+      curRow.reduce(function(acc, curSpace) {
+        // if (curSpace.ship >= 0) { console.log(curSpace, curSpace.ship); }
+        console.log(String(curSpace.ship));
+        acc['s' + String(curSpace.ship)] = 9;
+        console.log(acc);
+        return acc;
+      });
+      return acc;
+    }, {});
+    console.log(ships);
+  }
 }
 
 define((require, exports, module) => {
