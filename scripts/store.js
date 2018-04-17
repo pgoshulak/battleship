@@ -40,19 +40,17 @@ class UserBoard {
       this.spaces = spaces;
     }
   }
+  // Returns a dict with each ship's
   get shipSquaresAlive () {
-    let ships = {};
-    ships = this.spaces.reduce(function(acc, curRow) {
-      curRow.reduce(function(acc, curSpace) {
-        // if (curSpace.ship >= 0) { console.log(curSpace, curSpace.ship); }
-        console.log(String(curSpace.ship));
-        acc['s' + String(curSpace.ship)] = 9;
-        console.log(acc);
-        return acc;
-      });
-      return acc;
-    }, {});
-    console.log(ships);
+    let ships = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0};
+    for (let row of this.spaces) {
+      for (let space of row) {
+        if (space.status === STATUS.ALIVE) {
+          ships[space.ship] += 1;
+        }
+      }
+    }
+    return ships;
   }
 }
 
