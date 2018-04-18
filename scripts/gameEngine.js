@@ -46,14 +46,14 @@ define((require, exports, module) => {
         },
         stateFunctions: {
           // Generic function to trigger a state transition on the global game controller
-          triggerTransition(transitionName) {
+          requestTransition(transitionName) {
             $('#game-controller').trigger('triggerTransition', transitionName);
           },
           // Swap players
           swapPlayerBoards() {
             state.swapCurrentPlayers();
             render.renderBoards(state);
-            this.triggerTransition('ready');
+            this.requestTransition('ready');
           }
         }
       };
