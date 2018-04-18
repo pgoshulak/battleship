@@ -21,7 +21,7 @@ requirejs(['render', 'store', 'gameEngine'], function (render, store, gameEngine
         status: 1
       }); */
 
-      store.registerShot(state, squareCoords);
+      state.registerShot(squareCoords);
 
       render.renderBoards(state);
       refreshBoardBindings();

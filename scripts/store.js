@@ -41,8 +41,15 @@ class UserBoard {
     }
   }
   // Returns a dict with each ship's
-  get shipSquaresAlive () {
-    let ships = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, 'total': 0};
+  get shipSquaresAlive() {
+    let ships = {
+      '1': 0,
+      '2': 0,
+      '3': 0,
+      '4': 0,
+      '5': 0,
+      'total': 0
+    };
     for (let row of this.spaces) {
       for (let space of row) {
         if (space.status === STATUS.ALIVE) {
@@ -62,6 +69,62 @@ function swapCurrentPlayers() {
   this.currentPlayer = temp;
 }
 
+// Get info of square
+function getSquareInfo(squareCoords) {
+  let userId = squareCoords.userId;
+  let row = squareCoords.row;
+  let col = squareCoords.col;
+
+  let squareInfo = this.playerBoards[userId].spaces[row][col];
+  let ship = squareInfo.ship;
+  let status = squareInfo.status;
+
+  console.log(`User ${userId}'s square R${row}C${col} clicked!`);
+  console.log(`--> Ship type = ${ship}`);
+  console.log(`--> Status = ${status}`);
+
+  return {
+    squareInfo: squareInfo,
+    ship: ship,
+    status: status
+  };
+}
+
+// Set info of square
+function setSquareInfo(squareCoords, squareInfo) {
+  let userId = squareCoords.userId;
+  let row = squareCoords.row;
+  let col = squareCoords.col;
+
+  console.log(`setting info on R${row} C${col}`);
+  this.playerBoards[userId].spaces[row][col].ship = squareInfo.ship;
+  this.playerBoards[userId].spaces[row][col].status = squareInfo.status;
+}
+
+// Register a shot to a square
+function registerShot(squareCoords) {
+  let squareInfo = this.getSquareInfo(squareCoords);
+
+  // Player has clicked on their own square (TODO: Factor this out???)
+  if (squareCoords.userId === this.currentPlayer) {
+    return;
+  }
+
+  let newSquareInfo = {};
+  // Check if the square is a hit (ie. there is an alive ship)
+  if (squareInfo.status === 2) {
+    newSquareInfo = Object.assign({}, squareInfo, {
+      status: 3
+    });
+  } else {
+    // The shot is a miss
+    newSquareInfo = Object.assign({}, squareInfo, {
+      status: 1
+    });
+  }
+  this.setSquareInfo(squareCoords, newSquareInfo);
+}
+
 define((require, exports, module) => {
   module.exports = {
     // Full game state
@@ -75,66 +138,11 @@ define((require, exports, module) => {
         currentPlayer: 0,
         currentOpponent: 1,
         gameState: 'awaitingShot',
-        swapCurrentPlayers: swapCurrentPlayers
+        swapCurrentPlayers: swapCurrentPlayers,
+        getSquareInfo: getSquareInfo,
+        setSquareInfo: setSquareInfo,
+        registerShot: registerShot
       };
-    },
-
-
-
-    // Get info of square
-    getSquareInfo(state, squareCoords) {
-      let userId = squareCoords.userId;
-      let row = squareCoords.row;
-      let col = squareCoords.col;
-
-      let squareInfo = state.playerBoards[userId].spaces[row][col];
-      let ship = squareInfo.ship;
-      let status = squareInfo.status;
-
-      console.log(`User ${userId}'s square R${row}C${col} clicked!`);
-      console.log(`--> Ship type = ${ship}`);
-      console.log(`--> Status = ${status}`);
-
-      return {
-        squareInfo: squareInfo,
-        ship: ship,
-        status: status
-      };
-    },
-
-    // Set info of square
-    setSquareInfo(state, squareCoords, squareInfo) {
-      let userId = squareCoords.userId;
-      let row = squareCoords.row;
-      let col = squareCoords.col;
-
-      console.log(`setting info on R${row} C${col}`);
-      state.playerBoards[userId].spaces[row][col].ship = squareInfo.ship;
-      state.playerBoards[userId].spaces[row][col].status = squareInfo.status;
-    },
-
-    // Register a shot to a square
-    registerShot(state, squareCoords) {
-      let squareInfo = this.getSquareInfo(state, squareCoords);
-
-      // Player has clicked on their own square (TODO: Factor this out???)
-      if (squareCoords.userId === state.currentPlayer) {
-        return;
-      }
-
-      let newSquareInfo = {};
-      // Check if the square is a hit (ie. there is an alive ship)
-      if (squareInfo.status === 2) {
-        newSquareInfo = Object.assign({}, squareInfo, {
-          status: 3
-        });
-      } else {
-        // The shot is a miss
-        newSquareInfo = Object.assign({}, squareInfo, {
-          status: 1
-        });
-      }
-      this.setSquareInfo(state, squareCoords, newSquareInfo);
     }
   };
 });
