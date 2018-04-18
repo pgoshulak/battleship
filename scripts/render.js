@@ -42,23 +42,6 @@ const generateBoard = (boardData, visibility) => {
   return board;
 };
 
-// Various tasks to perform when board is re-rendered
-function refreshBoardBindings (state) {
-  // Get the coordinates of a clicked square
-  $('.board-square').click(function () {
-    let squareCoords = {
-      userId: $(this).data('user-id'),
-      row: $(this).data('row'),
-      col: $(this).data('col')
-    };
-
-    state.registerShot(squareCoords);
-
-    renderBoards(state);
-    refreshBoardBindings(state);
-  });
-}
-
 function renderBoards (state) {
   // IDs of the users
   let opponentId = state.currentOpponent;
@@ -79,7 +62,15 @@ function renderBoards (state) {
   $('#game-area').empty().append(opponentBoardRendered).append(playerBoardRendered);
 
   // Refresh board bindings
-  refreshBoardBindings(state);
+  $('.board-square').click(function () {
+    let squareCoords = {
+      userId: $(this).data('user-id'),
+      row: $(this).data('row'),
+      col: $(this).data('col')
+    };
+    state.registerShot(squareCoords);
+    renderBoards(state);
+  });
 }
 define((require, exports, module) => {
   module.exports = {

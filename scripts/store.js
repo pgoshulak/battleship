@@ -75,7 +75,6 @@ function getSquareInfo(squareCoords) {
   let row = squareCoords.row;
   let col = squareCoords.col;
 
-  console.trace();
   let squareInfo = this.playerBoards[userId].spaces[row][col];
   let ship = squareInfo.ship;
   let status = squareInfo.status;
