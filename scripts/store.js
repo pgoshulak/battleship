@@ -66,7 +66,8 @@ define((require, exports, module) => {
           new UserBoard(1, JSON.parse(randomBoardWithShots))
         ],
         currentPlayer: 0,
-        currentOpponent: 1
+        currentOpponent: 1,
+        gameState: 'awaitingShot'
       };
     },
 
