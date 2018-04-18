@@ -64,7 +64,10 @@ define((require, exports, module) => {
               this.requestTransition('reset');
               return;
             }
-            
+            // Check status of clicked square
+            let clickedSquareInfo = state.getSquareInfo(lastSquareClicked);
+            // If shot is a miss
+            // if (clickedSquareInfo.status === STATUS.MISS)
           }
         }
       };
