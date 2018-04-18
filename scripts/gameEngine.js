@@ -25,6 +25,7 @@ define((require, exports, module) => {
             'ready': 'awaitingShot'
           }
         },
+        debugStateTransitions: false,
         // Trigger a state transition
         triggerTransition(transitionName) {
           // Retrieve current game state
@@ -35,7 +36,11 @@ define((require, exports, module) => {
             // Get the next state
             newState = this.stateMap[oldState][transitionName];
             state.setState(newState);
-            console.info(`${oldState} -> ${transitionName} -> ${newState}`);
+
+            // Log state transition if debugging
+            if (this.debugStateTransitions) {
+              console.info(`${oldState} -> ${transitionName} -> ${newState}`);
+            }
             // If there is a function associated with this state change
             if (this.stateFunctions.hasOwnProperty(newState)) {
               this.stateFunctions[newState]();
