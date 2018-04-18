@@ -31,7 +31,7 @@ define((require, exports, module) => {
           oldState = state.gameState;
 
           // Check if the triggered transition is valid for the current state
-          if (this.stateMap[oldState].hasOwnProperty(transitionName)) {
+          if (this.stateMap[oldState] && this.stateMap[oldState].hasOwnProperty(transitionName)) {
             // Get the next state
             newState = this.stateMap[oldState][transitionName];
             state.setState(newState);
