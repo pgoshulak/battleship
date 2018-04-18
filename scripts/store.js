@@ -77,6 +77,24 @@ function setSquareInfo(squareCoords, squareInfo) {
   this.playerBoards[userId].spaces[row][col].status = squareInfo.status;
 }
 
+// Set only status of a square
+function setSquareStatus(squareCoords, newStatus) {
+  let newSquareInfo = {
+    status: newStatus,
+    ship: this.getSquareInfo(squareCoords).ship
+  };
+  this.setSquareInfo(squareCoords, newSquareInfo);
+}
+
+// Set only status of a square
+function setSquareShip(squareCoords, newShip) {
+  let newSquareInfo = {
+    status: this.getSquareInfo(squareCoords).status,
+    ship: newShip
+  };
+  this.setSquareInfo(squareCoords, newSquareInfo);
+}
+
 // Register a shot to a square
 function registerShot(squareCoords) {
   let squareInfo = this.getSquareInfo(squareCoords);
