@@ -151,6 +151,8 @@ define((require, exports, module) => {
         swapCurrentPlayers: swapCurrentPlayers,
         getSquareInfo: getSquareInfo,
         setSquareInfo: setSquareInfo,
+        setSquareStatus: setSquareStatus,
+        setSquareShip: setSquareShip,
         registerShot: registerShot,
         registerBoardClick: registerBoardClick
       };
