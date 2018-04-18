@@ -5,7 +5,7 @@ define((require, exports, module) => {
         // Map of states with {transition:nextState} pairs
         stateMap: {
           'awaitingShot': {
-            'shot': 'checkShotResult',
+            'click': 'checkShotResult',
             'swap': 'swapPlayerBoards'
           },
           'checkShotResult': {

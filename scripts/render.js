@@ -42,6 +42,10 @@ const generateBoard = (boardData, visibility) => {
   return board;
 };
 
+function requestTransition(transitionName) {
+  $('#game-controller').trigger('triggerTransition', transitionName);
+}
+
 function renderBoards (state) {
   // IDs of the users
   let opponentId = state.currentOpponent;
@@ -68,7 +72,9 @@ function renderBoards (state) {
       row: $(this).data('row'),
       col: $(this).data('col')
     };
-    state.registerShot(squareCoords);
+    // state.registerShot(squareCoords);
+    state.registerBoardClick(squareCoords);
+    requestTransition('click');
     renderBoards(state);
   });
 }

@@ -120,6 +120,11 @@ function registerShot(squareCoords) {
   this.setSquareInfo(squareCoords, newSquareInfo);
 }
 
+// Register a click on a square
+function registerBoardClick(squareCoords) {
+  this.lastSquareClicked = Object.assign({}, squareCoords);
+}
+
 // Set new state
 function setState(newState) {
   this.gameState = newState;
@@ -135,6 +140,11 @@ define((require, exports, module) => {
           new UserBoard(0, JSON.parse(randomBoardNoShots)),
           new UserBoard(1, JSON.parse(randomBoardWithShots))
         ],
+        lastSquareClicked: {
+          userId: 0,
+          row: 0,
+          col: 0
+        },
         currentPlayer: 0,
         currentOpponent: 1,
         gameState: 'awaitingShot',
@@ -142,7 +152,8 @@ define((require, exports, module) => {
         swapCurrentPlayers: swapCurrentPlayers,
         getSquareInfo: getSquareInfo,
         setSquareInfo: setSquareInfo,
-        registerShot: registerShot
+        registerShot: registerShot,
+        registerBoardClick: registerBoardClick
       };
     }
   };
