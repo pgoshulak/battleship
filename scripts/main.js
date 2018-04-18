@@ -1,6 +1,6 @@
 requirejs(['render', 'store', 'gameEngine'], function (render, store, gameEngine) {
   let state = store.state();
-  let game = gameEngine.game(state);
+  let game = gameEngine.game(state, render);
   render.renderBoards(state);
 
   // Various tasks to perform when board is re-rendered
