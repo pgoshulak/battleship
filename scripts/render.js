@@ -42,26 +42,47 @@ const generateBoard = (boardData, visibility) => {
   return board;
 };
 
+// Various tasks to perform when board is re-rendered
+function refreshBoardBindings (state) {
+  // Get the coordinates of a clicked square
+  $('.board-square').click(function () {
+    let squareCoords = {
+      userId: $(this).data('user-id'),
+      row: $(this).data('row'),
+      col: $(this).data('col')
+    };
+
+    state.registerShot(squareCoords);
+
+    renderBoards(state);
+    refreshBoardBindings(state);
+  });
+}
+
+function renderBoards (state) {
+  // IDs of the users
+  let opponentId = state.currentOpponent;
+  let playerId = state.currentPlayer;
+
+  let opponentBoard = state.playerBoards[opponentId];
+  let playerBoard = state.playerBoards[playerId];
+
+  // Generate JQuery elements with the two boards
+  let opponentBoardRendered = $('<div></div>')
+    .text(`this is the Opponent board, showing Player ${opponentId}`)
+    .append(generateBoard(opponentBoard, 'obscured'));
+  let playerBoardRendered = $('<div></div>')
+    .text(`this is the Player board, showing Player ${playerId}`)
+    .append(generateBoard(playerBoard, 'revealed'));
+
+  // Write the boards to the page
+  $('#game-area').empty().append(opponentBoardRendered).append(playerBoardRendered);
+
+  // Refresh board bindings
+  refreshBoardBindings(state);
+}
 define((require, exports, module) => {
   module.exports = {
-    renderBoards: function (state) {
-      // IDs of the users
-      let opponentId = state.currentOpponent;
-      let playerId = state.currentPlayer;
-
-      let opponentBoard = state.playerBoards[opponentId];
-      let playerBoard = state.playerBoards[playerId];
-
-      // Generate JQuery elements with the two boards
-      let opponentBoardRendered = $('<div></div>')
-        .text(`this is the Opponent board, showing Player ${opponentId}`)
-        .append(generateBoard(opponentBoard, 'obscured'));
-      let playerBoardRendered = $('<div></div>')
-        .text(`this is the Player board, showing Player ${playerId}`)
-        .append(generateBoard(playerBoard, 'revealed'));
-
-      // Write the boards to the page
-      $('#game-area').empty().append(opponentBoardRendered).append(playerBoardRendered);
-    }
+    renderBoards: renderBoards
   };
 });
