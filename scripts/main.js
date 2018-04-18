@@ -17,6 +17,8 @@ requirejs(['render', 'store', 'gameEngine'], function (render, store, gameEngine
     });
     // refreshBoardBindings();
     $('#game-controller').on('triggerTransition', function(event, type) {
+      console.log('cur state', state.gameState);
+      console.log('triggering transition', type);
       game.triggerTransition(type);
     });
   });

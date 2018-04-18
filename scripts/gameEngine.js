@@ -9,6 +9,7 @@ define((require, exports, module) => {
             'swap': 'swapPlayerBoards'
           },
           'checkShotResult': {
+            'reset': 'awaitingShot',
             'miss': 'endOfTurn',
             'hit': 'checkSunk'
           },
@@ -54,6 +55,16 @@ define((require, exports, module) => {
             state.swapCurrentPlayers();
             render.renderBoards(state);
             this.requestTransition('ready');
+          },
+          // Check if the shot was a hit or miss
+          checkShotResult() {
+            let lastSquareClicked = state.lastSquareClicked;
+            // If player clicked own board, reset state
+            if (state.currentPlayer === lastSquareClicked.userId) {
+              this.requestTransition('reset');
+              return;
+            }
+            
           }
         }
       };
