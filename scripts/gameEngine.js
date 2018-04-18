@@ -14,12 +14,9 @@ define((require, exports, module) => {
             'hit': 'checkSunk'
           },
           'checkSunk': {
-            'sunk': 'checkVictory',
-            'notSunk': 'endOfTurn'
-          },
-          'checkVictory': {
             'victory': 'gameOver',
-            'noVictory': 'endOfTurn'
+            'sunk': 'endOfTurn',
+            'notSunk': 'endOfTurn'
           },
           'endOfTurn': {
             'swap': 'swapPlayerBoards'
@@ -38,7 +35,7 @@ define((require, exports, module) => {
             // Get the next state
             newState = this.stateMap[oldState][transitionName];
             state.setState(newState);
-            console.log(`${oldState} -> ${transitionName} -> ${newState}`);
+            console.info(`${oldState} -> ${transitionName} -> ${newState}`);
             // If there is a function associated with this state change
             if (this.stateFunctions.hasOwnProperty(newState)) {
               this.stateFunctions[newState]();
@@ -89,6 +86,27 @@ define((require, exports, module) => {
           // End of turn
           endOfTurn() {
             this.requestTransition('swap');
+          },
+          // Check if ship is sunk
+          checkSunk() {
+            let shipType = state.getSquareInfo(state.lastSquareClicked).ship;
+            let squaresAlive = state.playerBoards[state.currentOpponent].shipSquaresAlive;
+
+            // If all ships are sunk
+            if (squaresAlive.total === 0) {
+              console.log(`Victory for Player ${state.currentPlayer}!`);
+              this.requestTransition('victory');
+              return;
+            }
+
+            // If the ship has no squares alive
+            if (squaresAlive[shipType] === 0) {
+              console.log('It is sunk! Need to assign square.status -> sunk');
+              this.requestTransition('sunk');
+            } else {
+              // The ship still has some squares alive
+              this.requestTransition('notSunk');
+            }
           }
         }
       };
