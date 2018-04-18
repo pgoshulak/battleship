@@ -32,7 +32,7 @@ define((require, exports, module) => {
         triggerTransition(transitionName) {
           // Retrieve current game state
           oldState = state.gameState;
-          
+
           // Check if the triggered transition is valid for the current state
           if (this.stateMap[oldState].hasOwnProperty(transitionName)) {
             // Get the next state
@@ -67,7 +67,24 @@ define((require, exports, module) => {
             // Check status of clicked square
             let clickedSquareInfo = state.getSquareInfo(lastSquareClicked);
             // If shot is a miss
-            // if (clickedSquareInfo.status === STATUS.MISS)
+            if (clickedSquareInfo.status === STATUS.EMPTY) {
+              state.setSquareStatus(lastSquareClicked, STATUS.MISS);
+              this.requestTransition('miss');
+              return;
+            }
+            // If shot is a hit
+            if (clickedSquareInfo.status === STATUS.ALIVE) {
+              state.setSquareStatus(lastSquareClicked, STATUS.HIT);
+              this.requestTransition('hit');
+              return;
+            }
+            // If square has already been clicked
+            if (clickedSquareInfo.status === STATUS.MISS
+              || clickedSquareInfo.status === STATUS.HIT
+              || clickedSquareInfo.status === STATUS.SUNK) {
+              this.requestTransition('reset');
+              return;
+            }
           }
         }
       };
