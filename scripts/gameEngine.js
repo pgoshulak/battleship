@@ -85,6 +85,10 @@ define((require, exports, module) => {
               this.requestTransition('reset');
               return;
             }
+          },
+          // End of turn
+          endOfTurn() {
+            this.requestTransition('swap');
           }
         }
       };
