@@ -30,24 +30,31 @@ define((require, exports, module) => {
         // Trigger a state transition
         triggerTransition(transitionName) {
           // Retrieve current game state
-          gameState = state.gameState;
-
+          oldState = state.gameState;
+          
           // Check if the triggered transition is valid for the current state
-          if (this.stateMap[gameState].hasOwnProperty(transitionName)) {
+          if (this.stateMap[oldState].hasOwnProperty(transitionName)) {
             // Get the next state
-            newState = this.stateMap[gameState][transitionName];
+            newState = this.stateMap[oldState][transitionName];
             state.setState(newState);
+            console.log(`${oldState} -> ${transitionName} -> ${newState}`);
             // If there is a function associated with this state change
-            if (this.hasOwnProperty(newState)) {
-              this[newState]();
+            if (this.stateFunctions.hasOwnProperty(newState)) {
+              this.stateFunctions[newState]();
             }
           }
         },
-        // State transition for swapping player boards
-        swapPlayerBoards: function () {
-          state.swapCurrentPlayers();
-          render.renderBoards(state);
-          this.triggerTransition('ready');
+        stateFunctions: {
+          // Generic function to trigger a state transition on the global game controller
+          triggerTransition(transitionName) {
+            $('#game-controller').trigger('triggerTransition', transitionName);
+          },
+          // Swap players
+          swapPlayerBoards() {
+            state.swapCurrentPlayers();
+            render.renderBoards(state);
+            this.triggerTransition('ready');
+          }
         }
       };
     }
