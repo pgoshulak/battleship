@@ -79,10 +79,6 @@ function getSquareInfo(squareCoords) {
   let ship = squareInfo.ship;
   let status = squareInfo.status;
 
-  console.log(`User ${userId}'s square R${row}C${col} clicked!`);
-  console.log(`--> Ship type = ${ship}`);
-  console.log(`--> Status = ${status}`);
-
   return {
     squareInfo: squareInfo,
     ship: ship,

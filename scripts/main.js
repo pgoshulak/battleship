@@ -12,14 +12,6 @@ requirejs(['render', 'store', 'gameEngine'], function (render, store, gameEngine
         row: $(this).data('row'),
         col: $(this).data('col')
       };
-      
-      /* store.getSquareInfo(state, squareCoords);
-  
-      // Test: immediately sets new square info
-      store.setSquareInfo(state, squareCoords, {
-        ship: 1,
-        status: 1
-      }); */
 
       state.registerShot(squareCoords);
 
