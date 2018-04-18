@@ -120,6 +120,11 @@ function registerShot(squareCoords) {
   this.setSquareInfo(squareCoords, newSquareInfo);
 }
 
+// Set new state
+function setState(newState) {
+  this.gameState = newState;
+}
+
 define((require, exports, module) => {
   module.exports = {
     // Full game state
@@ -133,6 +138,7 @@ define((require, exports, module) => {
         currentPlayer: 0,
         currentOpponent: 1,
         gameState: 'awaitingShot',
+        setState: setState,
         swapCurrentPlayers: swapCurrentPlayers,
         getSquareInfo: getSquareInfo,
         setSquareInfo: setSquareInfo,

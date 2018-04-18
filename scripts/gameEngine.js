@@ -4,7 +4,8 @@ define((require, exports, module) => {
       return {
         stateMap: {
           'awaitingShot': {
-            'shot': 'checkShotResult'
+            'shot': 'checkShotResult',
+            'swap': 'swapPlayerBoards'
           },
           'checkShotResult': {
             'miss': 'endOfTurn',
@@ -23,6 +24,16 @@ define((require, exports, module) => {
           },
           'swapPlayerBoards': {
             'ready': 'awaitingShot'
+          }
+        },
+        triggerTransition(transitionName) {
+          // console.log('Transition!', data);
+          gameState = state.gameState;
+          if (this.stateMap[gameState].hasOwnProperty(transitionName)) {
+            newState = this.stateMap[gameState][transitionName];
+            state.setState(newState);
+            console.log('successful transition to ', newState);
+            console.log(state);
           }
         }
       };
