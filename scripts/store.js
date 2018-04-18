@@ -92,7 +92,6 @@ function setSquareInfo(squareCoords, squareInfo) {
   let row = squareCoords.row;
   let col = squareCoords.col;
 
-  console.log(`setting info on R${row} C${col}`);
   this.playerBoards[userId].spaces[row][col].ship = squareInfo.ship;
   this.playerBoards[userId].spaces[row][col].status = squareInfo.status;
 }
