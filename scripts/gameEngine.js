@@ -1,7 +1,8 @@
 define((require, exports, module) => {
   module.exports = {
-    game: function(state, render) {
+    game: function (state, render) {
       return {
+        // Map of states with {transition:nextState} pairs
         stateMap: {
           'awaitingShot': {
             'shot': 'checkShotResult',
@@ -26,29 +27,27 @@ define((require, exports, module) => {
             'ready': 'awaitingShot'
           }
         },
+        // Trigger a state transition
         triggerTransition(transitionName) {
-          console.log('Transition!', transitionName);
+          // Retrieve current game state
           gameState = state.gameState;
-          if (this.stateMap[gameState].hasOwnProperty(transitionName)) {
-            newState = this.stateMap[gameState][transitionName];
 
-            // If there is a function associated with this state change
-            if (this.onStateSet.hasOwnProperty(newState)) {
-              this.onStateSet[newState]();
-            }
+          // Check if the triggered transition is valid for the current state
+          if (this.stateMap[gameState].hasOwnProperty(transitionName)) {
+            // Get the next state
+            newState = this.stateMap[gameState][transitionName];
             state.setState(newState);
-            console.log('successful transition to ', newState);
-            console.log(state);
+            // If there is a function associated with this state change
+            if (this.hasOwnProperty(newState)) {
+              this[newState]();
+            }
           }
         },
-        onStateSet: {
-          swapPlayerBoards: function() {
-            state.swapCurrentPlayers();
-            render.renderBoards(state);
-            console.log('boards swapped!');
-            console.log(state);
-            this.triggerTransition('ready');
-          }
+        // State transition for swapping player boards
+        swapPlayerBoards: function () {
+          state.swapCurrentPlayers();
+          render.renderBoards(state);
+          this.triggerTransition('ready');
         }
       };
     }
