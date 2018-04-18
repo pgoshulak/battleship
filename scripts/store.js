@@ -55,6 +55,13 @@ class UserBoard {
   }
 }
 
+// Swap the boards in the 'opponent' (top) and 'player' (bottom) states
+function swapCurrentPlayers() {
+  let temp = this.currentOpponent;
+  this.currentOpponent = this.currentPlayer;
+  this.currentPlayer = temp;
+}
+
 define((require, exports, module) => {
   module.exports = {
     // Full game state
@@ -67,16 +74,12 @@ define((require, exports, module) => {
         ],
         currentPlayer: 0,
         currentOpponent: 1,
-        gameState: 'awaitingShot'
+        gameState: 'awaitingShot',
+        swapCurrentPlayers: swapCurrentPlayers
       };
     },
 
-    // Swap the boards in the 'opponent' (top) and 'player' (bottom) states
-    swapCurrentPlayers(state) {
-      let temp = state.currentOpponent;
-      state.currentOpponent = state.currentPlayer;
-      state.currentPlayer = temp;
-    },
+
 
     // Get info of square
     getSquareInfo(state, squareCoords) {

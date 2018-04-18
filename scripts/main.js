@@ -31,7 +31,7 @@ requirejs(['render', 'store', 'gameEngine'], function (render, store, gameEngine
   $(document).ready(() => {
     // Swap the user boards top <-> bottom
     $('#swapPlayers').click(function () {
-      store.swapCurrentPlayers(state);
+      state.swapCurrentPlayers();
       render.renderBoards(state);
       refreshBoardBindings();
     });
