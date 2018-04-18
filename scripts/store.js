@@ -95,30 +95,6 @@ function setSquareShip(squareCoords, newShip) {
   this.setSquareInfo(squareCoords, newSquareInfo);
 }
 
-// Register a shot to a square
-function registerShot(squareCoords) {
-  let squareInfo = this.getSquareInfo(squareCoords);
-
-  // Player has clicked on their own square (TODO: Factor this out???)
-  if (squareCoords.userId === this.currentPlayer) {
-    return;
-  }
-
-  let newSquareInfo = {};
-  // Check if the square is a hit (ie. there is an alive ship)
-  if (squareInfo.status === 2) {
-    newSquareInfo = Object.assign({}, squareInfo, {
-      status: 3
-    });
-  } else {
-    // The shot is a miss
-    newSquareInfo = Object.assign({}, squareInfo, {
-      status: 1
-    });
-  }
-  this.setSquareInfo(squareCoords, newSquareInfo);
-}
-
 // Register a click on a square
 function registerBoardClick(squareCoords) {
   this.lastSquareClicked = Object.assign({}, squareCoords);
@@ -153,7 +129,6 @@ define((require, exports, module) => {
         setSquareInfo: setSquareInfo,
         setSquareStatus: setSquareStatus,
         setSquareShip: setSquareShip,
-        registerShot: registerShot,
         registerBoardClick: registerBoardClick
       };
     }
