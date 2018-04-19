@@ -105,6 +105,19 @@ function setState(newState) {
   this.gameState = newState;
 }
 
+// Set all of a ship's squares from hit -> sunk
+function sinkShip(userId, shipType) {
+  let board = this.playerBoards[userId].spaces;
+
+  for (let row of board) {
+    for (let space of row) {
+      if (space.ship === shipType) {
+        space.status = STATUS.SUNK;
+      }
+    }
+  }
+}
+
 define((require, exports, module) => {
   module.exports = {
     // Full game state
@@ -129,7 +142,8 @@ define((require, exports, module) => {
         setSquareInfo: setSquareInfo,
         setSquareStatus: setSquareStatus,
         setSquareShip: setSquareShip,
-        registerBoardClick: registerBoardClick
+        registerBoardClick: registerBoardClick,
+        sinkShip: sinkShip
       };
     }
   };

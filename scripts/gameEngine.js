@@ -106,7 +106,7 @@ define((require, exports, module) => {
 
             // If the ship has no squares alive
             if (squaresAlive[shipType] === 0) {
-              console.log('It is sunk! Need to assign square.status -> sunk');
+              state.sinkShip(state.currentOpponent, shipType);
               this.requestTransition('sunk');
             } else {
               // The ship still has some squares alive
