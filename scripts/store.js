@@ -118,15 +118,11 @@ function affectAllSpaces(scope, userId, cb) {
 
 // Set all of a ship's squares from hit -> sunk
 function sinkShip(userId, shipType) {
-  let board = this.playerBoards[userId].spaces;
-
-  for (let row of board) {
-    for (let space of row) {
-      if (space.ship === shipType) {
-        space.status = STATUS.SUNK;
-      }
+  affectAllSpaces(this, userId, function(space) {
+    if (space.ship === shipType) {
+      space.status = STATUS.SUNK;
     }
-  }
+  });
 }
 
 // Remove a ship from the board
