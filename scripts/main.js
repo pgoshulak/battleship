@@ -15,6 +15,6 @@ requirejs(['render', 'store', 'gameEngine'], function (render, store, gameEngine
     $('#game-controller').on('triggerTransition', function(event, type) {
       game.triggerTransition(type);
     });
-    render.renderShipToCursor(5, 'v');
+    // render.renderShipToCursor(5, 'v');
   });
 });

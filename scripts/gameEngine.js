@@ -5,13 +5,13 @@ define((require, exports, module) => {
         // Map of states with {transition:nextState} pairs
         stateMap: {
           // Ship placement
-          'awaitShipPickup': {
+          'awaitingShipPickup': {
             'click': 'checkIsOwnShip',
             'playerReady': 'checkBothPlayersReady'
           },
           'checkIsOwnShip': {
             'yes': 'shipPickedUp',
-            'no': 'awaitShipPickup'
+            'no': 'awaitingShipPickup'
           },
           'shipPickedUp': {
             'rotate': 'rotateShip',
@@ -25,7 +25,7 @@ define((require, exports, module) => {
             'no': 'shipPickedUp'
           },
           'placeShip': {
-            'next': 'awaitShipPickup'
+            'next': 'awaitingShipPickup'
           },
           // Check before start of game
           'checkBothPlayersReady': {
@@ -37,7 +37,7 @@ define((require, exports, module) => {
             'next': 'awaitingShot'
           },
           'swapSetupBoards': {
-            'next': 'awaitShipPickup'
+            'next': 'awaitingShipPickup'
           },
           // Gameplay states
           'awaitingShot': {
@@ -61,7 +61,7 @@ define((require, exports, module) => {
             'ready': 'awaitingShot'
           }
         },
-        debugStateTransitions: false,
+        debugStateTransitions: true,
         // Trigger a state transition
         triggerTransition(transitionName) {
           // Retrieve current game state
@@ -88,6 +88,28 @@ define((require, exports, module) => {
           requestTransition(transitionName) {
             $('#game-controller').trigger('triggerTransition', transitionName);
           },
+          // ========== Ship Placement ==========
+          // Wait for player to pick up ship during ship-placement stage
+          awaitingShipPickup() {
+            //
+          },
+          // Check if the picked up ship is owned by player
+          checkIsOwnShip() {
+            let squareInfo = state.getSquareInfo(state.lastSquareClicked);
+
+            // Check that the square belongs to user and contains a ship
+            if (state.lastSquareClicked.userId === state.currentPlayer
+            && squareInfo.ship > 0) {
+              this.requestTransition('yes');
+              return;
+            } else {
+              this.requestTransition('no');
+              return;
+            }
+          },
+
+
+          // ========== Gameplay ==========
           // Swap players
           swapPlayerBoards() {
             state.swapCurrentPlayers();
