@@ -76,7 +76,7 @@ function renderShipToCursor (shipLength, direction) {
       top: e.pageY - BOARD_SQUARE_SIZE / 2
     });
   });
-  $('#game-area').append(shipContainer);
+  $('#game-controller').append(shipContainer);
 }
 
 // Helper function to call a state transition on global game controller

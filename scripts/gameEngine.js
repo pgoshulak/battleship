@@ -100,6 +100,8 @@ define((require, exports, module) => {
             // Check that the square belongs to user and contains a ship
             if (state.lastSquareClicked.userId === state.currentPlayer
             && squareInfo.ship > 0) {
+              // Register the ship that has been picked up
+              state.shipPickedUp = squareInfo.ship;
               this.requestTransition('yes');
               return;
             } else {
@@ -107,7 +109,10 @@ define((require, exports, module) => {
               return;
             }
           },
-
+          // Render the picked up ship
+          shipPickedUp() {
+            render.renderShipToCursor(SHIP_SIZE[state.shipPickedUp], 'h');
+          },
 
           // ========== Gameplay ==========
           // Swap players

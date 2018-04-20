@@ -8,6 +8,13 @@ const SHIP = {
   CARRIER: 5
 };
 
+const SHIP_SIZE = {};
+SHIP_SIZE[SHIP.PATROL] = 2;
+SHIP_SIZE[SHIP.SUBMARINE] = 3;
+SHIP_SIZE[SHIP.DESTROYER] = 3;
+SHIP_SIZE[SHIP.BATTLESHIP] = 4;
+SHIP_SIZE[SHIP.CARRIER] = 5;
+
 // Constants defining a square's status
 const STATUS = {
   EMPTY: 0,
