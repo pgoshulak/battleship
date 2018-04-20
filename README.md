@@ -22,3 +22,5 @@ Please note: original Lighthous Labs eslint settings have been overridden to all
 - https://stackoverflow.com/questions/16512182/how-to-create-empty-2d-array-in-javascript
 - https://css-tricks.com/snippets/css/complete-guide-grid/
 - http://journal.stuffwithstuff.com/2014/07/15/a-turn-based-game-loop/
+
+- https://stackoverflow.com/questions/3385936/jquery-follow-the-cursor-with-a-div

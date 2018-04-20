@@ -42,6 +42,20 @@ const generateBoard = (boardData, visibility) => {
   return board;
 };
 
+function renderShipToCursor (length, direction) {
+  let ship = $('<div id="ship-following-cursor">ship</div>')
+    .addClass('board-square')
+    .addClass('board-square-follow-cursor');
+
+  $(document).on('mousemove', function(e){
+    ship.css({
+      left: e.pageX - BOARD_SQUARE_SIZE / 2,
+      top: e.pageY - BOARD_SQUARE_SIZE / 2
+    });
+  });
+  $('#game-area').append(ship);
+}
+
 function requestTransition(transitionName) {
   $('#game-controller').trigger('triggerTransition', transitionName);
 }
@@ -80,6 +94,7 @@ function renderBoards (state) {
 }
 define((require, exports, module) => {
   module.exports = {
-    renderBoards: renderBoards
+    renderBoards: renderBoards,
+    renderShipToCursor: renderShipToCursor
   };
 });

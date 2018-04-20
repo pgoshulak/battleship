@@ -45,3 +45,12 @@
 .board-square-sunk.board-square-revealed:hover {
   background: #224;
 }
+
+.board-square-follow-cursor {
+  background: #0A5;
+}
+
+#ship-following-cursor {
+  position: absolute;
+  cursor: all-scroll;
+}

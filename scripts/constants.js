@@ -17,3 +17,5 @@ const STATUS = {
   SUNK: 4
 };
 
+// Height and width of a board square
+const BOARD_SQUARE_SIZE = 24;
