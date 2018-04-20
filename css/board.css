@@ -7,14 +7,16 @@
 }
 
 .board-square {
-  background: #ADF;
   border: 1px solid #222;
   width: 24px;
   height: 24px;
   font-size: 0.6em;
   cursor: crosshair
 }
-.board-square:hover {
+.board-square-empty {
+  background: #ADF;
+}
+.board-square-empty:hover {
   background: #4DF;
 }
 

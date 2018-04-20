@@ -20,6 +20,7 @@ const generateBoard = (boardData, visibility) => {
       // Color based on status
       switch (square.status) {
       case 0:
+        space.addClass('board-square-empty');
         break;
       case 1:
         space.addClass('board-square-miss');
