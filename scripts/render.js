@@ -19,19 +19,19 @@ const generateBoard = (boardData, visibility) => {
 
       // Color based on status
       switch (square.status) {
-      case 0:
+      case STATUS.EMPTY:
         space.addClass('board-square-empty');
         break;
-      case 1:
+      case STATUS.MISS:
         space.addClass('board-square-miss');
         break;
-      case 2:
+      case STATUS.ALIVE:
         space.addClass('board-square-alive');
         break;
-      case 3:
+      case STATUS.HIT:
         space.addClass('board-square-hit');
         break;
-      case 4:
+      case STATUS.SUNK:
         space.addClass('board-square-sunk');
         break;
       default:
@@ -80,10 +80,12 @@ function renderShipToCursor (shipLength, direction) {
   $('#game-area').append(shipContainer);
 }
 
+// Helper function to call a state transition on global game controller
 function requestTransition(transitionName) {
   $('#game-controller').trigger('triggerTransition', transitionName);
 }
 
+// Render the boards
 function renderBoards (state) {
   // IDs of the users
   let opponentId = state.currentOpponent;
