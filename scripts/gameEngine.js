@@ -14,7 +14,7 @@ define((require, exports, module) => {
             'no': 'awaitingShipPickup'
           },
           'shipPickedUp': {
-            'rotate': 'rotateShip',
+            'clickRight': 'rotateShip',
             'click': 'isValidPlacement'
           },
           'rotateShip': {
@@ -101,7 +101,10 @@ define((require, exports, module) => {
             if (state.lastSquareClicked.userId === state.currentPlayer
             && squareInfo.ship > 0) {
               // Register the ship that has been picked up
-              state.shipPickedUp = squareInfo.ship;
+              state.shipPickedUp = {
+                shipType: squareInfo.ship,
+                direction: 'v'
+              };
               this.requestTransition('yes');
               return;
             } else {
@@ -111,7 +114,17 @@ define((require, exports, module) => {
           },
           // Render the picked up ship
           shipPickedUp() {
-            render.renderShipToCursor(SHIP_SIZE[state.shipPickedUp], 'h');
+            render.renderShipToCursor(state.shipPickedUp);
+          },
+          // Rotate the ship when spacebar pressed
+          rotateShip() {
+            if (state.shipPickedUp.direction === 'h') {
+              state.shipPickedUp.direction = 'v';
+            } else {
+              state.shipPickedUp.direction = 'h';
+            }
+            render.renderShipToCursor(state.shipPickedUp);
+            this.requestTransition('next');
           },
 
           // ========== Gameplay ==========

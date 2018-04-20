@@ -43,16 +43,24 @@ const generateBoard = (boardData, visibility) => {
 };
 
 // Render a floating ship to the cursor position, during ship placement
-function renderShipToCursor (shipLength, direction) {
-  let shipContainer = $('<div id="ship-following-cursor"></div>');
-  let shipSquare = () => {
+function renderShipToCursor (shipData) {
+  let shipLength = shipData.shipType;
+
+  $('#ship-following-cursor').remove();
+
+  let shipContainer = $('<div id="ship-following-cursor"></div>')
+    .css({
+      left: shipData.mouseX - BOARD_SQUARE_SIZE / 2,
+      top: shipData.mouseY - BOARD_SQUARE_SIZE / 2
+    });
+  const shipSquare = () => {
     return $('<div></div>')
       .addClass('board-square')
       .addClass('board-square-follow-cursor');
   };
   
   // Create the CSS-grid sized to the ship length
-  if (direction === 'h') {
+  if (shipData.direction === 'h') {
     shipContainer.css({
       gridTemplateColumns: `repeat(${shipLength}, 1fr)`,
       gridTemplateRows: `1fr`

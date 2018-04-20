@@ -133,7 +133,12 @@ define((require, exports, module) => {
           row: 0,
           col: 0
         },
-        shipPickedUp: 0,
+        shipPickedUp: {
+          shipType: 0,
+          direction: 'h',
+          mouseX: 0,
+          mouseY: 0
+        },
         currentPlayer: 0,
         currentOpponent: 1,
         gameState: 'awaitingShipPickup',
