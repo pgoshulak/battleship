@@ -4,6 +4,42 @@ define((require, exports, module) => {
       return {
         // Map of states with {transition:nextState} pairs
         stateMap: {
+          // Ship placement
+          'awaitShipPickup': {
+            'click': 'checkIsOwnShip',
+            'playerReady': 'checkBothPlayersReady'
+          },
+          'checkIsOwnShip': {
+            'yes': 'shipPickedUp',
+            'no': 'awaitShipPickup'
+          },
+          'shipPickedUp': {
+            'rotate': 'rotateShip',
+            'click': 'isValidPlacement'
+          },
+          'rotateShip': {
+            'next': 'shipPickedUp'
+          },
+          'isValidPlacement': {
+            'yes': 'placeShip',
+            'no': 'shipPickedUp'
+          },
+          'placeShip': {
+            'next': 'awaitShipPickup'
+          },
+          // Check before start of game
+          'checkBothPlayersReady': {
+            'yes': 'startGame',
+            'no': 'swapSetupBoards'
+          },
+          'startGame': {
+            // Should randomly pick a player to start
+            'next': 'awaitingShot'
+          },
+          'swapSetupBoards': {
+            'next': 'awaitShipPickup'
+          },
+          // Gameplay states
           'awaitingShot': {
             'click': 'checkShotResult',
             'swap': 'swapPlayerBoards'
