@@ -21,7 +21,7 @@ class UserBoard {
       this.spaces = spaces;
     }
   }
-  // Returns a dict with each ship's
+  // Returns a dict with each ship's number of 'alive' squares
   get shipSquaresAlive() {
     let ships = {
       '1': 0,

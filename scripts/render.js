@@ -7,7 +7,6 @@ const generateBoard = (boardData, visibility) => {
 
   allSpaces.forEach((row, rowIndex) => {
     row.forEach((square, colIndex) => {
-      // console.log(square);
       // Basic square render
       let space = $('<div></div>')
         .addClass('board-square')
@@ -112,7 +111,6 @@ function renderBoards (state) {
       row: $(this).data('row'),
       col: $(this).data('col')
     };
-    // state.registerShot(squareCoords);
     state.registerBoardClick(squareCoords);
     requestTransition('click');
     renderBoards(state);

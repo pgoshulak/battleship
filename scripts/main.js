@@ -1,21 +1,17 @@
 requirejs(['render', 'store', 'gameEngine'], function (render, store, gameEngine) {
-  let state = store.state();
-  let game = gameEngine.game(state, render);
-  render.renderBoards(state);
-
-
-
   $(document).ready(() => {
-    // Swap the user boards top <-> bottom
-    /* $('#swapPlayers').click(function () {
-      state.swapCurrentPlayers();
-      render.renderBoards(state);
-      refreshBoardBindings();
-    }); */
+    // Initialize data state and game engine
+    let state = store.state();
+    let game = gameEngine.game(state, render);
+
+    // First render call
+    render.renderBoards(state);
+
+    // Button to manually swap the user boards top <-> bottom
     $('#swapPlayers').click(function() {
       $('#game-controller').trigger('triggerTransition', 'swap');
     });
-    // refreshBoardBindings();
+    // Event listener for triggering state transitions
     $('#game-controller').on('triggerTransition', function(event, type) {
       game.triggerTransition(type);
     });
