@@ -43,18 +43,41 @@ const generateBoard = (boardData, visibility) => {
   return board;
 };
 
-function renderShipToCursor (length, direction) {
-  let ship = $('<div id="ship-following-cursor">ship</div>')
-    .addClass('board-square')
-    .addClass('board-square-follow-cursor');
+// Render a floating ship to the cursor position, during ship placement
+function renderShipToCursor (shipLength, direction) {
+  let shipContainer = $('<div id="ship-following-cursor"></div>');
+  let shipSquare = () => {
+    return $('<div></div>')
+      .addClass('board-square')
+      .addClass('board-square-follow-cursor');
+  };
+  
+  // Create the CSS-grid sized to the ship length
+  if (direction === 'h') {
+    shipContainer.css({
+      gridTemplateColumns: `repeat(${shipLength}, 1fr)`,
+      gridTemplateRows: `1fr`
+    });
+  } else {
+    shipContainer.css({
+      gridTemplateRows: `repeat(${shipLength}, 1fr)`,
+      gridTemplateColumns: `1fr`
+    });
+  }
 
+  // Add squares to show the length of the ship
+  for (let i = 0; i < shipLength; i++) {
+    shipContainer.append(shipSquare());
+  }
+
+  // Follow the mouse cursor
   $(document).on('mousemove', function(e){
-    ship.css({
+    shipContainer.css({
       left: e.pageX - BOARD_SQUARE_SIZE / 2,
       top: e.pageY - BOARD_SQUARE_SIZE / 2
     });
   });
-  $('#game-area').append(ship);
+  $('#game-area').append(shipContainer);
 }
 
 function requestTransition(transitionName) {

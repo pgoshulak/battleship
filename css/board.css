@@ -50,9 +50,11 @@
 
 .board-square-follow-cursor {
   background: #0A5;
+  opacity: 0.8;
 }
 
 #ship-following-cursor {
   position: absolute;
   cursor: all-scroll;
+  display: grid;
 }
