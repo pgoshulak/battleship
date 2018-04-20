@@ -101,10 +101,10 @@ define((require, exports, module) => {
             if (state.lastSquareClicked.userId === state.currentPlayer
             && squareInfo.ship > 0) {
               // Register the ship that has been picked up
-              state.shipPickedUp = {
+              state.shipPickedUp = Object.assign({}, state.shipPickedUp, {
                 shipType: squareInfo.ship,
                 direction: 'v'
-              };
+              });
               this.requestTransition('yes');
               return;
             } else {
@@ -114,6 +114,7 @@ define((require, exports, module) => {
           },
           // Render the picked up ship
           shipPickedUp() {
+            state.removeShip(state.lastSquareClicked.userId, state.shipPickedUp.shipType);
             render.renderShipToCursor(state.shipPickedUp);
           },
           // Rotate the ship when spacebar pressed

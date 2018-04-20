@@ -105,6 +105,17 @@ function setState(newState) {
   this.gameState = newState;
 }
 
+// Function generator to do <something> to all board squares
+function affectAllSpaces(scope, userId, cb) {
+  let board = scope.playerBoards[userId].spaces;
+
+  for (let row of board) {
+    for (let space of row) {
+      cb(space);
+    }
+  }
+}
+
 // Set all of a ship's squares from hit -> sunk
 function sinkShip(userId, shipType) {
   let board = this.playerBoards[userId].spaces;
@@ -116,6 +127,15 @@ function sinkShip(userId, shipType) {
       }
     }
   }
+}
+
+// Remove a ship from the board
+function removeShip(userId, shipType) {
+  affectAllSpaces(this, userId, function(space) {
+    if (space.ship === shipType) {
+      space.status = STATUS.REMOVED;
+    }
+  });
 }
 
 define((require, exports, module) => {
@@ -149,7 +169,8 @@ define((require, exports, module) => {
         setSquareStatus: setSquareStatus,
         setSquareShip: setSquareShip,
         registerBoardClick: registerBoardClick,
-        sinkShip: sinkShip
+        sinkShip: sinkShip,
+        removeShip: removeShip
       };
     }
   };

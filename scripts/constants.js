@@ -21,7 +21,8 @@ const STATUS = {
   MISS: 1,
   ALIVE: 2,
   HIT: 3,
-  SUNK: 4
+  SUNK: 4,
+  REMOVED: 5
 };
 
 // Height and width of a board square
