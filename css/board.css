@@ -13,10 +13,10 @@
   font-size: 0.6em;
   cursor: crosshair
 }
-.board-square-empty {
+.board-square-empty, .board-square-alive.board-square-obscured {
   background: #ADF;
 }
-.board-square-empty:hover {
+.board-square-empty:hover, .board-square-alive.board-square-obscured:hover {
   background: #4DF;
 }
 
