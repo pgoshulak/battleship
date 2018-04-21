@@ -139,6 +139,7 @@ function clearRemovedShip(userId, shipType) {
   affectAllSpaces(this, userId, function(space) {
     if (space.ship === shipType && space.status === STATUS.REMOVED) {
       space.status = STATUS.EMPTY;
+      space.ship = SHIP.NONE;
     }
   });
 }
