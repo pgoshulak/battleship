@@ -127,7 +127,16 @@ define((require, exports, module) => {
             render.renderShipToCursor(state.shipPickedUp);
             this.requestTransition('next');
           },
-
+          isValidPlacement() {
+            // Check if the squares below are empty here ...
+            this.requestTransition('yes');
+          },
+          placeShip() {
+            state.placeShip(state.lastSquareClicked,
+              state.shipPickedUp.shipType,
+              state.shipPickedUp.direction);
+            this.requestTransition('next');
+          },
           // ========== Gameplay ==========
           // Swap players
           swapPlayerBoards() {

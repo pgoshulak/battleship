@@ -134,6 +134,33 @@ function removeShip(userId, shipType) {
   });
 }
 
+// Place a ship on the board
+function placeShip(coords, shipType, direction) {
+  let board = this.playerBoards[coords.userId].spaces;
+  let shipSize = SHIP_SIZE[shipType];
+  
+  if (direction === 'h') {
+    for (let i = 0; i < shipSize; i++) {
+      board[coords.row][coords.col + i].ship = shipType;
+      board[coords.row][coords.col + i].status = STATUS.ALIVE;
+    }
+  } else {
+    for (let i = 0; i < shipSize; i++) {
+      board[coords.row + i][coords.col].ship = shipType;
+      board[coords.row + i][coords.col].status = STATUS.ALIVE;
+    }
+  }
+}
+
+// Reset a removed ship to its original position
+function resetShip(userId, shipType) {
+  affectAllSpaces(this, userId, function(space) {
+    if (space.ship === shipType) {
+      space.status = STATUS.ALIVE;
+    }
+  });
+}
+
 define((require, exports, module) => {
   module.exports = {
     // Full game state
@@ -166,7 +193,9 @@ define((require, exports, module) => {
         setSquareShip: setSquareShip,
         registerBoardClick: registerBoardClick,
         sinkShip: sinkShip,
-        removeShip: removeShip
+        removeShip: removeShip,
+        placeShip: placeShip,
+        resetShip: resetShip
       };
     }
   };
