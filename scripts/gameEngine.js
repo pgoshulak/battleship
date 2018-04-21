@@ -132,6 +132,11 @@ define((require, exports, module) => {
             this.requestTransition('yes');
           },
           placeShip() {
+            // Remove the cursor-following ship outline
+            $('#ship-following-cursor').remove();
+            // Reset the 'removed' ghost outline
+            state.clearRemovedShip(state.lastSquareClicked.userId, state.shipPickedUp.shipType);
+            // Place the ship on the clicked coordinates
             state.placeShip(state.lastSquareClicked,
               state.shipPickedUp.shipType,
               state.shipPickedUp.direction);

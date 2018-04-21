@@ -33,6 +33,9 @@ const generateBoard = (boardData, visibility) => {
       case STATUS.SUNK:
         space.addClass('board-square-sunk');
         break;
+      case STATUS.REMOVED:
+        space.addClass('board-square-ship-removed');
+        break;
       default:
         break;
       }

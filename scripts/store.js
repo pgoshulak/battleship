@@ -134,6 +134,15 @@ function removeShip(userId, shipType) {
   });
 }
 
+// Remove a ship from the board
+function clearRemovedShip(userId, shipType) {
+  affectAllSpaces(this, userId, function(space) {
+    if (space.ship === shipType && space.status === STATUS.REMOVED) {
+      space.status = STATUS.EMPTY;
+    }
+  });
+}
+
 // Place a ship on the board
 function placeShip(coords, shipType, direction) {
   let board = this.playerBoards[coords.userId].spaces;
@@ -194,6 +203,7 @@ define((require, exports, module) => {
         registerBoardClick: registerBoardClick,
         sinkShip: sinkShip,
         removeShip: removeShip,
+        clearRemovedShip: clearRemovedShip,
         placeShip: placeShip,
         resetShip: resetShip
       };

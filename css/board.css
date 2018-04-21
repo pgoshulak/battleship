@@ -48,9 +48,13 @@
   background: #224;
 }
 
+.board-square-ship-removed {
+  background: #7BC;
+}
+
 .board-square-follow-cursor {
   background: #0A5;
-  opacity: 0.8;
+  opacity: 0.6;
   pointer-events: none;
 }
 
