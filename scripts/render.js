@@ -50,7 +50,6 @@ function renderShipToCursor (shipData) {
   let shipLength = SHIP_SIZE[shipData.shipType];
 
   $('#ship-following-cursor').remove();
-
   let shipContainer = $('<div id="ship-following-cursor"></div>')
     .css({
       left: shipData.mouseX - BOARD_SQUARE_SIZE / 2,
@@ -118,12 +117,16 @@ function renderBoards (state) {
   $('#game-area').empty().append(opponentBoardRendered).append(playerBoardRendered);
 
   // Refresh board bindings
-  $('.board-square').click(function () {
+  $('.board-square').click(function (e) {
     let squareCoords = {
       userId: $(this).data('user-id'),
       row: $(this).data('row'),
       col: $(this).data('col')
     };
+    // Store mouseclick coords for rendering a picked-up ship
+    state.shipPickedUp.mouseX = e.pageX;
+    state.shipPickedUp.mouseY = e.pageY;
+
     state.registerBoardClick(squareCoords);
     requestTransition('click');
     renderBoards(state);
