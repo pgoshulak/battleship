@@ -7,7 +7,7 @@ define((require, exports, module) => {
           // Ship placement
           'awaitingShipPickup': {
             'click': 'checkIsOwnShip',
-            'playerReady': 'checkBothPlayersReady'
+            'playerReadyButton': 'setPlayerReady'
           },
           'checkIsOwnShip': {
             'yes': 'shipPickedUp',
@@ -27,6 +27,9 @@ define((require, exports, module) => {
           'placeShip': {
             'next': 'awaitingShipPickup'
           },
+          'setPlayerReady': {
+            'next': 'checkBothPlayersReady'
+          },
           // Check before start of game
           'checkBothPlayersReady': {
             'yes': 'startGame',
@@ -41,8 +44,7 @@ define((require, exports, module) => {
           },
           // Gameplay states
           'awaitingShot': {
-            'click': 'checkShotResult',
-            'swap': 'swapPlayerBoards'
+            'click': 'checkShotResult'
           },
           'checkShotResult': {
             'reset': 'awaitingShot',
@@ -55,10 +57,10 @@ define((require, exports, module) => {
             'notSunk': 'endOfTurn'
           },
           'endOfTurn': {
-            'swap': 'swapPlayerBoards'
+            'playerReadyButton': 'swapPlayerBoards'
           },
           'swapPlayerBoards': {
-            'ready': 'awaitingShot'
+            'next': 'awaitingShot'
           }
         },
         debugStateTransitions: true,
@@ -142,12 +144,35 @@ define((require, exports, module) => {
               state.shipPickedUp.direction);
             this.requestTransition('next');
           },
+          // Indicate that the current player is ready to start playing
+          setPlayerReady() {
+            state.playerBoards[state.currentPlayer].playerReady = true;
+            this.requestTransition('next');
+          },
+          // ========== Check before start of game ==========
+          checkBothPlayersReady() {
+            if (state.playerBoards[0].playerReady && state.playerBoards[1].playerReady) {
+              this.requestTransition('yes');
+            } else {
+              this.requestTransition('no');
+            }
+          },
+          // Swap the boards to allow other player to place ships
+          swapSetupBoards() {
+            state.swapCurrentPlayers();
+            render.renderBoards(state);
+            this.requestTransition('next');
+          },
+          // Start the game
+          startGame() {
+            this.requestTransition('next');
+          },
           // ========== Gameplay ==========
           // Swap players
           swapPlayerBoards() {
             state.swapCurrentPlayers();
             render.renderBoards(state);
-            this.requestTransition('ready');
+            this.requestTransition('next');
           },
           // Check if the shot was a hit or miss
           checkShotResult() {

@@ -11,6 +11,9 @@ class UserBoard {
   constructor(userId, spaces) {
     // Assign user id
     this.userId = userId;
+    // Flag to indicate if player is ready to start game (done placing ships)
+    this.playerReady = false;
+
     if (!spaces) {
       // Initialize 10x10 array of empty squares
       this.spaces = Array(10).fill().map(() => {
