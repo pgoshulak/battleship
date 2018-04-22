@@ -117,7 +117,7 @@ function renderBoards (state) {
   $('#game-area').empty().append(opponentBoardRendered).append(playerBoardRendered);
 
   // Refresh board bindings
-  $('.board-square').click(function (e) {
+  $('.board').on('click', '.board-square', function (e) {
     let squareCoords = {
       userId: $(this).data('user-id'),
       row: $(this).data('row'),
