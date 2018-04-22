@@ -89,10 +89,6 @@ define((require, exports, module) => {
             $('#game-controller').trigger('triggerTransition', transitionName);
           },
           // ========== Ship Placement ==========
-          // Wait for player to pick up ship during ship-placement stage
-          awaitingShipPickup() {
-            //
-          },
           // Check if the picked up ship is owned by player
           checkIsOwnShip() {
             let squareInfo = state.getSquareInfo(state.lastSquareClicked);
@@ -123,6 +119,7 @@ define((require, exports, module) => {
             // render.renderShipToCursor(state.shipPickedUp);
             this.requestTransition('next');
           },
+          // Check the ship is placed in a valid location
           isValidPlacement() {
             // Check if the squares exist and are available
             if (state.checkValidPlacement(state.lastSquareClicked,
@@ -133,6 +130,7 @@ define((require, exports, module) => {
               this.requestTransition('no');
             }
           },
+          // Place the ship on the specified coordinates
           placeShip() {
             // Remove the cursor-following ship outline
             $('#ship-following-cursor').remove();
