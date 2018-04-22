@@ -180,6 +180,9 @@ function checkValidPlacement(coords, shipType, direction) {
   let row = coords.row;
   let col = coords.col;
   
+  // Check the player clicked their own board
+  if (coords.userId !== this.currentPlayer) { return false; }
+
   // Check horizontal placement
   if (direction === 'h') {
     for (let i = 0; i < shipSize; i++) {

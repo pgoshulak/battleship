@@ -14,6 +14,7 @@ Please note: original Lighthous Labs eslint settings have been overridden to all
 # Features
 
 # Issues
+- During ship placement stage: if player picks up own ship and places on opponent board, opponent's matching ship gets removed
 
 # Roadmap
 
