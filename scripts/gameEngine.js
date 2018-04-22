@@ -100,11 +100,6 @@ define((require, exports, module) => {
             // Check that the square belongs to user and contains a ship
             if (state.lastSquareClicked.userId === state.currentPlayer
             && squareInfo.ship > 0) {
-              // Register the ship that has been picked up
-              state.shipPickedUp = Object.assign({}, state.shipPickedUp, {
-                shipType: squareInfo.ship,
-                direction: 'v'
-              });
               this.requestTransition('yes');
               return;
             } else {
@@ -114,6 +109,7 @@ define((require, exports, module) => {
           },
           // Render the picked up ship
           shipPickedUp() {
+            state.setShipPickedUp(state.lastSquareClicked);
             state.removeShip(state.lastSquareClicked.userId, state.shipPickedUp.shipType);
             render.renderShipToCursor(state.shipPickedUp);
           },

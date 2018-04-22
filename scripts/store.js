@@ -171,6 +171,30 @@ function resetShip(userId, shipType) {
   });
 }
 
+// Set ship-picked-up info
+function setShipPickedUp(square) {
+  let board = this.playerBoards[square.userId].spaces;
+  let row = square.row;
+  let col = square.col;
+  let thisShipType = this.getSquareInfo(square).ship;
+  let direction = 'h';
+
+  // Check if ship is vertical
+  // Check if board square above exists and is same ship type
+  if (board[row - 1] && board[row - 1][col].ship === thisShipType) {
+    direction = 'v';
+  }
+  // Check if board square below exists and is same ship type
+  if (board[row + 1] && board[row + 1][col].ship === thisShipType) {
+    direction = 'v';
+  }
+
+  this.shipPickedUp = Object.assign({}, this.shipPickedUp, {
+    shipType: thisShipType,
+    direction: direction
+  });
+}
+
 define((require, exports, module) => {
   module.exports = {
     // Full game state
@@ -206,7 +230,8 @@ define((require, exports, module) => {
         removeShip: removeShip,
         clearRemovedShip: clearRemovedShip,
         placeShip: placeShip,
-        resetShip: resetShip
+        resetShip: resetShip,
+        setShipPickedUp: setShipPickedUp
       };
     }
   };
