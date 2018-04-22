@@ -100,6 +100,7 @@ define((require, exports, module) => {
             // Check that the square belongs to user and contains a ship
             if (state.lastSquareClicked.userId === state.currentPlayer
             && squareInfo.ship > 0) {
+              state.setShipPickedUp(state.lastSquareClicked);
               this.requestTransition('yes');
               return;
             } else {
@@ -109,18 +110,19 @@ define((require, exports, module) => {
           },
           // Render the picked up ship
           shipPickedUp() {
-            state.setShipPickedUp(state.lastSquareClicked);
             state.removeShip(state.lastSquareClicked.userId, state.shipPickedUp.shipType);
             render.renderShipToCursor(state.shipPickedUp);
           },
           // Rotate the ship when spacebar pressed
           rotateShip() {
             if (state.shipPickedUp.direction === 'h') {
+              console.log('h->v');
               state.shipPickedUp.direction = 'v';
             } else {
+              console.log('v->h');
               state.shipPickedUp.direction = 'h';
             }
-            render.renderShipToCursor(state.shipPickedUp);
+            // render.renderShipToCursor(state.shipPickedUp);
             this.requestTransition('next');
           },
           isValidPlacement() {
