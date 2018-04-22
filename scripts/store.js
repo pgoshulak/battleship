@@ -171,6 +171,38 @@ function resetShip(userId, shipType) {
   });
 }
 
+// Check if a ship can be placed where clicked
+function checkValidPlacement(coords, shipType, direction) {
+  // Note: returns true if all board squares a) exist, and b) are empty
+  
+  let board = this.playerBoards[coords.userId].spaces;
+  let shipSize = SHIP_SIZE[shipType];
+  let row = coords.row;
+  let col = coords.col;
+  
+  // Check horizontal placement
+  if (direction === 'h') {
+    for (let i = 0; i < shipSize; i++) {
+      // If the space doesn't exist, fail the check
+      if (!board[row] || !board[row][col + i]) { return false; }
+      // If the space isn't empty (or temp. removed for placement), fail the check
+      let spaceStatus = board[row][col + i].status;
+      if (spaceStatus !== STATUS.EMPTY && spaceStatus !== STATUS.REMOVED) { return false; }
+    }
+  } else {
+    // Check vertical placement
+    for (let i = 0; i < shipSize; i++) {
+      // If the space doesn't exist, fail the check
+      if (!board[row + i] || !board[row + i][col]) { return false; }
+      // If the space isn't empty (or temp. removed for placement), fail the check
+      let spaceStatus = board[row + i][col].status;
+      if (spaceStatus !== STATUS.EMPTY && spaceStatus !== STATUS.REMOVED) { return false; }
+    }
+  }
+  // Since all needed squares exist and are available, pass the check
+  return true;
+}
+
 // Set ship-picked-up info
 function setShipPickedUp(square) {
   let board = this.playerBoards[square.userId].spaces;
@@ -231,7 +263,8 @@ define((require, exports, module) => {
         clearRemovedShip: clearRemovedShip,
         placeShip: placeShip,
         resetShip: resetShip,
-        setShipPickedUp: setShipPickedUp
+        setShipPickedUp: setShipPickedUp,
+        checkValidPlacement: checkValidPlacement
       };
     }
   };

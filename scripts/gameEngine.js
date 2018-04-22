@@ -124,8 +124,14 @@ define((require, exports, module) => {
             this.requestTransition('next');
           },
           isValidPlacement() {
-            // Check if the squares below are empty here ...
-            this.requestTransition('yes');
+            // Check if the squares exist and are available
+            if (state.checkValidPlacement(state.lastSquareClicked,
+              state.shipPickedUp.shipType,
+              state.shipPickedUp.direction)) {
+              this.requestTransition('yes');
+            } else {
+              this.requestTransition('no');
+            }
           },
           placeShip() {
             // Remove the cursor-following ship outline
