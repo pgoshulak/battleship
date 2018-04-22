@@ -116,10 +116,8 @@ define((require, exports, module) => {
           // Rotate the ship when spacebar pressed
           rotateShip() {
             if (state.shipPickedUp.direction === 'h') {
-              console.log('h->v');
               state.shipPickedUp.direction = 'v';
             } else {
-              console.log('v->h');
               state.shipPickedUp.direction = 'h';
             }
             // render.renderShipToCursor(state.shipPickedUp);

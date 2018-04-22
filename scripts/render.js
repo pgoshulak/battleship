@@ -47,8 +47,6 @@ const generateBoard = (boardData, visibility) => {
 
 // Render a floating ship to the cursor position, during ship placement
 function renderShipToCursor (shipData) {
-
-  console.log(shipData.direction);
   let shipLength = SHIP_SIZE[shipData.shipType];
 
   $('#ship-following-cursor').remove();
