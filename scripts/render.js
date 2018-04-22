@@ -47,7 +47,8 @@ const generateBoard = (boardData, visibility) => {
 
 // Render a floating ship to the cursor position, during ship placement
 function renderShipToCursor (shipData) {
-  let shipLength = shipData.shipType;
+  let shipLength = SHIP_SIZE[shipData.shipType];
+  console.log(shipLength);
 
   $('#ship-following-cursor').remove();
 
@@ -63,12 +64,14 @@ function renderShipToCursor (shipData) {
   };
   
   // Create the CSS-grid sized to the ship length
+  // Horizontal ships:
   if (shipData.direction === 'h') {
     shipContainer.css({
       gridTemplateColumns: `repeat(${shipLength}, 1fr)`,
       gridTemplateRows: `1fr`
     });
   } else {
+    // Vertical ships:
     shipContainer.css({
       gridTemplateRows: `repeat(${shipLength}, 1fr)`,
       gridTemplateColumns: `1fr`
