@@ -148,6 +148,17 @@ function renderBoards (state, renderMode = 'normal') {
     // renderBoards(state);
   });
 }
+
+// Set the text/style on the main/ready UI button
+function setReadyButton(text, type) {
+  let button = $('#player-ready');
+  button.text(text);
+}
+// Set the text/style on the screen message area
+function setMessageArea(text, type) {
+  let message = $('#message-area');
+  message.text(text);
+}
 define((require, exports, module) => {
   module.exports = {
     renderBoards: renderBoards,

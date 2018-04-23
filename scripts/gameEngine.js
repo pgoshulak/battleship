@@ -114,7 +114,7 @@ define((require, exports, module) => {
           // ========== Ship Placement ==========
           // Wait for player to pick up a ship
           awaitingShipPickup() {
-            render.renderBoards(state);
+            render.renderBoards(state, 'opponentScreened');
           },
           // Check if the picked up ship is owned by player
           checkIsOwnShip() {
