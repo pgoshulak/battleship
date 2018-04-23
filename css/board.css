@@ -10,9 +10,27 @@
   border: 1px solid #222;
   width: 24px;
   height: 24px;
-  font-size: 0.6em;
-  cursor: crosshair
+  /* font-size: 0.6em; */
+  cursor: crosshair;
 }
+
+.board-square>span {
+  color: rgba(0,0,0,0);
+  font-size: 0.6em;
+  pointer-events: none;
+}
+
+.board-square-obscured:hover>span {
+  color: rgba(0,0,0,0.5);
+  font-size: 4em;
+  z-index: 2;
+  position: relative;
+  left: -0.4em;
+  top: -0.4em;
+  transition: all 0.1s;
+  
+}
+
 .board-square-empty, .board-square-alive.board-square-obscured {
   background: #ADF;
 }

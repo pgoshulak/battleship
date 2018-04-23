@@ -7,6 +7,8 @@ const generateBoard = (boardData, visibility) => {
 
   allSpaces.forEach((row, rowIndex) => {
     row.forEach((square, colIndex) => {
+      let text = $('<span></span>')
+        .text(`${ROW_LETTER[rowIndex]}${colIndex + 1}`);
       // Basic square render
       let space = $('<div></div>')
         .addClass('board-square')
@@ -14,7 +16,7 @@ const generateBoard = (boardData, visibility) => {
         .data('user-id', userId)
         .data('row', rowIndex)
         .data('col', colIndex)
-        .text(`R${rowIndex}C${colIndex}`);
+        .append(text);
 
       // Color based on status
       switch (square.status) {
