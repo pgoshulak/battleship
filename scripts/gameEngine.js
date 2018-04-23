@@ -57,7 +57,16 @@ define((require, exports, module) => {
             'notSunk': 'endOfTurn'
           },
           'endOfTurn': {
-            'playerReadyButton': 'swapPlayerBoards'
+            'playerAi': 'awaitingAiShot',
+            'playerLocal': 'awaitingPlayerDone'
+          },
+          'awaitingPlayerDone': {
+            'playerReadyButton': 'screeningBoardsDuringSwap',
+            'keySpacebar': 'screeningBoardsDuringSwap'
+          },
+          'screeningBoardsDuringSwap': {
+            'playerReadyButton': 'swapPlayerBoards',
+            'keySpacebar': 'swapPlayerBoards'
           },
           'swapPlayerBoards': {
             'next': 'awaitingShot'
@@ -204,10 +213,6 @@ define((require, exports, module) => {
               return;
             }
           },
-          // End of turn
-          endOfTurn() {
-            this.requestTransition('swap');
-          },
           // Check if ship is sunk
           checkSunk() {
             let shipType = state.getSquareInfo(state.lastSquareClicked).ship;
@@ -228,6 +233,14 @@ define((require, exports, module) => {
               // The ship still has some squares alive
               this.requestTransition('notSunk');
             }
+          },
+          // End of turn
+          endOfTurn() {
+            this.requestTransition('playerLocal');
+          },
+          // Show screened boards while players swap seats to obscure boards
+          screeningBoardsDuringSwap() {
+            render.renderBoards(state, 'screened');
           }
         }
       };
