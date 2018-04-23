@@ -54,6 +54,10 @@
 
 .board-square-screened {
   background: #666;
+  cursor: not-allowed;
+}
+.board-square-screened:hover {
+  background: #666;
 }
 
 .board-square-follow-cursor {
