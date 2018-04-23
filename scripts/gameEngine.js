@@ -112,6 +112,10 @@ define((require, exports, module) => {
             $('#game-controller').trigger('triggerTransition', transitionName);
           },
           // ========== Ship Placement ==========
+          // Wait for player to pick up a ship
+          awaitingShipPickup() {
+            render.renderBoards(state);
+          },
           // Check if the picked up ship is owned by player
           checkIsOwnShip() {
             let squareInfo = state.getSquareInfo(state.lastSquareClicked);
@@ -130,6 +134,7 @@ define((require, exports, module) => {
           // Render the picked up ship
           shipPickedUp() {
             state.removeShip(state.lastSquareClicked.userId, state.shipPickedUp.shipType);
+            render.renderBoards(state);
             render.renderShipToCursor(state.shipPickedUp);
           },
           // Rotate the ship when spacebar pressed
@@ -273,6 +278,7 @@ define((require, exports, module) => {
           },
           // End of turn
           endOfTurn() {
+            render.renderBoards(state);
             this.requestTransition('playerLocal');
           },
           // Show screened boards while players swap seats to obscure boards
@@ -284,6 +290,10 @@ define((require, exports, module) => {
           removeGameplayBoardScreens() {
             render.renderBoards(state);
             this.requestTransition('next');
+          },
+          // End of game - reveal both boards
+          gameOver() {
+            render.renderBoards(state, 'allVisible');
           }
         }
       };

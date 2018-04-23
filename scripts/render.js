@@ -111,9 +111,14 @@ function renderBoards (state, renderMode = 'normal') {
   // - Screened = nothing visible
   let opponentRenderMode = 'obscured';
   let playerRenderMode = 'revealed';
+
   if (renderMode === 'screened') {
     opponentRenderMode = 'screened';
     playerRenderMode = 'screened';
+  }
+
+  if (renderMode === 'allVisible') {
+    opponentRenderMode = 'revealed';
   }
 
   // Generate JQuery elements with the two boards
@@ -140,7 +145,7 @@ function renderBoards (state, renderMode = 'normal') {
 
     state.registerBoardClick(squareCoords);
     requestTransition('click');
-    renderBoards(state);
+    // renderBoards(state);
   });
 }
 define((require, exports, module) => {

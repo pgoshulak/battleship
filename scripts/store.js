@@ -240,7 +240,7 @@ define((require, exports, module) => {
       return {
         // The boards for the two players
         playerBoards: [
-          new UserBoard(0, JSON.parse(randomBoardNoShots)),
+          new UserBoard(0, JSON.parse(randomBoardAlmostDead)),
           new UserBoard(1, JSON.parse(randomBoardWithShots))
         ],
         lastSquareClicked: {
