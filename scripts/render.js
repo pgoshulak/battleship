@@ -97,7 +97,7 @@ function requestTransition(transitionName) {
 }
 
 // Render the boards
-function renderBoards (state) {
+function renderBoards (state, renderMode = 'normal') {
   // IDs of the users
   let opponentId = state.currentOpponent;
   let playerId = state.currentPlayer;
@@ -105,13 +105,24 @@ function renderBoards (state) {
   let opponentBoard = state.playerBoards[opponentId];
   let playerBoard = state.playerBoards[playerId];
 
+  // Determine how the boards will render
+  // - Normal = full visibility, all shots and ships
+  // - Obscured = partial visibility, only shots
+  // - Screened = nothing visible
+  let opponentRenderMode = 'obscured';
+  let playerRenderMode = 'revealed';
+  if (renderMode === 'screened') {
+    opponentRenderMode = 'screened';
+    playerRenderMode = 'screened';
+  }
+
   // Generate JQuery elements with the two boards
   let opponentBoardRendered = $('<div></div>')
     .text(`this is the Opponent board, showing Player ${opponentId}`)
-    .append(generateBoard(opponentBoard, 'obscured'));
+    .append(generateBoard(opponentBoard, opponentRenderMode));
   let playerBoardRendered = $('<div></div>')
     .text(`this is the Player board, showing Player ${playerId}`)
-    .append(generateBoard(playerBoard, 'revealed'));
+    .append(generateBoard(playerBoard, playerRenderMode));
 
   // Write the boards to the page
   $('#game-area').empty().append(opponentBoardRendered).append(playerBoardRendered);

@@ -52,6 +52,10 @@
   background: #7BC;
 }
 
+.board-square-screened {
+  background: #666;
+}
+
 .board-square-follow-cursor {
   background: #0A5;
   opacity: 0.6;
