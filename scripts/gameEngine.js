@@ -7,7 +7,8 @@ define((require, exports, module) => {
           // Ship placement
           'awaitingShipPickup': {
             'click': 'checkIsOwnShip',
-            'playerReadyButton': 'setPlayerReady'
+            'playerReadyButton': 'setPlayerReady',
+            'keySpacebar': 'setPlayerReady'
           },
           'checkIsOwnShip': {
             'yes': 'shipPickedUp',
@@ -33,13 +34,17 @@ define((require, exports, module) => {
           // Check before start of game
           'checkBothPlayersReady': {
             'yes': 'startGame',
-            'no': 'swapSetupBoards'
+            'no': 'screeningSetupBoards'
           },
           'startGame': {
             // Should randomly pick a player to start
             'next': 'awaitingShot'
           },
-          'swapSetupBoards': {
+          'screeningSetupBoards': {
+            'playerReadyButton': 'removeSetupBoardScreens',
+            'keySpacebar': 'removeSetupBoardScreens'
+          },
+          'removeSetupBoardScreens': {
             'next': 'awaitingShipPickup'
           },
           // Gameplay states
@@ -61,14 +66,14 @@ define((require, exports, module) => {
             'playerLocal': 'awaitingPlayerDone'
           },
           'awaitingPlayerDone': {
-            'playerReadyButton': 'screeningBoardsDuringSwap',
-            'keySpacebar': 'screeningBoardsDuringSwap'
+            'playerReadyButton': 'screeningGameplayBoards',
+            'keySpacebar': 'screeningGameplayBoards'
           },
-          'screeningBoardsDuringSwap': {
-            'playerReadyButton': 'removeBoardScreens',
-            'keySpacebar': 'removeBoardScreens'
+          'screeningGameplayBoards': {
+            'playerReadyButton': 'removeGameplayBoardScreens',
+            'keySpacebar': 'removeGameplayBoardScreens'
           },
-          'removeBoardScreens': {
+          'removeGameplayBoardScreens': {
             'next': 'awaitingShot'
           }
         },
@@ -176,6 +181,16 @@ define((require, exports, module) => {
           startGame() {
             this.requestTransition('next');
           },
+          // Show screened boards while players swap seats to obscure boards
+          screeningSetupBoards() {
+            state.swapCurrentPlayers();
+            render.renderBoards(state, 'screened');
+          },
+          // Unscreen boards for next player
+          removeSetupBoardScreens() {
+            render.renderBoards(state);
+            this.requestTransition('next');
+          },
           // ========== Gameplay ==========
           // Swap players
           swapPlayerBoards() {
@@ -239,11 +254,12 @@ define((require, exports, module) => {
             this.requestTransition('playerLocal');
           },
           // Show screened boards while players swap seats to obscure boards
-          screeningBoardsDuringSwap() {
+          screeningGameplayBoards() {
             state.swapCurrentPlayers();
             render.renderBoards(state, 'screened');
           },
-          removeBoardScreens() {
+          // Unscreen boards for next player
+          removeGameplayBoardScreens() {
             render.renderBoards(state);
             this.requestTransition('next');
           }
