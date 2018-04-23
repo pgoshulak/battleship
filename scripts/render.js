@@ -157,6 +157,11 @@ function renderBoards (state, renderMode = 'normal') {
 function setReadyButton(text, type) {
   let button = $('#player-ready');
   button.text(text);
+  if (type === 'disabled') {
+    button.prop('disabled', true);
+  } else {
+    button.prop('disabled', false);
+  }
 }
 // Set the text/style on the screen message area
 function setMessageArea(text, type) {
@@ -166,6 +171,8 @@ function setMessageArea(text, type) {
 define((require, exports, module) => {
   module.exports = {
     renderBoards: renderBoards,
-    renderShipToCursor: renderShipToCursor
+    renderShipToCursor: renderShipToCursor,
+    setReadyButton: setReadyButton,
+    setMessageArea: setMessageArea
   };
 });

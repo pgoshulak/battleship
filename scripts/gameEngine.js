@@ -122,6 +122,8 @@ define((require, exports, module) => {
           // ========== Ship Placement ==========
           // Wait for player to pick up a ship
           awaitingShipPickup() {
+            render.setMessageArea('Click on a ship to move it');
+            render.setReadyButton('Finished placing ships');
             render.renderBoards(state, 'opponentScreened');
           },
           // Check if the picked up ship is owned by player
@@ -144,6 +146,8 @@ define((require, exports, module) => {
             state.removeShip(state.lastSquareClicked.userId, state.shipPickedUp.shipType);
             render.renderBoards(state, 'opponentScreened');
             render.renderShipToCursor(state.shipPickedUp);
+            render.setMessageArea('Right-click to rotate');
+            render.setReadyButton('Awaiting ship placement', 'disabled');
           },
           // Rotate the ship when spacebar pressed
           rotateShip() {
@@ -204,13 +208,9 @@ define((require, exports, module) => {
             // Hide the boards from view
             render.renderBoards(state, 'screened');
             // Await player 'ready' button press...
+            render.setMessageArea('Randomizing starting player...');
+            render.setReadyButton(`Player ${state.currentPlayer} is first!`);
           },
-          // Swap the boards to allow other player to place ships
-          /* swapSetupBoards() {
-            state.swapCurrentPlayers();
-            render.renderBoards(state);
-            this.requestTransition('next');
-          }, */
           // Start the game
           startGame() {
             render.renderBoards(state);
@@ -220,6 +220,8 @@ define((require, exports, module) => {
           screeningSetupBoards() {
             state.swapCurrentPlayers();
             render.renderBoards(state, 'screened');
+            render.setMessageArea('Please switch seats');
+            render.setReadyButton(`Player ${state.currentPlayer} ready!`);
           },
           // Unscreen boards for next player
           removeSetupBoardScreens() {
@@ -227,6 +229,10 @@ define((require, exports, module) => {
             this.requestTransition('next');
           },
           // ========== Gameplay ==========
+          awaitingShot() {
+            render.setMessageArea(`Player ${state.currentPlayer}, take your shot!`);
+            render.setReadyButton('Awaiting shot', 'disabled');
+          },
           // Swap players
           swapPlayerBoards() {
             state.swapCurrentPlayers();
@@ -246,6 +252,7 @@ define((require, exports, module) => {
             // If shot is a miss
             if (clickedSquareInfo.status === STATUS.EMPTY) {
               state.setSquareStatus(lastSquareClicked, STATUS.MISS);
+              render.setMessageArea('Miss!');
               this.requestTransition('miss');
               return;
             }
@@ -270,7 +277,7 @@ define((require, exports, module) => {
 
             // If all ships are sunk
             if (squaresAlive.total === 0) {
-              console.log(`Victory for Player ${state.currentPlayer}!`);
+              state.sinkShip(state.currentOpponent, shipType);
               this.requestTransition('victory');
               return;
             }
@@ -278,9 +285,11 @@ define((require, exports, module) => {
             // If the ship has no squares alive
             if (squaresAlive[shipType] === 0) {
               state.sinkShip(state.currentOpponent, shipType);
+              render.setMessageArea(`Sunk the ${SHIP_NAME[shipType]}!`);
               this.requestTransition('sunk');
             } else {
               // The ship still has some squares alive
+              render.setMessageArea('Hit!');
               this.requestTransition('notSunk');
             }
           },
@@ -289,10 +298,16 @@ define((require, exports, module) => {
             render.renderBoards(state);
             this.requestTransition('playerLocal');
           },
+          // Wait for player to indicate they are done (after firing their shot)
+          awaitingPlayerDone() {
+            render.setReadyButton('Finished', 'stop');
+          },
           // Show screened boards while players swap seats to obscure boards
           screeningGameplayBoards() {
             state.swapCurrentPlayers();
             render.renderBoards(state, 'screened');
+            render.setMessageArea(`Please switch seats`);
+            render.setReadyButton(`Player ${state.currentPlayer} ready!`, 'go');
           },
           // Unscreen boards for next player
           removeGameplayBoardScreens() {
@@ -302,6 +317,8 @@ define((require, exports, module) => {
           // End of game - reveal both boards
           gameOver() {
             render.renderBoards(state, 'allVisible');
+            render.setMessageArea(`Victory for Player ${state.currentPlayer}`);
+            render.setReadyButton('Game over', 'disabled');
           }
         }
       };
