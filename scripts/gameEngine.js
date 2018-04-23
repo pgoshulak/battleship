@@ -33,11 +33,18 @@ define((require, exports, module) => {
           },
           // Check before start of game
           'checkBothPlayersReady': {
-            'yes': 'startGame',
+            'yes': 'prepareGameStart',
             'no': 'screeningSetupBoards'
           },
+          'prepareGameStart': {
+            'playerAi': 'startGameAi',
+            'playerLocal': 'randomizeStartPlayer'
+          },
+          'randomizeStartPlayer': {
+            'playerReadyButton': 'startGame',
+            'keySpacebar': 'startGame'
+          },
           'startGame': {
-            // Should randomly pick a player to start
             'next': 'awaitingShot'
           },
           'screeningSetupBoards': {
@@ -171,14 +178,29 @@ define((require, exports, module) => {
               this.requestTransition('no');
             }
           },
+          // Set up the game based on who is playing
+          prepareGameStart() {
+            this.requestTransition('playerLocal');
+          },
+          // Screen boards and randomize starting player
+          randomizeStartPlayer() {
+            // Randomize which player will start
+            if (Math.round(Math.random())) {
+              state.swapCurrentPlayers();
+            }
+            // Hide the boards from view
+            render.renderBoards(state, 'screened');
+            // Await player 'ready' button press...
+          },
           // Swap the boards to allow other player to place ships
-          swapSetupBoards() {
+          /* swapSetupBoards() {
             state.swapCurrentPlayers();
             render.renderBoards(state);
             this.requestTransition('next');
-          },
+          }, */
           // Start the game
           startGame() {
+            render.renderBoards(state);
             this.requestTransition('next');
           },
           // Show screened boards while players swap seats to obscure boards
