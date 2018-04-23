@@ -65,10 +65,10 @@ define((require, exports, module) => {
             'keySpacebar': 'screeningBoardsDuringSwap'
           },
           'screeningBoardsDuringSwap': {
-            'playerReadyButton': 'swapPlayerBoards',
-            'keySpacebar': 'swapPlayerBoards'
+            'playerReadyButton': 'removeBoardScreens',
+            'keySpacebar': 'removeBoardScreens'
           },
-          'swapPlayerBoards': {
+          'removeBoardScreens': {
             'next': 'awaitingShot'
           }
         },
@@ -240,7 +240,12 @@ define((require, exports, module) => {
           },
           // Show screened boards while players swap seats to obscure boards
           screeningBoardsDuringSwap() {
+            state.swapCurrentPlayers();
             render.renderBoards(state, 'screened');
+          },
+          removeBoardScreens() {
+            render.renderBoards(state);
+            this.requestTransition('next');
           }
         }
       };
