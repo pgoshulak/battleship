@@ -4,6 +4,10 @@ define((require, exports, module) => {
       return {
         // Map of states with {transition:nextState} pairs
         stateMap: {
+          // Game entry
+          'gameEntry': {
+            'next': 'awaitingShipPickup'
+          },
           // Ship placement
           'awaitingShipPickup': {
             'click': 'checkIsOwnShip',
@@ -111,6 +115,10 @@ define((require, exports, module) => {
           requestTransition(transitionName) {
             $('#game-controller').trigger('triggerTransition', transitionName);
           },
+          // ========== Game Entry ==========
+          gameEntry() {
+            this.requestTransition('next');
+          },
           // ========== Ship Placement ==========
           // Wait for player to pick up a ship
           awaitingShipPickup() {
@@ -134,7 +142,7 @@ define((require, exports, module) => {
           // Render the picked up ship
           shipPickedUp() {
             state.removeShip(state.lastSquareClicked.userId, state.shipPickedUp.shipType);
-            render.renderBoards(state);
+            render.renderBoards(state, 'opponentScreened');
             render.renderShipToCursor(state.shipPickedUp);
           },
           // Rotate the ship when spacebar pressed

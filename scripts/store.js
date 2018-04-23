@@ -256,7 +256,7 @@ define((require, exports, module) => {
         },
         currentPlayer: 0,
         currentOpponent: 1,
-        gameState: 'awaitingShipPickup',
+        gameState: 'gameEntry',
         setState: setState,
         swapCurrentPlayers: swapCurrentPlayers,
         getSquareInfo: getSquareInfo,

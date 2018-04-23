@@ -5,7 +5,8 @@ requirejs(['render', 'store', 'gameEngine'], function (render, store, gameEngine
     let game = gameEngine.game(state, render);
 
     // First render call
-    render.renderBoards(state);
+    game.triggerTransition('next');
+    // render.renderBoards(state);
 
     // Button to manually swap the user boards top <-> bottom
     $('#player-ready').click(function() {

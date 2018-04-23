@@ -121,6 +121,10 @@ function renderBoards (state, renderMode = 'normal') {
     opponentRenderMode = 'revealed';
   }
 
+  if (renderMode === 'opponentScreened') {
+    opponentRenderMode = 'screened';
+  }
+
   // Generate JQuery elements with the two boards
   let opponentBoardRendered = $('<div></div>')
     .text(`this is the Opponent board, showing Player ${opponentId}`)
