@@ -5,7 +5,19 @@ const generateBoard = (boardData, visibility) => {
   let board = $('<div></div>')
     .addClass('board');
 
+  // Add blank top-left corner space
+  board.append($('<div></div>'));
+  // Add numbers along top
+  allSpaces[0].forEach((col, colIndex) => {
+    board.append($(`<div class="board-label">${colIndex + 1}</div>`));
+  });
+  // Add blank top-right corner space
+  board.append($('<div></div>'));
+  
   allSpaces.forEach((row, rowIndex) => {
+    // Add letter along left side
+    board.append($(`<div class="board-label">${ROW_LETTER[rowIndex]}</div>`));
+    // Add each square in the row
     row.forEach((square, colIndex) => {
       let text = $('<span></span>')
         .text(`${ROW_LETTER[rowIndex]}${colIndex + 1}`);
@@ -43,7 +55,20 @@ const generateBoard = (boardData, visibility) => {
       }
       board.append(space);
     });
+    // Add the letter on the right side;
+    board.append($(`<div class="board-label">${ROW_LETTER[rowIndex]}</div>`));
   });
+
+  // Add blank bottom-left corner space
+  board.append($('<div></div>'));
+  
+  // Add numbers along bottom
+  allSpaces[0].forEach((col, colIndex) => {
+    board.append($(`<div class="board-label">${colIndex + 1}</div>`));
+  });
+
+  // Add blank bottom-right corner space
+  board.append($('<div></div>'));
   return board;
 };
 

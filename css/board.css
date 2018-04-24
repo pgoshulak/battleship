@@ -1,9 +1,9 @@
 .board {
   background: #444;
-  padding: 20px;
+  /* padding: 20px; */
   display: inline-grid;
-  grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(10, 1fr);
+  grid-template-columns: auto repeat(10, 1fr) auto;
+  grid-template-rows: auto repeat(10, 1fr) auto;
 }
 
 .board-square {
@@ -103,4 +103,13 @@
   cursor: all-scroll;
   display: grid;
   pointer-events: none;
+}
+
+.board-label {
+  color: #AAA;
+  font-size: 0.6em;
+  text-align: center;
+  justify-self: center;
+  align-self: center;
+  padding: 2px;
 }
