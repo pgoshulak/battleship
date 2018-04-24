@@ -186,6 +186,7 @@ function setReadyButton(text, type) {
   } else {
     button.prop('disabled', false);
   }
+  button.removeClass().addClass(type);
 }
 // Set the text/style on the screen message area
 function setMessageArea(text, type) {

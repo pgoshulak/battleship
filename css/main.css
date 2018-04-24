@@ -1,3 +1,7 @@
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
 #game-container {
   display: grid;
   grid-template-columns: 1fr 200px 300px 200px 1fr;
@@ -32,4 +36,19 @@
 }
 #ready-button {
   grid-area: ready-button;
+}
+
+#ready-button {
+  font-size: 1.5em;
+  color: #EEE;
+}
+
+#ready-button.go {
+  background-color: #0C6;
+}
+#ready-button.stop {
+  background-color: #C20;
+}
+#ready-button[disabled] {
+  background-color: #AAA;
 }

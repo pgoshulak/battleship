@@ -123,7 +123,7 @@ define((require, exports, module) => {
           // Wait for player to pick up a ship
           awaitingShipPickup() {
             render.setMessageArea('Click on a ship to move it');
-            render.setReadyButton('Finished placing ships');
+            render.setReadyButton('Finished placing ships', 'stop');
             render.renderBoards(state, 'opponentScreened');
           },
           // Check if the picked up ship is owned by player
@@ -209,7 +209,7 @@ define((require, exports, module) => {
             render.renderBoards(state, 'screened');
             // Await player 'ready' button press...
             render.setMessageArea('Randomizing starting player...');
-            render.setReadyButton(`Player ${state.currentPlayer} is first!`);
+            render.setReadyButton(`Player ${state.currentPlayer} is first!`, 'go');
           },
           // Start the game
           startGame() {
@@ -221,7 +221,7 @@ define((require, exports, module) => {
             state.swapCurrentPlayers();
             render.renderBoards(state, 'screened');
             render.setMessageArea('Please switch seats');
-            render.setReadyButton(`Player ${state.currentPlayer} ready!`);
+            render.setReadyButton(`Player ${state.currentPlayer} ready!`, 'go');
           },
           // Unscreen boards for next player
           removeSetupBoardScreens() {
