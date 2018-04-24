@@ -54,6 +54,19 @@
 
 .board-square-hit, .board-square-sunk.board-square-obscured {
   background: #D22;
+  animation: pulse-square-hit 2s ease-in-out infinite;
+}
+
+@keyframes pulse-square-hit {
+  0% {
+    background-color: #D22;
+  }
+  50% {
+    background-color: #C22;
+  }
+  100% {
+    background-color: #D22;
+  }
 }
 .board-square-hit:hover, .board-square-sunk.board-square-obscured:hover {
   background: #F66;
@@ -73,6 +86,7 @@
 .board-square-screened {
   background: #666;
   cursor: not-allowed;
+  animation: none;
 }
 .board-square-screened:hover {
   background: #666;
