@@ -153,15 +153,12 @@ function renderBoards (state, renderMode = 'normal') {
   }
 
   // Generate JQuery elements with the two boards
-  let opponentBoardRendered = $('<div></div>')
-    .text(`this is the Opponent board, showing Player ${opponentId}`)
-    .append(generateBoard(opponentBoard, opponentRenderMode));
-  let playerBoardRendered = $('<div></div>')
-    .text(`this is the Player board, showing Player ${playerId}`)
-    .append(generateBoard(playerBoard, playerRenderMode));
+  let opponentBoardRendered = generateBoard(opponentBoard, opponentRenderMode);
+  let playerBoardRendered = generateBoard(playerBoard, playerRenderMode);
 
   // Write the boards to the page
-  $('#game-area').empty().append(opponentBoardRendered).append(playerBoardRendered);
+  $('#opponent-board').empty().append(opponentBoardRendered);
+  $('#player-board').empty().append(playerBoardRendered);
 
   // Refresh board bindings
   $('.board').on('click', '.board-square', function (e) {
