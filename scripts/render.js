@@ -179,7 +179,7 @@ function renderBoards (state, renderMode = 'normal') {
 
 // Set the text/style on the main/ready UI button
 function setReadyButton(text, type) {
-  let button = $('#player-ready');
+  let button = $('#ready-button');
   button.text(text);
   if (type === 'disabled') {
     button.prop('disabled', true);

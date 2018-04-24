@@ -9,7 +9,7 @@ requirejs(['render', 'store', 'gameEngine'], function (render, store, gameEngine
     // render.renderBoards(state);
 
     // Button to manually swap the user boards top <-> bottom
-    $('#player-ready').click(function() {
+    $('#ready-button').click(function() {
       $('#game-controller').trigger('triggerTransition', 'playerReadyButton');
     });
     // Event listener for triggering state transitions
