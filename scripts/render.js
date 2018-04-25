@@ -72,6 +72,20 @@ const generateBoard = (boardData, visibility) => {
   return board;
 };
 
+// Generate ship list
+const generateShipList = (shipSquaresAlive, visibility) => {
+  let $shipList = $('<ul>').addClass('ship-list');
+  for (let i = 1; i <= 5; i++) {
+    let $entry = $('<li>')
+      .addClass('ship-list-entry')
+      .appendTo($shipList);
+
+    let text = `${SHIP_NAME[i]} ( ${shipSquaresAlive[i]} / ${SHIP_SIZE[i]} )`;
+    $entry.text(text);
+  }
+  return $shipList;
+};
+
 // Render a floating ship to the cursor position, during ship placement
 function renderShipToCursor (shipData) {
   let shipLength = SHIP_SIZE[shipData.shipType];
@@ -123,7 +137,7 @@ function requestTransition(transitionName) {
   $('#game-controller').trigger('triggerTransition', transitionName);
 }
 
-// Render the boards
+// Render the boards and ship lists
 function renderBoards (state, renderMode = 'normal') {
   // IDs of the users
   let opponentId = state.currentOpponent;
@@ -156,9 +170,14 @@ function renderBoards (state, renderMode = 'normal') {
   let opponentBoardRendered = generateBoard(opponentBoard, opponentRenderMode);
   let playerBoardRendered = generateBoard(playerBoard, playerRenderMode);
 
+  let opponentShipList = generateShipList(opponentBoard.shipSquaresAlive, opponentRenderMode);
+  let playerShipList = generateShipList(playerBoard.shipSquaresAlive, playerRenderMode);
+
   // Write the boards to the page
   $('#opponent-board').empty().append(opponentBoardRendered);
   $('#player-board').empty().append(playerBoardRendered);
+  $('#opponent-ships').empty().append(opponentShipList);
+  $('#player-ships').empty().append(playerShipList);
 
   // Refresh board bindings
   $('.board').on('click', '.board-square', function (e) {
