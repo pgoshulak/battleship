@@ -34,24 +34,24 @@
 }
 
 .board-square-empty, .board-square-alive.board-square-obscured {
-  background: #ADF;
+  background: #345;
 }
 .board-square-empty:hover, .board-square-alive.board-square-obscured:hover {
-  background: #4DF;
+  background: #156;
 }
 
 .board-square-miss {
-  background: #DEF;
+  background: #567;
 }
 .board-square-miss:hover {
   background: #FFF;
 }
 
 .board-square-alive.board-square-revealed {
-  background: #999;
+  background: #BBB;
 }
 .board-square-alive.board-square-revealed:hover {
-  background: #BBB;
+  background: #DDD;
 }
 
 .board-square-hit, .board-square-sunk.board-square-obscured {
@@ -82,20 +82,20 @@
 }
 
 .board-square-ship-removed {
-  background: #7BC;
+  background: #678;
 }
 
 .board-square-screened {
-  background: #666;
+  background: #444;
   cursor: not-allowed;
   animation: none;
 }
 .board-square-screened:hover {
-  background: #666;
+  background: #444;
 }
 
 .board-square-follow-cursor {
-  background: #0A5;
+  background: #DDD;
   opacity: 0.6;
   pointer-events: none;
 }
