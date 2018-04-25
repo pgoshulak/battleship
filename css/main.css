@@ -11,7 +11,7 @@ body {
 #game-container {
   display: grid;
   grid-template-columns: 1fr 200px auto 200px 1fr;
-  grid-template-rows: auto 1fr 1fr;
+  grid-template-rows: 2fr 1fr 1fr;
   grid-template-areas: 
     ". opponent-ships opponent-board shot-log ."
     ". player-ships player-board message-area ."
@@ -36,7 +36,7 @@ body {
 #message-area {
   grid-area: message-area;
 }
-#ready-button {
+#ready-button-container {
   grid-area: ready-button;
 }
 

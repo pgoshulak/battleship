@@ -1,14 +1,14 @@
-.log-base, #ready-button {
+.log-base, #ready-button-container {
   background-color: #223;
   border: 10px solid #444;
   border-style: inset;
   color: #DDD;
   list-style-type: none;
-  box-shadow: 0px 0px 2px 2px #000 inset;
+  box-shadow: 0px 0px 2px 2px rgba(0,0,0,0.5) inset;
 }
 
 #shot-log, #opponent-ships, #player-ships {
-  height: 268px;
+  height: 100%;
   overflow-y: scroll;
   padding: 5px;
   margin: 0;
@@ -51,16 +51,30 @@
 
 #ready-button {
   font-size: 1.5em;
+  height: 100%;
+  width: 100%;
+  border-width: 10px;
+  border-style: outset;
+}
+#ready-button:active {
+  transform: translateY(2px);
+  border-style: inset;
+}
+#ready-button:focus {
+  outline: none;
 }
 
 #ready-button.go {
   background-color: #0C6;
+  border-color: #0D7;
 }
 #ready-button.stop {
   background-color: #C20;
+  border-color: #D30;
 }
 #ready-button[disabled] {
   background-color: #AAA;
+  border-color: #BBB;
 }
 
 
