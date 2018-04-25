@@ -1,3 +1,5 @@
+# Battleship
+## State Transition Map
 ```mermaid
 graph TD;
 gameEntry[gameEntry] -- next --> awaitingShipPickup[awaitingShipPickup] ;

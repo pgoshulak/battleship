@@ -3,7 +3,6 @@ define((require, exports, module) => {
     game: function (state, render) {
       return {
         // Map of states with {transition:nextState} pairs
-        /* State map start */
         stateMap: {
           /* Game entry */
           'gameEntry': {
@@ -88,7 +87,8 @@ define((require, exports, module) => {
           'removeGameplayBoardScreens': {
             'next': 'awaitingShot'
           }
-        }, /* State map end */
+        },
+        /* State map end */
         debugStateTransitions: true,
         // Trigger a state transition
         triggerTransition(transitionName) {
