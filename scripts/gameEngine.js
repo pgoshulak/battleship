@@ -115,6 +115,16 @@ define((require, exports, module) => {
           requestTransition(transitionName) {
             $('#game-controller').trigger('triggerTransition', transitionName);
           },
+          // Helper function to log a shot in state and render it to screen
+          logShot(shot, outcome = '', sunk = 0) {
+            if (shot.userId === 0) {
+              shot.shooterId = 1;
+            } else {
+              shot.shooterId = 0;
+            }
+            state.logLastShot(shot, outcome, sunk);
+            render.renderLoggedShot(shot, outcome, sunk);
+          },
           // ========== Game Entry ==========
           gameEntry() {
             this.requestTransition('next');
@@ -252,6 +262,7 @@ define((require, exports, module) => {
             // If shot is a miss
             if (clickedSquareInfo.status === STATUS.EMPTY) {
               state.setSquareStatus(lastSquareClicked, STATUS.MISS);
+              this.logShot(lastSquareClicked, 'miss');
               render.setMessageArea('Miss!');
               this.requestTransition('miss');
               return;
@@ -278,6 +289,7 @@ define((require, exports, module) => {
             // If all ships are sunk
             if (squaresAlive.total === 0) {
               state.sinkShip(state.currentOpponent, shipType);
+              this.logShot(state.lastSquareClicked, 'victory', shipType);
               this.requestTransition('victory');
               return;
             }
@@ -286,10 +298,12 @@ define((require, exports, module) => {
             if (squaresAlive[shipType] === 0) {
               state.sinkShip(state.currentOpponent, shipType);
               render.setMessageArea(`Sunk the ${SHIP_NAME[shipType]}!`);
+              this.logShot(state.lastSquareClicked, 'hit', shipType);
               this.requestTransition('sunk');
             } else {
               // The ship still has some squares alive
               render.setMessageArea('Hit!');
+              this.logShot(state.lastSquareClicked, 'hit');
               this.requestTransition('notSunk');
             }
           },

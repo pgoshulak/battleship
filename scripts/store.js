@@ -233,6 +233,14 @@ function setShipPickedUp(square) {
   });
 }
 
+// Log the last shot to the game log
+function logLastShot(shot, outcome = '', sunk = 0) {
+  this.shotLog.push(Object.assign({}, this.lastSquareClicked, {
+    outcome: outcome,
+    sunk: sunk
+  }));
+}
+
 define((require, exports, module) => {
   module.exports = {
     // Full game state
@@ -254,6 +262,7 @@ define((require, exports, module) => {
           mouseX: 0,
           mouseY: 0
         },
+        shotLog: [],
         currentPlayer: 0,
         currentOpponent: 1,
         gameState: 'gameEntry',
@@ -270,7 +279,8 @@ define((require, exports, module) => {
         placeShip: placeShip,
         resetShip: resetShip,
         setShipPickedUp: setShipPickedUp,
-        checkValidPlacement: checkValidPlacement
+        checkValidPlacement: checkValidPlacement,
+        logLastShot: logLastShot
       };
     }
   };

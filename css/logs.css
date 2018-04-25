@@ -1,0 +1,55 @@
+#shot-log {
+  background-color: #444;
+  height: 260px;
+  overflow-y: scroll;
+  padding: 5px;
+  margin: 0;
+}
+#shot-log > li {
+  list-style-type: none;
+  color: #DDD;
+}
+#shot-log > li.shot-log-sunk {
+  color: #F42;
+  font-weight: bold;
+}
+#shot-log > li.shot-log-victory {
+  color: #2D2;
+  font-weight: bold;
+}
+
+#ready-button {
+  font-size: 1.5em;
+  color: #EEE;
+}
+
+#ready-button.go {
+  background-color: #0C6;
+}
+#ready-button.stop {
+  background-color: #C20;
+}
+#ready-button[disabled] {
+  background-color: #AAA;
+}
+
+
+
+/* Shot log scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Shot log scrollbar track */
+::-webkit-scrollbar-track {
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  background: rgba(0,0,0,0.2); 
+}
+
+/* Shot log scrollbar track */
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  background: rgba(0,0,0,0.4); 
+}

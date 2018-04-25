@@ -26,3 +26,4 @@ Please note: original Lighthous Labs eslint settings have been overridden to all
 - https://stackoverflow.com/questions/3385936/jquery-follow-the-cursor-with-a-div
 - https://css-tricks.com/almanac/properties/p/pointer-events/
 - https://codepen.io/LukeAskew/pen/gabgom?editors=0100
+- https://css-tricks.com/examples/WebKitScrollbars/

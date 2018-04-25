@@ -193,11 +193,45 @@ function setMessageArea(text, type) {
   let message = $('#message-area');
   message.text(text);
 }
+
+// Insert a shot in the on-screen shot log
+function renderLoggedShot(shot, outcome = '', sunk = 0) {
+  let victory = false;
+  let printedOutcome = outcome;
+
+  // Victory conditions should log 'hit' first, THEN 'victory'
+  if (outcome === 'victory') {
+    victory = true;
+    printedOutcome = 'hit';
+  }
+  
+  // Log the shot's outcome
+  $('<li class="shot-log-entry"></li>')
+    .text(`Player ${shot.shooterId} shot ${ROW_LETTER[shot.row]}${shot.col + 1}
+      : ${printedOutcome}!`)
+    .prependTo($('#shot-log'));
+  
+  // If there is a ship sunk, log it as well
+  if (sunk > 0) {
+    $('<li class="shot-log-entry shot-log-sunk"></li>')
+      .text(`Player ${shot.shooterId} sunk Player ${shot.userId}'s ${SHIP_NAME[sunk]}!`)
+      .prependTo($('#shot-log'));
+  }
+
+  // Log a victory message
+  if (victory) {
+    $('<li class="shot-log-entry shot-log-victory"></li>')
+      .text(`Victory for Player ${shot.shooterId}!`)
+      .prependTo($('#shot-log'));
+  }
+}
+
 define((require, exports, module) => {
   module.exports = {
     renderBoards: renderBoards,
     renderShipToCursor: renderShipToCursor,
     setReadyButton: setReadyButton,
-    setMessageArea: setMessageArea
+    setMessageArea: setMessageArea,
+    renderLoggedShot: renderLoggedShot
   };
 });
