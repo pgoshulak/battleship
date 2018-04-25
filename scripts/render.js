@@ -190,7 +190,7 @@ function setReadyButton(text, type) {
 }
 // Set the text/style on the screen message area
 function setMessageArea(text, type) {
-  let message = $('#message-area');
+  let message = $('#message-area > div');
   message.text(text);
 }
 

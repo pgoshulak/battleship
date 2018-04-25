@@ -1,6 +1,8 @@
 #shot-log {
-  background-color: #444;
-  height: 260px;
+  background-color: #223;
+  border: 10px solid #444;
+  border-style: inset;
+  height: 268px;
   overflow-y: scroll;
   padding: 5px;
   margin: 0;
@@ -18,9 +20,27 @@
   font-weight: bold;
 }
 
+#message-area {
+  display: grid;
+  height: 100%;
+  background-color: #223;
+  color: #DDD;
+  border: 10px solid #444;
+  border-style: inset;
+  box-shadow: 0px 0px 2px 2px #000 inset;
+}
+#message-area > div {
+  margin: auto;
+  padding: 5px;
+}
+
 #ready-button {
   font-size: 1.5em;
   color: #EEE;
+  box-shadow: 0px 0px 5px 5px rgba(0,0,0,0.2) inset;
+  border: 10px solid #444;
+  border-style: inset;
+  height: 130;
 }
 
 #ready-button.go {
