@@ -3,12 +3,13 @@ define((require, exports, module) => {
     game: function (state, render) {
       return {
         // Map of states with {transition:nextState} pairs
+        /* State map start */
         stateMap: {
-          // Game entry
+          /* Game entry */
           'gameEntry': {
             'next': 'awaitingShipPickup'
           },
-          // Ship placement
+          /* Ship placement */
           'awaitingShipPickup': {
             'click': 'checkIsOwnShip',
             'playerReadyButton': 'setPlayerReady',
@@ -35,7 +36,7 @@ define((require, exports, module) => {
           'setPlayerReady': {
             'next': 'checkBothPlayersReady'
           },
-          // Check before start of game
+          /* Check before start of game */
           'checkBothPlayersReady': {
             'yes': 'prepareGameStart',
             'no': 'screeningSetupBoards'
@@ -58,7 +59,7 @@ define((require, exports, module) => {
           'removeSetupBoardScreens': {
             'next': 'awaitingShipPickup'
           },
-          // Gameplay states
+          /* Gameplay states */
           'awaitingShot': {
             'click': 'checkShotResult'
           },
@@ -87,7 +88,7 @@ define((require, exports, module) => {
           'removeGameplayBoardScreens': {
             'next': 'awaitingShot'
           }
-        },
+        }, /* State map end */
         debugStateTransitions: true,
         // Trigger a state transition
         triggerTransition(transitionName) {
