@@ -27,3 +27,4 @@ Please note: original Lighthous Labs eslint settings have been overridden to all
 - https://css-tricks.com/almanac/properties/p/pointer-events/
 - https://codepen.io/LukeAskew/pen/gabgom?editors=0100
 - https://css-tricks.com/examples/WebKitScrollbars/
+- [Background image source](http://www.kcra.com/article/grandmother-contracts-flesh-eating-bacteria-from-myrtle-beach-ocean-water-family-claims/10395694)

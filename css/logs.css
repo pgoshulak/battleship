@@ -1,16 +1,19 @@
-#shot-log {
+.log-base, #ready-button {
   background-color: #223;
   border: 10px solid #444;
   border-style: inset;
+  color: #DDD;
+  list-style-type: none;
+  box-shadow: 0px 0px 2px 2px #000 inset;
+}
+
+#shot-log, #opponent-ships, #player-ships {
   height: 268px;
   overflow-y: scroll;
   padding: 5px;
   margin: 0;
 }
-#shot-log > li {
-  list-style-type: none;
-  color: #DDD;
-}
+
 #shot-log > li.shot-log-sunk {
   color: #F42;
   font-weight: bold;
@@ -20,14 +23,26 @@
   font-weight: bold;
 }
 
+#opponent-ships, #player-ships {
+  display: grid;
+  height: 100%;
+}
+
+.ship-list {
+  margin: auto;
+  list-style-type: none;
+  padding: 5px;
+  text-align: right;
+  font-size: 1.2em
+}
+
+.ship-list > li.ship-list-sunk {
+  color: #F42;
+}
+
 #message-area {
   display: grid;
   height: 100%;
-  background-color: #223;
-  color: #DDD;
-  border: 10px solid #444;
-  border-style: inset;
-  box-shadow: 0px 0px 2px 2px #000 inset;
 }
 #message-area > div {
   margin: auto;
@@ -36,11 +51,6 @@
 
 #ready-button {
   font-size: 1.5em;
-  color: #EEE;
-  box-shadow: 0px 0px 5px 5px rgba(0,0,0,0.2) inset;
-  border: 10px solid #444;
-  border-style: inset;
-  height: 130;
 }
 
 #ready-button.go {

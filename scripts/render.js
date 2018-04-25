@@ -76,12 +76,24 @@ const generateBoard = (boardData, visibility) => {
 const generateShipList = (shipSquaresAlive, visibility) => {
   let $shipList = $('<ul>').addClass('ship-list');
   for (let i = 1; i <= 5; i++) {
-    let $entry = $('<li>')
+    // Create the ship name string
+    let text = `${SHIP_NAME[i]}`;
+
+    // Show full ship stats (eg. for own player)
+    if (visibility === 'revealed') {
+      text += ` ( ${shipSquaresAlive[i]} / ${SHIP_SIZE[i]} )`;
+    }
+    
+    // Append element
+    let entry = $('<li>')
       .addClass('ship-list-entry')
+      .text(text)
       .appendTo($shipList);
 
-    let text = `${SHIP_NAME[i]} ( ${shipSquaresAlive[i]} / ${SHIP_SIZE[i]} )`;
-    $entry.text(text);
+    // If the ship is sunk
+    if (shipSquaresAlive[i] === 0) {
+      entry.addClass('ship-list-sunk');
+    }
   }
   return $shipList;
 };

@@ -1,6 +1,11 @@
 * {
-  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Share Tech Mono', monospace; */
+  font-family: 'VT323', monospace;
   box-sizing: border-box;
+}
+body {
+  /* background-color: #222; */
+  padding: 0px;
 }
 
 #game-container {
@@ -33,4 +38,15 @@
 }
 #ready-button {
   grid-area: ready-button;
+}
+
+#background-image {
+  position:absolute;
+  filter: saturate(0.2) brightness(0.2);
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  top: 0;
+  left: 0;
+  z-index: -10;
 }
