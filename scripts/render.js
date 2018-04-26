@@ -151,45 +151,57 @@ function requestTransition(transitionName) {
 
 // Render the boards and ship lists
 function renderBoards (state, renderMode = 'normal') {
-  // IDs of the users
-  let opponentId = state.currentOpponent;
-  let playerId = state.currentPlayer;
+  
+  let topId;
+  let bottomId;
 
-  let opponentBoard = state.playerBoards[opponentId];
-  let playerBoard = state.playerBoards[playerId];
+  if (state.gameType === 'local') {
+    // Assign current player -> bottom board, current opponent -> top board
+    topId = state.currentOpponent;
+    bottomId = state.currentPlayer;
+  } else if (state.gameType === 'ai') {
+    // Force bottom board to always display the player (Player 0)
+    topId = 1;
+    bottomId = 0;
+  } else {
+    throw 'Unknown game type';
+  }
+
+  let topBoard = state.playerBoards[topId];
+  let bottomBoard = state.playerBoards[bottomId];
 
   // Determine how the boards will render
   // - Normal = full visibility, all shots and ships
   // - Obscured = partial visibility, only shots
   // - Screened = nothing visible
-  let opponentRenderMode = 'obscured';
-  let playerRenderMode = 'revealed';
+  let topRenderMode = 'obscured';
+  let bottomRenderMode = 'revealed';
 
   if (renderMode === 'screened') {
-    opponentRenderMode = 'screened';
-    playerRenderMode = 'screened';
+    topRenderMode = 'screened';
+    bottomRenderMode = 'screened';
   }
 
   if (renderMode === 'allVisible') {
-    opponentRenderMode = 'revealed';
+    topRenderMode = 'revealed';
   }
 
   if (renderMode === 'opponentScreened') {
-    opponentRenderMode = 'screened';
+    topRenderMode = 'screened';
   }
 
   // Generate JQuery elements with the two boards
-  let opponentBoardRendered = generateBoard(opponentBoard, opponentRenderMode);
-  let playerBoardRendered = generateBoard(playerBoard, playerRenderMode);
+  let topBoardRendered = generateBoard(topBoard, topRenderMode);
+  let bottomBoardRendered = generateBoard(bottomBoard, bottomRenderMode);
 
-  let opponentShipList = generateShipList(opponentBoard.shipSquaresAlive, opponentRenderMode);
-  let playerShipList = generateShipList(playerBoard.shipSquaresAlive, playerRenderMode);
+  let topShipList = generateShipList(topBoard.shipSquaresAlive, topRenderMode);
+  let bottomShipList = generateShipList(bottomBoard.shipSquaresAlive, bottomRenderMode);
 
   // Write the boards to the page
-  $('#opponent-board').empty().append(opponentBoardRendered);
-  $('#player-board').empty().append(playerBoardRendered);
-  $('#opponent-ships').empty().append(opponentShipList);
-  $('#player-ships').empty().append(playerShipList);
+  $('#opponent-board').empty().append(topBoardRendered);
+  $('#player-board').empty().append(bottomBoardRendered);
+  $('#opponent-ships').empty().append(topShipList);
+  $('#player-ships').empty().append(bottomShipList);
 
   // Refresh board bindings
   $('.board').on('click', '.board-square', function (e) {
