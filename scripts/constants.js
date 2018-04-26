@@ -35,4 +35,8 @@ const STATUS = {
 // Height and width of a board square
 const BOARD_SQUARE_SIZE = 24;
 
+// Labels for rows
 const ROW_LETTER = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+
+// AI shot delay (ms)
+const AI_SHOT_DELAY = 700;

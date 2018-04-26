@@ -88,8 +88,11 @@ define((require, exports, module) => {
             'notSunk': 'endOfTurn'
           },
           'endOfTurn': {
-            'playerAi': 'awaitingAiShot',
-            'playerLocal': 'awaitingPlayerDone'
+            'ai': 'swapToAi',
+            'local': 'awaitingPlayerDone'
+          },
+          'swapToAi': {
+            'next': 'awaitingShot'
           },
           'awaitingPlayerDone': {
             'playerReadyButton': 'screeningGameplayBoards',
@@ -282,8 +285,12 @@ define((require, exports, module) => {
             render.setReadyButton('Awaiting shot', 'disabled');
 
             if (state.gameType === 'ai' && state.currentPlayer === 1) {
-              state.aiClick();
-              this.requestTransition('aiClick');
+              setTimeout(() => {
+
+                state.aiClick();
+                this.requestTransition('aiClick');
+              }, AI_SHOT_DELAY);
+              
             }
           },
           // Swap players
@@ -352,8 +359,22 @@ define((require, exports, module) => {
           },
           // End of turn
           endOfTurn() {
+            // Render the resulting shot (after calculating hit/miss/sunk)
             render.renderBoards(state);
-            this.requestTransition('playerLocal');
+            // TODO: Good spot for an explosion effect here
+
+            if (state.gameType === 'local') {
+              this.requestTransition('local');
+            } else {
+              this.requestTransition('ai');
+            }
+          },
+          // Switch to AI's turn
+          swapToAi() {
+            state.swapCurrentPlayers();
+            setTimeout(() => {
+              this.requestTransition('next');
+            }, AI_SHOT_DELAY);
           },
           // Wait for player to indicate they are done (after firing their shot)
           awaitingPlayerDone() {

@@ -287,7 +287,6 @@ define((require, exports, module) => {
         setShipPickedUp: setShipPickedUp,
         checkValidPlacement: checkValidPlacement,
         logLastShot: logLastShot
-        // ai: ai
       });
     }
   };
