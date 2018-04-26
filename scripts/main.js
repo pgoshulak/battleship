@@ -23,6 +23,10 @@ requirejs(['render', 'store', 'gameEngine'], function (render, store, gameEngine
         // Spacebar
         if (e.which === 32) {
           $('#game-controller').trigger('triggerTransition', 'keySpacebar');
+        } else if (e.which === 49) {
+          $('#game-controller').trigger('triggerTransition', 'key1');
+        } else if (e.which === 50) {
+          $('#game-controller').trigger('triggerTransition', 'key2');
         }
       })
       // Right mouse click

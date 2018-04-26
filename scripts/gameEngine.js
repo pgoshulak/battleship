@@ -6,7 +6,12 @@ define((require, exports, module) => {
         stateMap: {
           /* Game entry */
           'gameEntry': {
-            'next': 'awaitingShipPickup'
+            // 'next': 'awaitingShipPickup'
+            'next': 'getGameType'
+          },
+          'getGameType': {
+            'key1': 'gameSetupAi',
+            'key2': 'awaitingShipPickup'
           },
           /* Ship placement */
           'awaitingShipPickup': {
@@ -129,6 +134,9 @@ define((require, exports, module) => {
           // ========== Game Entry ==========
           gameEntry() {
             this.requestTransition('next');
+          },
+          getGameType() {
+            render.setMessageArea('Press [1] - Player vs AI Press [2] - 2P Hotseat');
           },
           // ========== Ship Placement ==========
           // Wait for player to pick up a ship
