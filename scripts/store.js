@@ -242,10 +242,15 @@ function logLastShot(shot, outcome = '', sunk = 0) {
 }
 
 define((require, exports, module) => {
+  const ai = require('scripts/ai.js');
   module.exports = {
     // Full game state
     state() {
-      return {
+      // Note: `state` is an Object-merge between the below `state` functions
+      // and exported functions in the `ai.js` module. This awkward setup is
+      // used because an initial project requirement (only JQuery) was
+      // misinterpreted, and `requirejs` was used as the module importer
+      return Object.assign({}, ai, {
         // The boards for the two players
         playerBoards: [
           new UserBoard(0, JSON.parse(randomBoardAlmostDead)),
@@ -281,7 +286,8 @@ define((require, exports, module) => {
         setShipPickedUp: setShipPickedUp,
         checkValidPlacement: checkValidPlacement,
         logLastShot: logLastShot
-      };
+        // ai: ai
+      });
     }
   };
 });

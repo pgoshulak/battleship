@@ -138,6 +138,9 @@ define((require, exports, module) => {
           getGameType() {
             render.setMessageArea('Press [1] - Player vs AI Press [2] - 2P Hotseat');
           },
+          gameSetupAi() {
+            state.aiLog();
+          },
           // ========== Ship Placement ==========
           // Wait for player to pick up a ship
           awaitingShipPickup() {
