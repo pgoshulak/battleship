@@ -11,7 +11,13 @@ define((require, exports, module) => {
           },
           'getGameType': {
             'key1': 'gameSetupAi',
-            'key2': 'awaitingShipPickup'
+            'key2': 'gameSetupLocal'
+          },
+          'gameSetupAi': {
+            'next': 'awaitingShipPickup'
+          },
+          'gameSetupLocal': {
+            'next': 'awaitingShipPickup'
           },
           /* Ship placement */
           'awaitingShipPickup': {
@@ -65,7 +71,8 @@ define((require, exports, module) => {
           },
           /* Gameplay states */
           'awaitingShot': {
-            'click': 'checkShotResult'
+            'click': 'checkShotResult',
+            'aiClick': 'checkShotResult'
           },
           'checkShotResult': {
             'reset': 'awaitingShot',
@@ -139,7 +146,13 @@ define((require, exports, module) => {
             render.setMessageArea('Press [1] - Player vs AI Press [2] - 2P Hotseat');
           },
           gameSetupAi() {
-            state.aiLog();
+            state.gameType = 'ai';
+            state.aiGameInit();
+            this.requestTransition('next');
+          },
+          gameSetupLocal() {
+            state.gameType = 'local';
+            this.requestTransition('next');
           },
           // ========== Ship Placement ==========
           // Wait for player to pick up a ship
@@ -254,6 +267,11 @@ define((require, exports, module) => {
           awaitingShot() {
             render.setMessageArea(`Player ${state.currentPlayer}, take your shot!`);
             render.setReadyButton('Awaiting shot', 'disabled');
+
+            if (state.gameType === 'ai' && state.currentPlayer === 1) {
+              state.aiClick();
+              this.requestTransition('aiClick');
+            }
           },
           // Swap players
           swapPlayerBoards() {

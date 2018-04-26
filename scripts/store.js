@@ -253,7 +253,7 @@ define((require, exports, module) => {
       return Object.assign({}, ai, {
         // The boards for the two players
         playerBoards: [
-          new UserBoard(0, JSON.parse(randomBoardAlmostDead)),
+          new UserBoard(0, JSON.parse(randomBoardWithShots)),
           new UserBoard(1, JSON.parse(randomBoardWithShots))
         ],
         lastSquareClicked: {
@@ -270,6 +270,7 @@ define((require, exports, module) => {
         shotLog: [],
         currentPlayer: 0,
         currentOpponent: 1,
+        gameType: 'local',
         gameState: 'gameEntry',
         setState: setState,
         swapCurrentPlayers: swapCurrentPlayers,
