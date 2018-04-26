@@ -2,7 +2,11 @@
 ## State Transition Map
 ```mermaid
 graph TD;
-gameEntry[gameEntry] -- next --> awaitingShipPickup[awaitingShipPickup] ;
+gameEntry[gameEntry] -- next --> getGameType[getGameType] ;
+getGameType[getGameType] -- key1 --> gameSetupAi[gameSetupAi] ;
+getGameType[getGameType] -- key2 --> gameSetupLocal[gameSetupLocal] ;
+gameSetupAi[gameSetupAi] -- next --> awaitingShipPickup[awaitingShipPickup] ;
+gameSetupLocal[gameSetupLocal] -- next --> awaitingShipPickup[awaitingShipPickup] ;
 awaitingShipPickup[awaitingShipPickup] -- click --> checkIsOwnShip[checkIsOwnShip] ;
 awaitingShipPickup[awaitingShipPickup] -- playerReadyButton --> setPlayerReady[setPlayerReady] ;
 awaitingShipPickup[awaitingShipPickup] -- keySpacebar --> setPlayerReady[setPlayerReady] ;
@@ -15,17 +19,19 @@ isValidPlacement[isValidPlacement] -- yes --> placeShip[placeShip] ;
 isValidPlacement[isValidPlacement] -- no --> shipPickedUp[shipPickedUp] ;
 placeShip[placeShip] -- next --> awaitingShipPickup[awaitingShipPickup] ;
 setPlayerReady[setPlayerReady] -- next --> checkBothPlayersReady[checkBothPlayersReady] ;
-checkBothPlayersReady[checkBothPlayersReady] -- yes --> prepareGameStart[prepareGameStart] ;
+checkBothPlayersReady[checkBothPlayersReady] -- yes --> randomizeStartPlayer[randomizeStartPlayer] ;
 checkBothPlayersReady[checkBothPlayersReady] -- no --> screeningSetupBoards[screeningSetupBoards] ;
-prepareGameStart[prepareGameStart] -- playerAi --> startGameAi[startGameAi] ;
-prepareGameStart[prepareGameStart] -- playerLocal --> randomizeStartPlayer[randomizeStartPlayer] ;
-randomizeStartPlayer[randomizeStartPlayer] -- playerReadyButton --> startGame[startGame] ;
-randomizeStartPlayer[randomizeStartPlayer] -- keySpacebar --> startGame[startGame] ;
+randomizeStartPlayer[randomizeStartPlayer] -- ai --> renderAiStart[renderAiStart] ;
+randomizeStartPlayer[randomizeStartPlayer] -- local --> renderLocalStart[renderLocalStart] ;
+renderAiStart[renderAiStart] -- next --> startGame[startGame] ;
+renderLocalStart[renderLocalStart] -- playerReadyButton --> startGame[startGame] ;
+renderLocalStart[renderLocalStart] -- keySpacebar --> startGame[startGame] ;
 startGame[startGame] -- next --> awaitingShot[awaitingShot] ;
 screeningSetupBoards[screeningSetupBoards] -- playerReadyButton --> removeSetupBoardScreens[removeSetupBoardScreens] ;
 screeningSetupBoards[screeningSetupBoards] -- keySpacebar --> removeSetupBoardScreens[removeSetupBoardScreens] ;
 removeSetupBoardScreens[removeSetupBoardScreens] -- next --> awaitingShipPickup[awaitingShipPickup] ;
 awaitingShot[awaitingShot] -- click --> checkShotResult[checkShotResult] ;
+awaitingShot[awaitingShot] -- aiClick --> checkShotResult[checkShotResult] ;
 checkShotResult[checkShotResult] -- reset --> awaitingShot[awaitingShot] ;
 checkShotResult[checkShotResult] -- miss --> endOfTurn[endOfTurn] ;
 checkShotResult[checkShotResult] -- hit --> checkSunk[checkSunk] ;

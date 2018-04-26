@@ -6,7 +6,7 @@ define((require, exports, module) => {
         stateMap: {
           /* Game entry */
           'gameEntry': {
-            // 'next': 'awaitingShipPickup'
+            /* 'next': 'awaitingShipPickup' */
             'next': 'getGameType'
           },
           'getGameType': {
@@ -48,14 +48,17 @@ define((require, exports, module) => {
           },
           /* Check before start of game */
           'checkBothPlayersReady': {
-            'yes': 'prepareGameStart',
+            'yes': 'randomizeStartPlayer',
             'no': 'screeningSetupBoards'
           },
-          'prepareGameStart': {
-            'playerAi': 'startGameAi',
-            'playerLocal': 'randomizeStartPlayer'
-          },
           'randomizeStartPlayer': {
+            'ai': 'renderAiStart',
+            'local': 'renderLocalStart'
+          },
+          'renderAiStart': {
+            'next': 'startGame'
+          },
+          'renderLocalStart': {
             'playerReadyButton': 'startGame',
             'keySpacebar': 'startGame'
           },
@@ -230,21 +233,31 @@ define((require, exports, module) => {
               this.requestTransition('no');
             }
           },
-          // Set up the game based on who is playing
-          prepareGameStart() {
-            this.requestTransition('playerLocal');
-          },
           // Screen boards and randomize starting player
           randomizeStartPlayer() {
             // Randomize which player will start
             if (Math.round(Math.random())) {
               state.swapCurrentPlayers();
             }
-            // Hide the boards from view
-            render.renderBoards(state, 'screened');
-            // Await player 'ready' button press...
             render.setMessageArea('Randomizing starting player...');
+            
+            if (state.gameType === 'ai') {
+              this.requestTransition('ai');
+            } else {
+              this.requestTransition('local');
+            }
+          },
+          // Render a local (2P) game with screened boards (waiting for 'ready' button)
+          renderLocalStart() {
+            render.renderBoards(state, 'screened');
             render.setReadyButton(`Player ${state.currentPlayer} is first!`, 'go');
+            // Await 'ready' button to indicate the correct player is seated...
+          },
+          // Render an AI (1P) game with normal boards
+          renderAiStart() {
+            render.renderBoards(state);
+            render.setReadyButton(`Player ${state.currentPlayer} is first!`, 'go');
+            this.requestTransition('next');
           },
           // Start the game
           startGame() {
