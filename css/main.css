@@ -40,6 +40,17 @@ body {
   grid-area: ready-button;
 }
 
+#name-input-container{
+  position: absolute;
+  left: 50%;
+  top: 100px;
+  transform: translate(-50%,0);
+  display: none;
+}
+#name-input-container label {
+ display: block;
+}
+
 #background-image {
   position:absolute;
   filter: saturate(0.2) brightness(0.2);

@@ -6,7 +6,6 @@ define((require, exports, module) => {
         stateMap: {
           /* Game entry */
           'gameEntry': {
-            /* 'next': 'awaitingShipPickup' */
             'next': 'getGameType'
           },
           'getGameType': {
@@ -14,12 +13,15 @@ define((require, exports, module) => {
             'key2': 'gameSetupLocal'
           },
           'gameSetupAi': {
-            'next': 'awaitingShipPickup'
+            'next': 'displayUserNameInput'
           },
           'gameSetupLocal': {
-            'next': 'awaitingShipPickup'
+            'next': 'displayUserNameInput'
           },
           /* Ship placement */
+          'displayUserNameInput': {
+            'next': 'awaitingShipPickup'
+          },
           'awaitingShipPickup': {
             'click': 'checkIsOwnShip',
             'playerReadyButton': 'setPlayerReady',
@@ -70,7 +72,7 @@ define((require, exports, module) => {
             'keySpacebar': 'removeSetupBoardScreens'
           },
           'removeSetupBoardScreens': {
-            'next': 'awaitingShipPickup'
+            'next': 'displayUserNameInput'
           },
           /* Gameplay states */
           'awaitingShot': {
@@ -153,6 +155,7 @@ define((require, exports, module) => {
           },
           gameSetupAi() {
             state.gameType = 'ai';
+            state.userNames[1] = 'EvilAI';
             state.aiGameInit();
             this.requestTransition('next');
           },
@@ -161,6 +164,14 @@ define((require, exports, module) => {
             this.requestTransition('next');
           },
           // ========== Ship Placement ==========
+          // Display Username input
+          displayUserNameInput() {
+            $('#name-input-container').show();
+            $('#name-input')
+              .val('')
+              .attr('placeholder', state.userNames[state.currentPlayer]);
+            this.requestTransition('next');
+          },
           // Wait for player to pick up a ship
           awaitingShipPickup() {
             render.setMessageArea('Click on a ship to move it');
@@ -225,6 +236,8 @@ define((require, exports, module) => {
           },
           // Indicate that the current player is ready to start playing
           setPlayerReady() {
+            $('#name-input-container').hide();
+            state.userNames[state.currentPlayer] = $('#name-input').val() || state.userNames[state.currentPlayer];
             state.playerBoards[state.currentPlayer].playerReady = true;
             this.requestTransition('next');
           },
@@ -253,17 +266,18 @@ define((require, exports, module) => {
           // Render a local (2P) game with screened boards (waiting for 'ready' button)
           renderLocalStart() {
             render.renderBoards(state, 'screened');
-            render.setReadyButton(`Player ${state.currentPlayer} is first!`, 'go');
+            render.setReadyButton(`${state.userNames[state.currentPlayer]} is first!`, 'go');
             // Await 'ready' button to indicate the correct player is seated...
           },
           // Render an AI (1P) game with normal boards
           renderAiStart() {
             render.renderBoards(state);
-            render.setReadyButton(`Player ${state.currentPlayer} is first!`, 'go');
+            render.setReadyButton(`${state.userNames[state.currentPlayer]} is first!`, 'go');
             this.requestTransition('next');
           },
           // Start the game
           startGame() {
+            render.userNames = state.userNames;
             render.renderBoards(state);
             this.requestTransition('next');
           },
@@ -272,7 +286,7 @@ define((require, exports, module) => {
             state.swapCurrentPlayers();
             render.renderBoards(state, 'screened');
             render.setMessageArea('Please switch seats');
-            render.setReadyButton(`Player ${state.currentPlayer} ready!`, 'go');
+            render.setReadyButton(`${state.userNames[state.currentPlayer]} ready!`, 'go');
           },
           // Unscreen boards for next player
           removeSetupBoardScreens() {
@@ -281,7 +295,7 @@ define((require, exports, module) => {
           },
           // ========== Gameplay ==========
           awaitingShot() {
-            render.setMessageArea(`Player ${state.currentPlayer}, take your shot!`);
+            render.setMessageArea(`${state.userNames[state.currentPlayer]}, take your shot!`);
             render.setReadyButton('Awaiting shot', 'disabled');
 
             if (state.gameType === 'ai' && state.currentPlayer === 1) {
@@ -387,7 +401,7 @@ define((require, exports, module) => {
             state.swapCurrentPlayers();
             render.renderBoards(state, 'screened');
             render.setMessageArea(`Please switch seats`);
-            render.setReadyButton(`Player ${state.currentPlayer} ready!`, 'go');
+            render.setReadyButton(`${state.userNames[state.currentPlayer]} ready!`, 'go');
           },
           // Unscreen boards for next player
           removeGameplayBoardScreens() {
@@ -400,7 +414,7 @@ define((require, exports, module) => {
             let explosionType = state.getSquareInfo(state.lastSquareClicked).status;
             render.renderExplodeLastSquare(explosionType);
             
-            render.setMessageArea(`Victory for Player ${state.currentPlayer}`);
+            render.setMessageArea(`Victory for ${state.userNames[state.currentPlayer]}`);
             render.setReadyButton('Game over', 'disabled');
           }
         }

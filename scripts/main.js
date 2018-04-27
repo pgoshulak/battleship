@@ -20,8 +20,8 @@ requirejs(['render', 'store', 'gameEngine'], function (render, store, gameEngine
     // Global listeners
     $(document)
       .keypress(function(e) {
-        // Spacebar
-        if (e.which === 32) {
+        // Spacebar (except when user is inputting name in <input#name-input>)
+        if (e.which === 32 && $('#name-input').is(':focus') === false) {
           $('#game-controller').trigger('triggerTransition', 'keySpacebar');
         } else if (e.which === 49) {
           $('#game-controller').trigger('triggerTransition', 'key1');

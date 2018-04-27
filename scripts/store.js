@@ -270,6 +270,7 @@ define((require, exports, module) => {
         shotLog: [],
         currentPlayer: 0,
         currentOpponent: 1,
+        userNames: ['Alpha', 'Bravo'],
         gameType: 'local',
         gameState: 'gameEntry',
         setState: setState,

@@ -272,27 +272,28 @@ function renderLoggedShot(shot, outcome = '', sunk = 0) {
   
   // Log the shot's outcome
   $('<li class="shot-log-entry"></li>')
-    .text(`Player ${shot.shooterId} shot ${ROW_LETTER[shot.row]}${shot.col + 1}
+    .text(`${this.userNames[shot.shooterId]} shot ${ROW_LETTER[shot.row]}${shot.col + 1}
       : ${printedOutcome}!`)
     .prependTo($('#shot-log'));
   
   // If there is a ship sunk, log it as well
   if (sunk > 0) {
     $('<li class="shot-log-entry shot-log-sunk"></li>')
-      .text(`Player ${shot.shooterId} sunk Player ${shot.userId}'s ${SHIP_NAME[sunk]}!`)
+      .text(`${this.userNames[shot.shooterId]} sunk ${this.userNames[shot.userId]}'s ${SHIP_NAME[sunk]}!`)
       .prependTo($('#shot-log'));
   }
 
   // Log a victory message
   if (victory) {
     $('<li class="shot-log-entry shot-log-victory"></li>')
-      .text(`Victory for Player ${shot.shooterId}!`)
+      .text(`Victory for ${this.userNames[shot.shooterId]}!`)
       .prependTo($('#shot-log'));
   }
 }
 
 define((require, exports, module) => {
   module.exports = {
+    userNames: [],
     renderBoards: renderBoards,
     renderShipToCursor: renderShipToCursor,
     renderExplodeLastSquare: renderExplodeLastSquare,
