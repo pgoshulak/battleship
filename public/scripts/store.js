@@ -254,7 +254,7 @@ define((require, exports, module) => {
         // The boards for the two players
         playerBoards: [
           new UserBoard(0, JSON.parse(randomBoardWithShots)),
-          new UserBoard(1, JSON.parse(randomBoardWithShots))
+          new UserBoard(1, JSON.parse(randomBoardAlmostDead))
         ],
         lastSquareClicked: {
           userId: 0,

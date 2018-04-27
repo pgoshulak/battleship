@@ -1,13 +1,1 @@
-{
-  "testPlayer2": [{
-    "shipDiff": "0",
-    "timestamp": "2018-04-27T22:55:02.144Z"
-  }, {
-    "shipDiff": "1",
-    "timestamp": "2018-04-27T22:55:17.176Z"
-  }],
-  "test Player2": [{
-    "scoreDiff": "-2",
-    "timestamp": "2018-04-27T22:57:29.725Z"
-  }]
-}
+{"testPlayer2":[{"shipDiff":"0","timestamp":"2018-04-27T22:55:02.144Z"},{"shipDiff":"1","timestamp":"2018-04-27T22:55:17.176Z"}],"test Player2":[{"scoreDiff":"-2","timestamp":"2018-04-27T22:57:29.725Z"}],"leader test":[{"scoreDiff":"8","timestamp":"2018-04-27T23:44:32.537Z"}],"leader TEST2":[{"scoreDiff":"9","timestamp":"2018-04-27T23:46:51.674Z"}]}

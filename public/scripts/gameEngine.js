@@ -106,6 +106,10 @@ define((require, exports, module) => {
           },
           'removeGameplayBoardScreens': {
             'next': 'awaitingShot'
+          },
+          'gameOver': {
+            'playerReadyButton': 'viewLeaderBoard',
+            'keySpacebar': 'viewLeaderBoard'
           }
         },
         /* State map end */
@@ -414,8 +418,27 @@ define((require, exports, module) => {
             let explosionType = state.getSquareInfo(state.lastSquareClicked).status;
             render.renderExplodeLastSquare(explosionType);
             
-            render.setMessageArea(`Victory for ${state.userNames[state.currentPlayer]}`);
-            render.setReadyButton('Game over', 'disabled');
+            let scoreUser0 = state.playerBoards[0].shipSquaresAlive.total;
+            let scoreUser1 = state.playerBoards[1].shipSquaresAlive.total;
+            let scoreDiff = scoreUser0 - scoreUser1;
+            render.setMessageArea(`Victory for ${state.userNames[state.currentPlayer]}
+            , (${Math.abs(scoreDiff)} squares remaining)`);
+
+
+            if (state.gameType === 'local') {
+              render.setReadyButton('Game over', 'disabled');
+            } else {
+              // Register the highscore
+              $.post('/scores', {
+                userName: state.userNames[0],
+                scoreDiff: scoreDiff
+              });
+              render.setReadyButton('Leaderboard', 'go');
+            }
+          },
+          // Go to leaderboard
+          viewLeaderBoard() {
+            window.location = '/scores';
           }
         }
       };
