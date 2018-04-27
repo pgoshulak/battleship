@@ -1,0 +1,13 @@
+{
+  "testPlayer": [
+    {
+      "shipDiff": 5
+    },
+    {
+      "shipDiff": 2
+    },
+    {
+      "shipDiff": -3
+    }
+  ]
+}

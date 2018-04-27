@@ -4,7 +4,8 @@
   "description": "Browser-based implementation of battleship (LHL side project)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,11 @@
   "homepage": "https://github.com/pgoshulak/battleship#readme",
   "devDependencies": {
     "eslint": "^4.19.1",
-    "eslint-config-lighthouselabs": "github:lighthouse-labs/eslint-config-lighthouselabs"
+    "eslint-config-lighthouselabs": "github:lighthouse-labs/eslint-config-lighthouselabs",
+    "nodemon": "^1.17.3"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3"
   }
 }
