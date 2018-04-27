@@ -258,8 +258,8 @@ define((require, exports, module) => {
         ],
         lastSquareClicked: {
           userId: 0,
-          row: 0,
-          col: 0
+          row: -1,
+          col: -1
         },
         shipPickedUp: {
           shipType: 0,
