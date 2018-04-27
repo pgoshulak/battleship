@@ -9,6 +9,7 @@
 }
 
 .board-square {
+  position:relative;
   border: 1px solid #222;
   width: 24px;
   height: 24px;
@@ -20,13 +21,13 @@
   color: rgba(0,0,0,0);
   font-size: 0.6em;
   pointer-events: none;
+  position: absolute;
 }
 
 .board-square-obscured:hover>span {
   color: rgba(0,0,0,0.5);
   font-size: 4em;
   z-index: 2;
-  position: relative;
   left: -0.4em;
   top: -0.4em;
   transition: all 0.1s;
@@ -114,4 +115,128 @@
   justify-self: center;
   align-self: center;
   padding: 2px;
+}
+
+
+.board-square-explode-miss, 
+.board-square-explode-hit, 
+.board-square-explode-sunk {
+  position: absolute;
+  border-radius: 50%;
+  height: 32px;
+  width: 32px;
+  top: -4px;
+  left: -4px;
+  z-index: 999;
+  opacity: 0.2;
+}
+
+.board-square-explode-miss {
+  background-color: #0AF;
+  box-shadow: 0 0 10px 10px #0aF;
+  animation: explode-one 0.2s 1;
+}
+.board-square-explode-hit {
+  background-color: #F00;
+  box-shadow: 0 0 10px 10px #F00;
+  animation: explode-one 0.2s 1;
+}
+.board-square-explode-sunk {
+  background-color: #F00;
+  box-shadow: 0 0 10px 10px #F00;
+  animation: explode-multi 0.9s 1;
+}
+
+@keyframes explode-one {
+  0% {
+    transform: scale(0.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(5);
+    opacity: 0;
+  }
+}
+
+@keyframes explode-multi {
+  0% {
+    top: initial;
+    left: initial;
+    transform: scale(0.5);
+    opacity: 1;
+    background-color: #FF0;
+    box-shadow: 0 0 10px 10px #FF0;
+  }
+  15% {
+    top: initial;
+    left: initial;
+    transform: scale(5);
+    opacity: 0.5;
+    background-color: #FF0;
+    box-shadow: 0 0 10px 10px #FF0;
+  }
+  16% {
+    top: 10px;
+    left: 0px;
+    transform: scale(0.5);
+    opacity: 1;
+    background-color: #F00;
+    box-shadow: 0 0 10px 10px #F00;
+  }
+  30% {
+    top: 10px;
+    left: 0px;
+    transform: scale(5);
+    opacity: 0.5;
+    background-color: #F00;
+    box-shadow: 0 0 10px 10px #F00;
+  }
+  31% {
+    top: -10px;
+    left: 0px;
+    transform: scale(0.5);
+    opacity: 1;
+    background-color: #999;
+    box-shadow: 0 0 10px 10px #999;
+  }
+  45% {
+    top: -10px;
+    left: 0px;
+    transform: scale(5);
+    opacity: 0.5;
+    background-color: #999;
+    box-shadow: 0 0 10px 10px #999;
+  }
+  46% {
+    top: 20px;
+    left: -5px;
+    transform: scale(0.5);
+    opacity: 1;
+    background-color: #FF0;
+    box-shadow: 0 0 10px 10px #FF0;
+  }
+  60% {
+    top: 20px;
+    left: -5px;
+    transform: scale(5);
+    opacity: 0.5;
+    background-color: #FF0;
+    box-shadow: 0 0 10px 10px #FF0;
+  }
+  61% {
+    top: initial;
+    left: initial;
+    transform: scale(0.5);
+    opacity: 0.5;
+    background-color: #F00;
+    box-shadow: 0 0 10px 10px #F00;
+  }
+  100% {
+    top: initial;
+    left: initial;
+    transform: scale(8);
+    opacity: 0;
+    background-color: #F00;
+    box-shadow: 0 0 10px 10px #F00;
+  }
 }

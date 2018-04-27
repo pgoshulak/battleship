@@ -361,7 +361,9 @@ define((require, exports, module) => {
           endOfTurn() {
             // Render the resulting shot (after calculating hit/miss/sunk)
             render.renderBoards(state);
-            // TODO: Good spot for an explosion effect here
+            // Render the explosion
+            let explosionType = state.getSquareInfo(state.lastSquareClicked).status;
+            render.renderExplodeLastSquare(explosionType);
 
             if (state.gameType === 'local') {
               this.requestTransition('local');
@@ -395,6 +397,9 @@ define((require, exports, module) => {
           // End of game - reveal both boards
           gameOver() {
             render.renderBoards(state, 'allVisible');
+            let explosionType = state.getSquareInfo(state.lastSquareClicked).status;
+            render.renderExplodeLastSquare(explosionType);
+            
             render.setMessageArea(`Victory for Player ${state.currentPlayer}`);
             render.setReadyButton('Game over', 'disabled');
           }

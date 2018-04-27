@@ -1,5 +1,5 @@
 // Generate JQuery object containing CSS grid of a board
-const generateBoard = (boardData, visibility) => {
+const generateBoard = (boardData, visibility, lastSquareClicked) => {
   let userId = boardData.userId;
   let allSpaces = boardData.spaces;
   let board = $('<div></div>')
@@ -29,6 +29,13 @@ const generateBoard = (boardData, visibility) => {
         .data('row', rowIndex)
         .data('col', colIndex)
         .append(text);
+      
+      // Determine if this was the last square clicked
+      if (userId === lastSquareClicked.userId
+      && rowIndex === lastSquareClicked.row
+      && colIndex === lastSquareClicked.col) {
+        space.addClass('board-square-last-clicked');
+      }
 
       // Color based on status
       switch (square.status) {
@@ -191,8 +198,8 @@ function renderBoards (state, renderMode = 'normal') {
   }
 
   // Generate JQuery elements with the two boards
-  let topBoardRendered = generateBoard(topBoard, topRenderMode);
-  let bottomBoardRendered = generateBoard(bottomBoard, bottomRenderMode);
+  let topBoardRendered = generateBoard(topBoard, topRenderMode, state.lastSquareClicked);
+  let bottomBoardRendered = generateBoard(bottomBoard, bottomRenderMode, state.lastSquareClicked);
 
   let topShipList = generateShipList(topBoard.shipSquaresAlive, topRenderMode);
   let bottomShipList = generateShipList(bottomBoard.shipSquaresAlive, bottomRenderMode);
@@ -218,6 +225,21 @@ function renderBoards (state, renderMode = 'normal') {
     requestTransition('click');
     // renderBoards(state);
   });
+}
+
+// Add explosion element to last square clicked
+function renderExplodeLastSquare (typeId) {
+  let type = '';
+  if (typeId === STATUS.MISS) {
+    type = 'miss';
+  } else if (typeId === STATUS.HIT) {
+    type = 'hit';
+  } else if (typeId === STATUS.SUNK) {
+    type = 'sunk';
+  }
+  $('<div>')
+    .addClass(`board-square-explode-${type}`)
+    .appendTo($('.board-square-last-clicked'));
 }
 
 // Set the text/style on the main/ready UI button
@@ -273,6 +295,7 @@ define((require, exports, module) => {
   module.exports = {
     renderBoards: renderBoards,
     renderShipToCursor: renderShipToCursor,
+    renderExplodeLastSquare: renderExplodeLastSquare,
     setReadyButton: setReadyButton,
     setMessageArea: setMessageArea,
     renderLoggedShot: renderLoggedShot
