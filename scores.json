@@ -1,13 +1,13 @@
 {
-  "testPlayer": [
-    {
-      "shipDiff": 5
-    },
-    {
-      "shipDiff": 2
-    },
-    {
-      "shipDiff": -3
-    }
-  ]
+  "testPlayer2": [{
+    "shipDiff": "0",
+    "timestamp": "2018-04-27T22:55:02.144Z"
+  }, {
+    "shipDiff": "1",
+    "timestamp": "2018-04-27T22:55:17.176Z"
+  }],
+  "test Player2": [{
+    "scoreDiff": "-2",
+    "timestamp": "2018-04-27T22:57:29.725Z"
+  }]
 }
