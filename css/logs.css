@@ -8,7 +8,7 @@
 }
 
 #shot-log, #opponent-ships, #player-ships {
-  height: 100%;
+  height: 286px;
   overflow-y: scroll;
   padding: 5px;
   margin: 0;
