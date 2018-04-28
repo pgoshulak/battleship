@@ -13,8 +13,8 @@
   border: 1px solid #222;
   width: 24px;
   height: 24px;
-  /* font-size: 0.6em; */
   cursor: crosshair;
+  user-select: none;
 }
 
 .board-square>span {
@@ -106,7 +106,7 @@
   cursor: all-scroll;
   display: grid;
   pointer-events: none;
-  z-index: 3;
+  z-index: 5;
 }
 
 .board-label {
@@ -151,7 +151,7 @@
 .board-square-explode-sunk {
   background-color: #F00;
   box-shadow: 0 0 10px 10px #F00;
-  animation: explode-multi 0.9s 1;
+  animation: explode-multi 1.3s 1;
 }
 
 @keyframes explode-one {
@@ -177,7 +177,7 @@
   15% {
     top: initial;
     left: initial;
-    transform: scale(5);
+    transform: scale(6);
     opacity: 0.5;
     background-color: #F80;
     box-shadow: 0 0 10px 10px #F80;
@@ -193,7 +193,7 @@
   30% {
     top: 10px;
     left: 0px;
-    transform: scale(5);
+    transform: scale(7);
     opacity: 0.5;
     background-color: #800;
     box-shadow: 0 0 10px 10px #800;
@@ -209,7 +209,7 @@
   45% {
     top: -10px;
     left: 0px;
-    transform: scale(5);
+    transform: scale(8);
     opacity: 0.5;
     background-color: #999;
     box-shadow: 0 0 10px 10px #999;
@@ -225,7 +225,7 @@
   60% {
     top: 20px;
     left: -5px;
-    transform: scale(5);
+    transform: scale(9);
     opacity: 0.5;
     background-color: #F80;
     box-shadow: 0 0 10px 10px #F80;
@@ -241,7 +241,7 @@
   100% {
     top: initial;
     left: initial;
-    transform: scale(8);
+    transform: scale(10);
     opacity: 0;
     background-color: #800;
     box-shadow: 0 0 10px 10px #800;
