@@ -47,4 +47,6 @@ awaitingPlayerDone[awaitingPlayerDone] -- keySpacebar --> screeningGameplayBoard
 screeningGameplayBoards[screeningGameplayBoards] -- playerReadyButton --> removeGameplayBoardScreens[removeGameplayBoardScreens] ;
 screeningGameplayBoards[screeningGameplayBoards] -- keySpacebar --> removeGameplayBoardScreens[removeGameplayBoardScreens] ;
 removeGameplayBoardScreens[removeGameplayBoardScreens] -- next --> awaitingShot[awaitingShot] ;
+gameOver[gameOver] -- playerReadyButton --> viewLeaderBoard[viewLeaderBoard] ;
+gameOver[gameOver] -- keySpacebar --> viewLeaderBoard[viewLeaderBoard] ;
 ```

@@ -112,8 +112,6 @@ define((require, exports, module) => {
             'keySpacebar': 'viewLeaderBoard'
           }
         },
-        /* State map end */
-        debugStateTransitions: true,
         // Trigger a state transition
         triggerTransition(transitionName) {
           // Retrieve current game state
@@ -126,7 +124,7 @@ define((require, exports, module) => {
             state.setState(newState);
 
             // Log state transition if debugging
-            if (this.debugStateTransitions) {
+            if (DEBUG_STATE_TRANSITIONS) {
               console.info(`${oldState} -> ${transitionName} -> ${newState}`);
             }
             // If there is a function associated with this state change

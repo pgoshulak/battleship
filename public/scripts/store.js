@@ -6,6 +6,53 @@ class BoardSpace {
   }
 }
 
+// Randomly place all ships on board
+function randomizeShipPlacement(spaces) {
+  // Helper function to check if a square is valid and empty
+  const isEmpty = (row, col) => {
+    return spaces[row]
+      && spaces[row][col]
+      && spaces[row][col].status === STATUS.EMPTY;
+  };
+
+  // Place each ship from largest to smallest (hardcoded to 5 ships)
+  for (let shipType = 5; shipType > 0; shipType--) {
+    let shipSize = SHIP_SIZE[shipType];
+    let startRow;
+    let startCol;
+    let isHorizontal;
+    let isValid;
+    do {
+      // Choose a random start position and direction
+      startRow = Math.floor(Math.random() * 10);
+      startCol = Math.floor(Math.random() * 10);
+      isHorizontal = Math.round(Math.random());
+
+      // Check each would-be space
+      isValid = true;
+      for (let i = 0; i < shipSize; i++) {
+        if (isHorizontal) {
+          isValid &= isEmpty(startRow, startCol + i);
+        } else {
+          isValid &= isEmpty(startRow + i, startCol);
+        }
+      }
+      // Repeat until a valid start position and direction are found
+    } while (!isValid);
+
+    // Place the ship by setting each square's status and shipType
+    for (let j = 0; j < shipSize; j++) {
+      if (isHorizontal) {
+        spaces[startRow][startCol + j].status = STATUS.ALIVE;
+        spaces[startRow][startCol + j].ship = shipType;
+      } else {
+        spaces[startRow + j][startCol].status = STATUS.ALIVE;
+        spaces[startRow + j][startCol].ship = shipType;
+      }
+    }
+  }
+}
+
 // A user's full 10x10 board
 class UserBoard {
   constructor(userId, spaces) {
@@ -19,6 +66,7 @@ class UserBoard {
       this.spaces = Array(10).fill().map(() => {
         return Array(10).fill().map(() => new BoardSpace);
       });
+      randomizeShipPlacement(this.spaces);
     } else {
       // Initialize a 10x10 array of predetermined squares
       this.spaces = spaces;
@@ -253,8 +301,10 @@ define((require, exports, module) => {
       return Object.assign({}, ai, {
         // The boards for the two players
         playerBoards: [
-          new UserBoard(0, JSON.parse(randomBoardWithShots)),
-          new UserBoard(1, JSON.parse(randomBoardAlmostDead))
+          // new UserBoard(0, JSON.parse(randomBoardWithShots)),
+          // new UserBoard(1, JSON.parse(randomBoardAlmostDead))
+          new UserBoard(0),
+          new UserBoard(1)
         ],
         lastSquareClicked: {
           userId: 0,
