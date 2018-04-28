@@ -1,1 +1,31 @@
-{"testPlayer2":[{"shipDiff":"0","timestamp":"2018-04-27T22:55:02.144Z"},{"shipDiff":"1","timestamp":"2018-04-27T22:55:17.176Z"}],"test Player2":[{"scoreDiff":"-2","timestamp":"2018-04-27T22:57:29.725Z"}],"leader test":[{"scoreDiff":"8","timestamp":"2018-04-27T23:44:32.537Z"}],"leader TEST2":[{"scoreDiff":"9","timestamp":"2018-04-27T23:46:51.674Z"}]}
+{
+  "testPlayer2": [{
+    "scoreDiff": "0",
+    "timestamp": "2018-04-27T22:55:02.144Z"
+  }, {
+    "scoreDiff": "1",
+    "timestamp": "2018-04-27T22:55:17.176Z"
+  }],
+  "tester one game": [{
+    "scoreDiff": "-2",
+    "timestamp": "2018-04-27T22:57:29.725Z"
+  }],
+  "score 8": [{
+    "scoreDiff": "8",
+    "timestamp": "2018-04-27T23:44:32.537Z"
+  }],
+  "leader TEST2": [{
+    "scoreDiff": "9",
+    "timestamp": "2018-04-27T23:46:51.674Z"
+  }],
+  "Alpha 8-6-4": [{
+    "scoreDiff": "8",
+    "timestamp": "2018-04-28T00:46:45.524Z"
+  },{
+    "scoreDiff": "6",
+    "timestamp": "2018-04-28T00:46:45.524Z"
+  },{
+    "scoreDiff": "4",
+    "timestamp": "2018-04-28T00:46:45.524Z"
+  }]
+}

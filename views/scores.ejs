@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Battleship Leaderboard</title>
+</head>
+<body>
+<% 
+  let scoresByUser = JSON.parse(scoresJson);
+  let scoresArr = Object.keys(scoresByUser)
+    .map((name) => {
+      // Array of scores in form { scoreDiff, timestamp }
+      let userScoresData = scoresByUser[name];
+
+      let wins = 0;
+      let bestScore = -Infinity;
+      // Array of only the scores
+      let scoresOnly = userScoresData.map(game => {
+        let score = Number(game.scoreDiff);
+        if (score > 0) wins++;
+        if (score > bestScore) bestScore = score;
+        return Number(game.scoreDiff);
+      });
+      // Sum of all scores
+      let aggregate = scoresOnly.reduce((agg, cur) => agg + cur);
+
+      return {
+        name: name,
+        wins: wins,
+        gamesPlayed: userScoresData.length,
+        aggregate: aggregate,
+        best: bestScore
+      }
+    });
+%>
+  <h1>Battleship Leaderboards</h1>
+  <table>
+    <tr>
+      <th>Rank</th>
+      <th>Player</th>
+      <th>Wins</th>
+      <th>Games played</th>
+      <th>Aggregate score</th>
+      <th>Best score</th>
+    </tr>
+    <% scoresArr.sort((a, b) => b.aggregate - a.aggregate).forEach((player, index) => { %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= player.name %></td>
+        <td><%= player.wins %></td>
+        <td><%= player.gamesPlayed %></td>
+        <td><%= player.aggregate %></td>
+        <td><%= player.best %></td>
+      </tr>
+
+    <% }) %>
+  </table>
+</body>
+</html>

@@ -10,11 +10,13 @@ const SCORES_DATA = './scores.json';
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
+app.set('view engine', 'ejs');
 
 app.get('/scores', (req, res) => {
   if (fs.existsSync(SCORES_DATA)) {
-    let scoresJson = JSON.parse(fs.readFileSync(SCORES_DATA, 'utf8'));
-    res.json(scoresJson);
+    // Read scores from server JSON file
+    let scoresJson = fs.readFileSync(SCORES_DATA, 'utf8');
+    res.render('scores', { scoresJson });
     return;
   }
   res.send('Error loading scores');
