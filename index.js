@@ -12,11 +12,15 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
-app.get('/scores', (req, res) => {
+app.get('/scores/:user?', (req, res) => {
   if (fs.existsSync(SCORES_DATA)) {
     // Read scores from server JSON file
     let scoresJson = fs.readFileSync(SCORES_DATA, 'utf8');
-    res.render('scores', { scoresJson });
+    let userHighlight = '';
+    if (req.params.user) {
+      userHighlight = req.params.user;
+    }
+    res.render('scores', { scoresJson, userHighlight });
     return;
   }
   res.send('Error loading scores');

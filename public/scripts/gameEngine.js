@@ -438,7 +438,7 @@ define((require, exports, module) => {
           },
           // Go to leaderboard
           viewLeaderBoard() {
-            window.location = '/scores';
+            window.location = `/scores/${state.userNames[0]}`;
           }
         }
       };

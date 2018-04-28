@@ -1,0 +1,38 @@
+body {
+  color: #DDD;
+  display: flex;
+  justify-content: center;
+}
+
+h1 {
+  display: block;
+  text-align: center;
+}
+
+body>div {
+  padding: 10px;
+  background-color: #223;
+  border: 10px solid #444;
+  border-style: outset;
+
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td {
+  border-collapse:collapse;
+  padding: 10px;
+  color: #F42;
+  text-align: center;
+  width: 50px;
+}
+
+.highlight td {
+  color: lime;
+}
+
+tr:hover td {
+  background: #556;
+}

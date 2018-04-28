@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="/css/scores.css" />
   <title>Battleship Leaderboard</title>
 </head>
 <body>
@@ -35,27 +37,37 @@
       }
     });
 %>
-  <h1>Battleship Leaderboards</h1>
-  <table>
-    <tr>
-      <th>Rank</th>
-      <th>Player</th>
-      <th>Wins</th>
-      <th>Games played</th>
-      <th>Aggregate score</th>
-      <th>Best score</th>
-    </tr>
-    <% scoresArr.sort((a, b) => b.aggregate - a.aggregate).forEach((player, index) => { %>
+  <div>
+    <h1>Battleship Leaderboards</h1>
+    <table>
       <tr>
-        <td><%= index + 1 %></td>
-        <td><%= player.name %></td>
-        <td><%= player.wins %></td>
-        <td><%= player.gamesPlayed %></td>
-        <td><%= player.aggregate %></td>
-        <td><%= player.best %></td>
+        <th>Rank</th>
+        <th>Player</th>
+        <th>Wins</th>
+        <th>Games played</th>
+        <th>Aggregate score</th>
+        <th>Best score</th>
       </tr>
+      <!-- Sort scores by Aggregate score (sum of all points) -->
+      <% scoresArr.sort((a, b) => b.aggregate - a.aggregate).forEach((player, index) => { %>
 
-    <% }) %>
-  </table>
+      <!-- Highlight the requested user's row -->
+        <% if (player.name === userHighlight) { %>
+          <tr class="highlight">
+        <% } else { %>
+          <tr>
+        <% } %>
+          <td><%= index + 1 %></td>
+          <td><%= player.name %></td>
+          <td><%= player.wins %></td>
+          <td><%= player.gamesPlayed %></td>
+          <td><%= player.aggregate %></td>
+          <td><%= player.best %></td>
+        </tr>
+
+      <% }) %>
+    </table>
+  </div>
+  <img id="background-image" src="/css/water.jpg" alt="background-image"></img>
 </body>
 </html>
