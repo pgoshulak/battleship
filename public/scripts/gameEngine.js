@@ -23,7 +23,7 @@ define((require, exports, module) => {
             'next': 'awaitingShipPickup'
           },
           'awaitingShipPickup': {
-            'click': 'checkIsOwnShip',
+            'mousedown': 'checkIsOwnShip',
             'playerReadyButton': 'setPlayerReady',
             'keySpacebar': 'setPlayerReady'
           },
@@ -33,7 +33,7 @@ define((require, exports, module) => {
           },
           'shipPickedUp': {
             'clickRight': 'rotateShip',
-            'click': 'isValidPlacement'
+            'mouseup': 'isValidPlacement'
           },
           'rotateShip': {
             'next': 'shipPickedUp'

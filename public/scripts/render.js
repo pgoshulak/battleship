@@ -210,20 +210,38 @@ function renderBoards (state, renderMode = 'normal') {
   $('#opponent-ships').empty().append(topShipList);
   $('#player-ships').empty().append(bottomShipList);
 
-  // Refresh board bindings
-  $('.board').on('click', '.board-square', function (e) {
+  // Click handler for board squares
+  function clickHandler(e, thisSquare) {
     let squareCoords = {
-      userId: $(this).data('user-id'),
-      row: $(this).data('row'),
-      col: $(this).data('col')
+      userId: $(thisSquare).data('user-id'),
+      row: $(thisSquare).data('row'),
+      col: $(thisSquare).data('col')
     };
+    state.registerBoardClick(squareCoords);
     // Store mouseclick coords for rendering a picked-up ship
     state.shipPickedUp.mouseX = e.pageX;
     state.shipPickedUp.mouseY = e.pageY;
 
-    state.registerBoardClick(squareCoords);
+  }
+  
+  // Refresh board bindings
+  $('.board').on('click', '.board-square', function (e) {
+    clickHandler(e, this);
     requestTransition('click');
-    // renderBoards(state);
+  });
+  $('.board').on('mousedown', '.board-square', function (e) {
+    // Check that this is a left-click
+    if (e.which === 1) {
+      clickHandler(e, this);
+      requestTransition('mousedown');
+    }
+  });
+  $('.board').on('mouseup', '.board-square', function (e) {
+    // Check that this is a left-click
+    if (e.which === 1) {
+      clickHandler(e, this);
+      requestTransition('mouseup');
+    }
   });
 }
 
