@@ -243,18 +243,8 @@ function aiClick() {
   
   /* ----- Execute the next shot depending on updated state ----- */
   console.log(aiState);
-  if (aiState === 'random') {
-    nextShot = getRandomShot(this, smallestShipSize);
-    
-  } else if (aiState === 'targeting') {
-    // Try shooting adjacent to the most recent hit
-    nextShot = getRandomNearbyShot(this, hitStack);
-    if (nextShot === null) {
-      resetToRandom();
-      nextShot = getRandomShot(this, smallestShipSize);
-    }
-
-  } else if (aiState === 'striking') {
+  
+  if (aiState === 'striking') {
     nextShot = getNextShotInDirection(this, hitStack, discoveredDirection);
     console.log(`Got next shot as`, nextShot);
     // If the direction continues into a board edge or a miss, reverse it
@@ -266,11 +256,27 @@ function aiClick() {
     }
     // If direction is still invalid (after initial reversing), reset aiState to random
     if (nextShot === null) {
-      console.log('reset to random');
+      console.log('downgrade to targeting');
+      aiState = 'targeting';
+      // resetToRandom();
+      // nextShot = getRandomShot(this, smallestShipSize);
+    }
+  }
+
+  if (aiState === 'targeting') {
+    // Try shooting adjacent to the most recent hit
+    nextShot = getRandomNearbyShot(this, hitStack);
+    if (nextShot === null) {
+      console.log('downgrade to random');
       resetToRandom();
       nextShot = getRandomShot(this, smallestShipSize);
     }
   }
+
+  if (aiState === 'random' || nextShot === null) {
+    nextShot = getRandomShot(this, smallestShipSize);
+  }
+
   this.registerBoardClick(nextShot);
 
 }
