@@ -89,6 +89,8 @@ const generateShipList = (shipSquaresAlive, visibility) => {
     // Show full ship stats (eg. for own player)
     if (visibility === 'revealed') {
       text += ` ( ${shipSquaresAlive[i]} / ${SHIP_SIZE[i]} )`;
+    } else {
+      text += ` ( ${SHIP_SIZE[i]} )`;
     }
     
     // Append element
@@ -292,6 +294,7 @@ function renderLoggedShot(shot, outcome = '', sunk = 0) {
   $('<li class="shot-log-entry"></li>')
     .text(`${this.userNames[shot.shooterId]} shot ${ROW_LETTER[shot.row]}${shot.col + 1}
       : ${printedOutcome}!`)
+    .addClass(`shot-log-${printedOutcome}`)
     .prependTo($('#shot-log'));
   
   // If there is a ship sunk, log it as well

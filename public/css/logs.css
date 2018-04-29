@@ -14,6 +14,9 @@
   margin: 0;
 }
 
+#shot-log > li.shot-log-hit {
+  color: #FA0;
+}
 #shot-log > li.shot-log-sunk {
   color: #F42;
   font-weight: bold;
