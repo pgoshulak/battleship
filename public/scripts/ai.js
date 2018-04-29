@@ -19,6 +19,20 @@ function aiGameInit() {
   this.playerBoards[1].playerReady = true;
 }
 
+// Check if a shot is to a valid square (row/col exist) and not already taken (not a miss/hit/sunk)
+function isValidShot(state, shot) {
+  let board = state.playerBoards[0].spaces;
+  if (board[shot.row]
+    && board[shot.row][shot.col]
+    && board[shot.row][shot.col].status !== STATUS.MISS
+    && board[shot.row][shot.col].status !== STATUS.HIT
+    && board[shot.row][shot.col].status !== STATUS.SUNK) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 // Find a random, yet-unshot square divisible by smallest living ship
 function getRandomShot(state, smallestShipLength) {
   let randomShot;
@@ -45,34 +59,37 @@ function getRandomShot(state, smallestShipLength) {
   return randomShot;
 }
 
+// Translate a NSEW direction into row+/- and col+/-
+function getDirectionOffset(dir) {
+  // Given a direction 0=N, 1=W, 2=S, 3=E, return row and col differential
+  // eg. dir=0 -> N -> rowDiff = -1 (move up 1), colDiff = 0 (don't move sideways);
+  return {
+    col: (dir - 2) % 2,
+    row: (dir - 1) % 2
+  };
+}
+
+// Return the reverse of a given NSEW direction
+function reverseDirection(dir) {
+  // Given a direction 0=N, 1=W, 2=S, 3=E, return opposite direction
+  // eg. dir=0 -> N -> return 2 (S)
+  return (dir + 2) % 4;
+}
 // Shoot a random adjacent square
 // Note: side-effect!! Function sets variable `lastDirectionTried` of parent scope, and may (in future) pop() from hitStack
-function getRandomNearbyShot(hitStack) {
+function getRandomNearbyShot(state, hitStack) {
   let lastShot = hitStack[hitStack.length - 1];
   let nextShot = null;
+  let counter = 0;
   do {
     let randomDir = Math.floor(Math.random() * 4);
-    
-    if (randomDir === 0 && lastShot.row - 1 >= 0) {
-      // Next shot is North
-      nextShot = { userId: 0, col: lastShot.col, row: lastShot.row - 1};
-      lastDirectionTried = 'n';
-
-    } else if (randomDir === 1 && lastShot.col + 1 <= 9) {
-      // Next shot is EAST
-      nextShot = { userId: 0, col: lastShot.col + 1, row: lastShot.row};
-      lastDirectionTried = 'e';
-
-    } else if (randomDir === 2 && lastShot.row + 1 <= 9) {
-      // Next shot is SOUTH
-      nextShot = { userId: 0, col: lastShot.col, row: lastShot.row + 1};
-      lastDirectionTried = 's';
-
-    } else if (randomDir === 3 && lastShot.col - 1 >= 0) {
-      // Next shot is WEST
-      nextShot = { userId: 0, col: lastShot.col - 1, row: lastShot.row};
-      lastDirectionTried = 'w';
-    }
+    let offset = getDirectionOffset(randomDir);
+    nextShot = {
+      userId: 0,
+      col: lastShot.col + offset.col,
+      row: lastShot.row + offset.row
+    };
+    lastDirectionTried = randomDir;
 
     /* TODO: This is where AI can get more advanced. Finding a valid shot should involve
     both whether the space exists (as is currently) AND if the shot has been taken. IF the
@@ -87,9 +104,14 @@ function getRandomNearbyShot(hitStack) {
     are tightly packed)
      */
 
-    // If shot wasn't valid, try again
-  } while (!nextShot);
-  return nextShot;
+    // If shot wasn't valid, try again until a maximum (max is 20 because dir is randomized, need to wait until all dirs likely tried)
+  } while (!isValidShot(state, nextShot) && counter < 20);
+
+  if (!isValidShot(state, nextShot)) {
+    return null;
+  } else {
+    return nextShot;
+  }
 }
 
 // Get the size of the smallest ship (for choosing shot spacing)
@@ -106,21 +128,6 @@ function getSmallestShipSize(state) {
   return smallestShipSize;
 }
 
-// Return the reverse of a given n/e/s/w direction
-function reverseDirection(dir) {
-  if (dir === 'n') {
-    return 's';
-  } else if (dir === 's') {
-    return 'n';
-  } else if (dir === 'e') {
-    return 'w';
-  } else if (dir === 'w') {
-    return 'e';
-  } else {
-    return null;
-  }
-}
-
 // Reset state and helper variables to 'random' shooting
 function resetToRandom() {
   aiState = 'random';
@@ -134,7 +141,6 @@ function getNextShotInDirection(state, hitStack, direction) {
   let lastShot = hitStack[hitStack.length - 1];
   // If there is a valid shot in the direction, return it
   // If the direction leads to a board edge, return null (requesting a reverse)
-  // FIXME: Need to check BOTH whether square is valid AND not yet shot-at (eg. status != hit/miss/sunk)
   // FIXME: Need to be able to backtrack over squares
 
   if (direction === 'n' && lastShot.row - 1 >= 0) {
@@ -190,14 +196,14 @@ function aiClick() {
   console.log(aiState);
   if (aiState === 'random') {
     nextShot = getRandomShot(this, smallestShipSize);
-    this.registerBoardClick(nextShot);
-    return;
-
+    
   } else if (aiState === 'targeting') {
-    nextShot = getRandomNearbyShot(hitStack);
     // Try shooting adjacent to the most recent hit
-    this.registerBoardClick(nextShot);
-    return;
+    nextShot = getRandomNearbyShot(this, hitStack);
+    if (nextShot === null) {
+      resetToRandom();
+      nextShot = getRandomShot(this, smallestShipSize);
+    }
 
   } else if (aiState === 'striking') {
     nextShot = getNextShotInDirection(this, hitStack, discoveredDirection);
@@ -209,10 +215,10 @@ function aiClick() {
     // If direction is still invalid, reset aiState to random
     if (nextShot === null) {
       resetToRandom();
-      nextShot = getRandomShot(smallestShipSize);
+      nextShot = getRandomShot(this, smallestShipSize);
     }
-    this.registerBoardClick(nextShot);
   }
+  this.registerBoardClick(nextShot);
 
 }
 
