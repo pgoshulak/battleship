@@ -113,6 +113,10 @@ define((require, exports, module) => {
             'keySpacebar': 'viewLeaderBoard'
           }
         },
+        /* State map end */
+        // Please leave the above comment 'State map end' as-is... it signifies
+        // the end of the statemap to the flowchart generator
+
         // Trigger a state transition
         triggerTransition(transitionName) {
           // Retrieve current game state
