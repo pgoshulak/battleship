@@ -2,6 +2,11 @@
 A browser-based battleship implementation. This project was started as a stretch-project for LighthouseLabs.
 
 # Screenshots
+![Game setup](/docs/1-setup.png)
+![Explosions!](/docs/2-explosion.png)
+![Almost done...](/docs/3-gameplay.png)
+![Victory!](/docs/4-victory.png)
+![Leaderboard](/docs/5-leaderboard.png)
 
 # Getting started
 Clone the repository and run `npm install` to install necessary files. To begin the game, navigate to the downloaded directory and run `npm run start`. In your browser, go to `http://localhost:8080` or whichever port is shown.
