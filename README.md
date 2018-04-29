@@ -7,7 +7,6 @@ A browser-based battleship implementation. This project was started as a stretch
 ![Almost done...](/docs/3-gameplay.png)
 ![Victory!](/docs/4-victory.png)
 ![Leaderboard](/docs/5-leaderboard.png)
-![Game engine Finite State Machine](/docs/statemap.svg)
 
 # Getting started
 Clone the repository and run `npm install` to install necessary files. To begin the game, navigate to the downloaded directory and run `npm run start`. In your browser, go to `http://localhost:8080` or whichever port is shown.
@@ -63,7 +62,7 @@ Note: the 'sink-reverts-to-`random`' AI is quite effective when ships are spaced
 - leaderboard for highscore tracking
 
 ## Dev notes
-The game engine is a custom-built Finite State Machine with automatic and user-triggered transitions. The complete FSM can be rendered in chart format by running `node write-chart.js` and opening `statemap.md` in a [mermaid](https://mermaidjs.github.io/)-compatible viewer.
+The game engine is a custom-built Finite State Machine with automatic and user-triggered transitions. The complete FSM can be rendered in chart format by running `node write-chart.js` and opening `statemap.md` in a [mermaid](https://mermaidjs.github.io/)-compatible viewer. See below for a recent SVG version of the state map.
 
 The game engine interfaces with a data store loosely based on Vue.js's [Vuex](https://github.com/vuejs/vuex) state management system.
 
@@ -72,6 +71,8 @@ The rendering engine is a separate module which makes heavy use of JQuery.
 Please note: original Lighthous Labs eslint settings have been overridden to allow ECMA 2015. This will allow more advanced concepts such as 'const'/'let', 'class', etc to be used. This change was accepted by the instructor prior to beginning, to allow these advanced concepts to be learned.
 
 Please also note: the original project requirements stated only HTML, CSS, Javascript, and JQuery were to be used. This requirement was stretched slightly to allow an Express+EJS server to handle saving user scores and rendering the leaderboard. Additionally, [require.js](https://github.com/requirejs/requirejs) was used to import modules in the client, rather than implementing a build-step.
+
+![Game engine Finite State Machine](/docs/statemap.svg)
 
 # Issues
 - Name input should be handled on keypress-enter (eg. hide the box?)
