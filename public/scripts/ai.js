@@ -6,7 +6,6 @@ let aiState = 'random';
 let smallestShipSize = 2;
 // Stack (LI/FO) of hits made
 let hitStack = [];
-let nextShot = {};
 
 // Upon two adjacent hits, direction of hits
 let lastDirectionTried = '';
@@ -57,22 +56,27 @@ function getRandomShot(state, smallestShipLength) {
     };
     status = state.getSquareInfo(randomShot).status;
 
-    // Generate shots that rule out the smallest alive ship
+    // Filter for shots that rule out the smallest alive ship
     // Eg. Patrol Boat is alive, length 2 -> checkerboard (ie max dist between shots is 1 square)
     // Eg. Battleship is alive, length 4 -> stripes (ie max dist between shots is 3 square)
     isDivisibleByShip = ((randomShot.row + randomShot.col) % smallestShipLength) === 0;
 
-
     // Limit the attempts to find a 'divisible' shot
     // Eg. if long ship has a single square alive in the middle but it isn't a 'divisible' square, it will never be shot
+    
+    if (!isValidShot(state, randomShot)) {
+      // Linting note: the while() condition would not accept the boolean !isDivisibleByShip
+      // in combination with other booleans. Therefore the condition of isDivisibleByShip would
+      // be ignored and shots would not follow this pattern.
+      // Using a 'continue' here is admittedly bad form, but it is the only way this condition
+      // would be considered
+      continue;
+    }
     if (counter > 10) {
       return randomShot;
     }
-    // Note: the while() condition originally considered if a shot was to an
-    // empty square, but the !isDivisibleByShip boolean mysteriously doesn't
-    // work with that check. Currently, an invalid shot (ie. to MISS/HIT square)
-    // simply loops back to 'awaitingShot' game state.
-  } while (!isDivisibleByShip && !isValidShot(state, randomShot));
+    // Only allow shots that consider smallest ship, and whether they're not already shot at
+  } while (!isDivisibleByShip);
   return randomShot;
 }
 
@@ -95,11 +99,14 @@ function reverseDirection(dir) {
 // Shoot a random adjacent square
 // Note: side-effect!! Function sets variable `lastDirectionTried` of parent scope, and may (in future) pop() from hitStack
 function getRandomNearbyShot(state, hitStack) {
+  // Retrieve the last 'hit' shot
   let lastShot = hitStack[hitStack.length - 1];
   let nextShot = null;
   let counter = 0;
   do {
+    // Pick random direction from 0=N, 1=W, 2=S, 3=E
     let randomDir = Math.floor(Math.random() * 4);
+    // Translate direction into row/col offsets
     let offset = getDirectionOffset(randomDir);
     nextShot = {
       userId: 0,
@@ -121,10 +128,12 @@ function getRandomNearbyShot(state, hitStack) {
     are tightly packed)
      */
 
-    // If shot wasn't valid, try again until a maximum (max is 20 because dir is randomized, need to wait until all dirs likely tried)
+    // If shot wasn't valid, try again until a maximum (max is 20 because dir is randomized,
+    // need to wait until all 4 dirs likely tried)
     counter++;
   } while (!isValidShot(state, nextShot) && counter < 20);
 
+  // If shot is invalid but counter has overflowed, return null (indicating no possible adjacent shots)
   if (!isValidShot(state, nextShot)) {
     return null;
   } else {
@@ -136,6 +145,14 @@ function getRandomNearbyShot(state, hitStack) {
 function getSmallestShipSize(state) {
   let shipSquaresAlive = state.playerBoards[0].shipSquaresAlive;
   let smallestShipSize = 5;
+
+  // Override: if there are only a few squares left and AI is still shooting random,
+  // allow AI to shoot at any square (fixes issue of AI not detecting ship clumps and
+  // not being able to hit 'that one last shot' that isn't on a ship's valid-shots
+  // diagonal ... see getRandomShot() for this value's implementation)
+  if (shipSquaresAlive.total < 4) {
+    return 1;
+  }
 
   // Check each ship from biggest -> smallest
   for (let shipType = 5; shipType > 0; shipType--) {
@@ -160,17 +177,15 @@ function getNextShotInDirection(state, hitStack, direction) {
   let prevShotConsidered = lastShot;
   let counter = 0;
   let nextShot = null;
-  // Get the next shot in a given direction, advancing given the following:
+  // Get the next shot in a given direction, advancing along dir given the following:
   // - space is not shot at -> shoot at it
-  // - space is a hit -> skip over it and continue
+  // - space is a hit -> skip over it and try again
   // - space is a miss -> return null (parent scope should reverse direction and try again)
   // - space is sunk -> return null (parent scope should reverse direction and try again)
   //   (this might be cheating? The AI would differentiate hit vs sunk, whereas player sees
   //   them both as 'red' but can remember 'sunk' patterns)
   // - space is outside board -> return null (parent scope should reverse direction and try again)
   
-  console.log(`Starting getNextShotInDirection() at ${ROW_LETTER[lastShot.row]}${lastShot.col}`);
-
   do {
     counter++;
     let offset = getDirectionOffset(direction);
@@ -181,7 +196,6 @@ function getNextShotInDirection(state, hitStack, direction) {
       row: prevShotConsidered.row + offset.row
     };
     let nextShotValidity = getShotValidity(state, nextShot);
-    console.log(`--- Trying ${ROW_LETTER[lastShot.row]}${lastShot.col} --> ${nextShotValidity}`);
     
     // If shot hasn't been taken, take it
     if (nextShotValidity === STATUS.EMPTY
@@ -201,11 +215,9 @@ function getNextShotInDirection(state, hitStack, direction) {
       // 'Crawl' along the ship (eg. backtracking to find the next unshot square)
       prevShotConsidered = Object.assign({}, nextShot);
     }
-    
 
-
+    // Limit number of attempts in case of infinite loop
   } while (counter < 20);
-
   return null;
 }
 
@@ -219,6 +231,7 @@ function aiClick() {
 
   /* ----- Assign new state variables given previous shot outcome ----- */
   // Note: This should be done in a Finite State Machine as is gameEngine.js
+
   if (lastAiShot.outcome === 'hit') {
     // If last shot was a hit, add it to the stack for 'investigating'
     hitStack.push(lastAiShot);
@@ -232,53 +245,52 @@ function aiClick() {
       aiState = 'striking';
     }
   } else if (lastAiShot.outcome === 'miss') {
+    // If AI was shooting along a known ship direction but reached the end (ie. miss), backtrack
     if (aiState === 'striking') {
       discoveredDirection = reverseDirection(discoveredDirection);
     }
   }
+  // Once a ship has been sunk, revert to random shooting
   if (lastAiShot.sunk > 0) {
     // Future: Deal with adjacent ships that may give several adjacent, different-ship hits
+    // but would prematurely revert to randomized shooting once one has been sunk
     resetToRandom();
   }
   
   /* ----- Execute the next shot depending on updated state ----- */
-  console.log(aiState);
   
+  // AI knows the ship direction (ie. two adjacent hits)
   if (aiState === 'striking') {
+    // If AI knows ship direction, keep shooting in that direction
     nextShot = getNextShotInDirection(this, hitStack, discoveredDirection);
-    console.log(`Got next shot as`, nextShot);
     // If the direction continues into a board edge or a miss, reverse it
     if (nextShot === null) {
-      console.log('Reversing direction');
       discoveredDirection = reverseDirection(discoveredDirection);
       nextShot = getNextShotInDirection(this, hitStack, discoveredDirection);
-      console.log(`Got next shot as`, nextShot);
     }
-    // If direction is still invalid (after initial reversing), reset aiState to random
+    // If direction is still invalid (after initial reversing), downgrade AI state to 'targeting'
     if (nextShot === null) {
-      console.log('downgrade to targeting');
       aiState = 'targeting';
-      // resetToRandom();
-      // nextShot = getRandomShot(this, smallestShipSize);
     }
   }
 
+  // AI has a single hit but doesn't know which direction the ship proceeds
   if (aiState === 'targeting') {
     // Try shooting adjacent to the most recent hit
     nextShot = getRandomNearbyShot(this, hitStack);
+    // If no adjacent shots are availble, downgrade AI state to 'random'
     if (nextShot === null) {
-      console.log('downgrade to random');
       resetToRandom();
-      nextShot = getRandomShot(this, smallestShipSize);
     }
   }
 
+  // AI is shooting randomly to discover a ship
   if (aiState === 'random' || nextShot === null) {
     nextShot = getRandomShot(this, smallestShipSize);
   }
 
+  // Send the click to the board
   this.registerBoardClick(nextShot);
-
 }
 
 define((require, exports, module) => {
