@@ -12,6 +12,8 @@ let nextShot = {};
 let lastDirectionTried = '';
 let discoveredDirection = '';
 
+// TODO: array of shot attempts before prevShot != recentShot --> if array grows too big, reset aiState to random (ie. current strategy has failed)
+
 // Initialize AI game
 function aiGameInit() {
   this.playerBoards[1].playerReady = true;
@@ -80,8 +82,8 @@ function getRandomNearbyShot(hitStack) {
     to the remaining shots in the stack. Once the stack has been exhausted, return null to
     indicate the parent scope should reset aiState to 'random'.
 
-    Note that this strategy wouldn't account for when ships are sunk, and how to pop the 
-    correct number of squares off the stack (let alone which ones, eg. if multiple ships 
+    Note that this strategy wouldn't account for when ships are sunk, and how to pop the
+    correct number of squares off the stack (let alone which ones, eg. if multiple ships
     are tightly packed)
      */
 
@@ -104,6 +106,54 @@ function getSmallestShipSize(state) {
   return smallestShipSize;
 }
 
+// Return the reverse of a given n/e/s/w direction
+function reverseDirection(dir) {
+  if (dir === 'n') {
+    return 's';
+  } else if (dir === 's') {
+    return 'n';
+  } else if (dir === 'e') {
+    return 'w';
+  } else if (dir === 'w') {
+    return 'e';
+  } else {
+    return null;
+  }
+}
+
+// Reset state and helper variables to 'random' shooting
+function resetToRandom() {
+  aiState = 'random';
+  lastDirectionTried = '';
+  discoveredDirection = '';
+}
+
+// Return the next shot in a given direction
+function getNextShotInDirection(state, hitStack, direction) {
+  let board = state.playerBoards[0].spaces;
+  let lastShot = hitStack[hitStack.length - 1];
+  // If there is a valid shot in the direction, return it
+  // If the direction leads to a board edge, return null (requesting a reverse)
+  // FIXME: Need to check BOTH whether square is valid AND not yet shot-at (eg. status != hit/miss/sunk)
+  // FIXME: Need to be able to backtrack over squares
+
+  if (direction === 'n' && lastShot.row - 1 >= 0) {
+    return { userId: 0, row: lastShot.row - 1, col: lastShot.col };
+
+  } else if (direction === 's' && lastShot.row + 1 <= 9) {
+    return { userId: 0, row: lastShot.row + 1, col: lastShot.col };
+    
+  } else if (direction === 'e' && lastShot.col + 1 <= 9) {
+    return { userId: 0, row: lastShot.row, col: lastShot.col + 1 };
+    
+  } else if (direction === 'w' && lastShot.col - 1 >= 0) {
+    return { userId: 0, row: lastShot.row, col: lastShot.col - 1 };
+    
+  } else {
+    return null;
+  }
+}
+
 // Register that the AI clicked the calculated square
 function aiClick() {
   let nextShot = null;
@@ -113,6 +163,7 @@ function aiClick() {
   let lastAiShot = this.shotLog[this.shotLog.length - 2] || {outcome: 'miss', sunk: 0};
 
   /* ----- Assign new state variables given previous shot outcome ----- */
+  // Note: This should be done in a Finite State Machine as is gameEngine.js
   if (lastAiShot.outcome === 'hit') {
     // If last shot was a hit, add it to the stack for 'investigating'
     hitStack.push(lastAiShot);
@@ -125,22 +176,42 @@ function aiClick() {
       discoveredDirection = lastDirectionTried;
       aiState = 'striking';
     }
-  } else if (lastAiShot.sunk > 0) {
-    aiState = 'random';
+  } else if (lastAiShot.outcome === 'miss') {
+    if (aiState === 'striking') {
+      discoveredDirection = reverseDirection(discoveredDirection);
+    }
+  }
+  if (lastAiShot.sunk > 0) {
+    // Future: Deal with adjacent ships that may give several adjacent, different-ship hits
+    resetToRandom();
   }
   
   /* ----- Execute the next shot depending on updated state ----- */
+  console.log(aiState);
   if (aiState === 'random') {
     nextShot = getRandomShot(this, smallestShipSize);
     this.registerBoardClick(nextShot);
     return;
+
   } else if (aiState === 'targeting') {
     nextShot = getRandomNearbyShot(hitStack);
     // Try shooting adjacent to the most recent hit
     this.registerBoardClick(nextShot);
     return;
+
   } else if (aiState === 'striking') {
-    nextShot = 
+    nextShot = getNextShotInDirection(this, hitStack, discoveredDirection);
+    // If the direction continues into a board edge, reverse it
+    if (nextShot === null) {
+      discoveredDirection = reverseDirection(discoveredDirection);
+      nextShot = getNextShotInDirection(this, hitStack, discoveredDirection);
+    }
+    // If direction is still invalid, reset aiState to random
+    if (nextShot === null) {
+      resetToRandom();
+      nextShot = getRandomShot(smallestShipSize);
+    }
+    this.registerBoardClick(nextShot);
   }
 
 }
