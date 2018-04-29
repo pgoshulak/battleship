@@ -381,11 +381,22 @@ define((require, exports, module) => {
             let explosionType = state.getSquareInfo(state.lastSquareClicked).status;
             render.renderExplodeLastSquare(explosionType);
 
-            if (state.gameType === 'local') {
-              this.requestTransition('local');
+            const goToNext = () => {
+              if (state.gameType === 'local') {
+                this.requestTransition('local');
+              } else {
+                this.requestTransition('ai');
+              }
+            };
+
+            // If the shot is a 'sink', add a dramatic delay to show the explosion
+            if (explosionType === STATUS.SUNK) {
+              console.log('sinking');
+              setTimeout(goToNext, 1000);
             } else {
-              this.requestTransition('ai');
+              goToNext();
             }
+            
           },
           // Switch to AI's turn
           swapToAi() {
