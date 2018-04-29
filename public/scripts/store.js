@@ -29,6 +29,7 @@ function randomizeShipPlacement(spaces) {
       isHorizontal = Math.round(Math.random());
 
       // Check each would-be space
+      // TODO: Refactor to use existing state.isValidPlacement()
       isValid = true;
       for (let i = 0; i < shipSize; i++) {
         if (isHorizontal) {
@@ -41,6 +42,7 @@ function randomizeShipPlacement(spaces) {
     } while (!isValid);
 
     // Place the ship by setting each square's status and shipType
+    // TODO: Refactor to use existing state.placeShip()
     for (let j = 0; j < shipSize; j++) {
       if (isHorizontal) {
         spaces[startRow][startCol + j].status = STATUS.ALIVE;
