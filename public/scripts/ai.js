@@ -47,7 +47,9 @@ function getRandomShot(state, smallestShipLength) {
   let randomShot;
   let status;
   let isDivisibleByShip;
+  let counter = 0;
   do {
+    counter++;
     randomShot = {
       userId: 0,
       row: Math.floor(Math.random() * 10),
@@ -60,11 +62,17 @@ function getRandomShot(state, smallestShipLength) {
     // Eg. Battleship is alive, length 4 -> stripes (ie max dist between shots is 3 square)
     isDivisibleByShip = ((randomShot.row + randomShot.col) % smallestShipLength) === 0;
 
+
+    // Limit the attempts to find a 'divisible' shot
+    // Eg. if long ship has a single square alive in the middle but it isn't a 'divisible' square, it will never be shot
+    if (counter > 10) {
+      return randomShot;
+    }
     // Note: the while() condition originally considered if a shot was to an
     // empty square, but the !isDivisibleByShip boolean mysteriously doesn't
     // work with that check. Currently, an invalid shot (ie. to MISS/HIT square)
     // simply loops back to 'awaitingShot' game state.
-  } while (!isDivisibleByShip);
+  } while (!isDivisibleByShip && !isValidShot(state, randomShot));
   return randomShot;
 }
 
