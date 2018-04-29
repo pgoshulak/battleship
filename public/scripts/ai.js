@@ -33,6 +33,15 @@ function isValidShot(state, shot) {
   }
 }
 
+// Returns the status of a square, considering whether the shot is within the board or not
+function getShotValidity(state, shot) {
+  let board = state.playerBoards[0].spaces;
+  if (!board[shot.row] || !board[shot.row][shot.col]) {
+    return STATUS.INVALID;
+  }
+  return board[shot.row][shot.col].status;
+}
+
 // Find a random, yet-unshot square divisible by smallest living ship
 function getRandomShot(state, smallestShipLength) {
   let randomShot;
@@ -105,6 +114,7 @@ function getRandomNearbyShot(state, hitStack) {
      */
 
     // If shot wasn't valid, try again until a maximum (max is 20 because dir is randomized, need to wait until all dirs likely tried)
+    counter++;
   } while (!isValidShot(state, nextShot) && counter < 20);
 
   if (!isValidShot(state, nextShot)) {
@@ -139,25 +149,56 @@ function resetToRandom() {
 function getNextShotInDirection(state, hitStack, direction) {
   let board = state.playerBoards[0].spaces;
   let lastShot = hitStack[hitStack.length - 1];
-  // If there is a valid shot in the direction, return it
-  // If the direction leads to a board edge, return null (requesting a reverse)
-  // FIXME: Need to be able to backtrack over squares
+  let prevShotConsidered = lastShot;
+  let counter = 0;
+  let nextShot = null;
+  // Get the next shot in a given direction, advancing given the following:
+  // - space is not shot at -> shoot at it
+  // - space is a hit -> skip over it and continue
+  // - space is a miss -> return null (parent scope should reverse direction and try again)
+  // - space is sunk -> return null (parent scope should reverse direction and try again)
+  //   (this might be cheating? The AI would differentiate hit vs sunk, whereas player sees
+  //   them both as 'red' but can remember 'sunk' patterns)
+  // - space is outside board -> return null (parent scope should reverse direction and try again)
+  
+  console.log(`Starting getNextShotInDirection() at ${ROW_LETTER[lastShot.row]}${lastShot.col}`);
 
-  if (direction === 'n' && lastShot.row - 1 >= 0) {
-    return { userId: 0, row: lastShot.row - 1, col: lastShot.col };
+  do {
+    counter++;
+    let offset = getDirectionOffset(direction);
+    // Assign the next shot as prev shot + direction offset
+    nextShot = {
+      userId: 0,
+      col: prevShotConsidered.col + offset.col,
+      row: prevShotConsidered.row + offset.row
+    };
+    let nextShotValidity = getShotValidity(state, nextShot);
+    console.log(`--- Trying ${ROW_LETTER[lastShot.row]}${lastShot.col} --> ${nextShotValidity}`);
+    
+    // If shot hasn't been taken, take it
+    if (nextShotValidity === STATUS.EMPTY
+      || nextShotValidity === STATUS.ALIVE) {
+      // Take the shot
+      return nextShot;
 
-  } else if (direction === 's' && lastShot.row + 1 <= 9) {
-    return { userId: 0, row: lastShot.row + 1, col: lastShot.col };
+      // If shot would be a miss, outside the board, or a known sunk ship
+    } else if (nextShotValidity === STATUS.MISS
+      || nextShotValidity === STATUS.INVALID
+      || nextShotValidity === STATUS.SUNK) {
+      // Tell parent scope that no valid shot exists in this direction
+      return null;
+
+      // If shot is a hit (ie. likely belongs to same ship)
+    } else if (nextShotValidity === STATUS.HIT) {
+      // 'Crawl' along the ship (eg. backtracking to find the next unshot square)
+      prevShotConsidered = Object.assign({}, nextShot);
+    }
     
-  } else if (direction === 'e' && lastShot.col + 1 <= 9) {
-    return { userId: 0, row: lastShot.row, col: lastShot.col + 1 };
-    
-  } else if (direction === 'w' && lastShot.col - 1 >= 0) {
-    return { userId: 0, row: lastShot.row, col: lastShot.col - 1 };
-    
-  } else {
-    return null;
-  }
+
+
+  } while (counter < 20);
+
+  return null;
 }
 
 // Register that the AI clicked the calculated square
@@ -207,13 +248,17 @@ function aiClick() {
 
   } else if (aiState === 'striking') {
     nextShot = getNextShotInDirection(this, hitStack, discoveredDirection);
-    // If the direction continues into a board edge, reverse it
+    console.log(`Got next shot as`, nextShot);
+    // If the direction continues into a board edge or a miss, reverse it
     if (nextShot === null) {
+      console.log('Reversing direction');
       discoveredDirection = reverseDirection(discoveredDirection);
       nextShot = getNextShotInDirection(this, hitStack, discoveredDirection);
+      console.log(`Got next shot as`, nextShot);
     }
-    // If direction is still invalid, reset aiState to random
+    // If direction is still invalid (after initial reversing), reset aiState to random
     if (nextShot === null) {
+      console.log('reset to random');
       resetToRandom();
       nextShot = getRandomShot(this, smallestShipSize);
     }

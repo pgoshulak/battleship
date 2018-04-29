@@ -24,6 +24,7 @@ SHIP_NAME[SHIP.CARRIER] = 'Carrier';
 
 // Constants defining a square's status
 const STATUS = {
+  INVALID: -1,
   EMPTY: 0,
   MISS: 1,
   ALIVE: 2,
