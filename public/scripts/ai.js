@@ -1,13 +1,10 @@
-function aiLog() {
-  console.log('AI module reading gamestate:', this.gameState);
-}
 // Initialize AI game
 function aiGameInit() {
   this.playerBoards[1].playerReady = true;
 }
 
 // Find a random, yet-unshot square divisible by smallest living ship
-function getRandomShot(smallestShipLength) {
+function getRandomShot(state, smallestShipLength) {
   let randomShot;
   let status;
   let isDivisibleByShip;
@@ -17,7 +14,7 @@ function getRandomShot(smallestShipLength) {
       row: Math.floor(Math.random() * 10),
       col: Math.floor(Math.random() * 10)
     };
-    status = this.getSquareInfo(randomShot).status;
+    status = state.getSquareInfo(randomShot).status;
 
     // Generate shots that rule out the smallest alive ship
     // Eg. Patrol Boat is alive, length 2 -> checkerboard (ie max dist between shots is 1 square)
@@ -27,16 +24,32 @@ function getRandomShot(smallestShipLength) {
   return randomShot;
 }
 
+// Get the size of the smallest ship (for choosing shot spacing)
+function getSmallestShipSize(state) {
+  let shipSquaresAlive = state.playerBoards[0].shipSquaresAlive;
+  let smallestShipSize = 5;
+
+  // Check each ship from biggest -> smallest
+  for (let shipType = 5; shipType > 0; shipType--) {
+    console.log(`checking ${SHIP_NAME[shipType]}`);
+    if (shipSquaresAlive[shipType] > 0) {
+      smallestShipSize = SHIP_SIZE[shipType];
+      console.log('alive');
+    }
+  }
+  console.log('smallest size: ', smallestShipSize);
+  return smallestShipSize;
+}
+
 // Register that the AI clicked the calculated square
 function aiClick() {
-  this.registerBoardClick(this.getRandomShot(5));
+  let smallestShipSize = getSmallestShipSize(this);
+  this.registerBoardClick(getRandomShot(this, smallestShipSize));
 }
 
 define((require, exports, module) => {
   module.exports = {
-    aiLog,
     aiGameInit,
-    aiClick,
-    getRandomShot
+    aiClick
   };
 });
