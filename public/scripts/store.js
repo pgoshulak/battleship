@@ -298,11 +298,12 @@ define((require, exports, module) => {
     state() {
       // Note: `state` is an Object-merge between the below `state` functions
       // and exported functions in the `ai.js` module. This awkward setup is
-      // used because an initial project requirement (only JQuery) was
+      // used because an initial project requirement (use only JQuery) was
       // misinterpreted, and `requirejs` was used as the module importer
       return Object.assign({}, ai, {
         // The boards for the two players
         playerBoards: [
+          // Use the following format to load a predetermined game state (data from testData.js)
           // new UserBoard(0, JSON.parse(randomBoardWithShots)),
           // new UserBoard(1, JSON.parse(randomBoardAlmostDead))
           new UserBoard(0),

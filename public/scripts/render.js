@@ -160,7 +160,7 @@ function requestTransition(transitionName) {
 
 // Render the boards and ship lists
 function renderBoards (state, renderMode = 'normal') {
-  
+  // User IDs of top and bottom boards (depends on 1P or 2P game type)
   let topId;
   let bottomId;
 
@@ -176,6 +176,7 @@ function renderBoards (state, renderMode = 'normal') {
     throw 'Unknown game type';
   }
 
+  // Get the board data
   let topBoard = state.playerBoards[topId];
   let bottomBoard = state.playerBoards[bottomId];
 
@@ -203,6 +204,7 @@ function renderBoards (state, renderMode = 'normal') {
   let topBoardRendered = generateBoard(topBoard, topRenderMode, state.lastSquareClicked);
   let bottomBoardRendered = generateBoard(bottomBoard, bottomRenderMode, state.lastSquareClicked);
 
+  // Generate the ships-remaining lists
   let topShipList = generateShipList(topBoard.shipSquaresAlive, topRenderMode);
   let bottomShipList = generateShipList(bottomBoard.shipSquaresAlive, bottomRenderMode);
 
@@ -219,6 +221,7 @@ function renderBoards (state, renderMode = 'normal') {
       row: $(thisSquare).data('row'),
       col: $(thisSquare).data('col')
     };
+    // Register a board-click on the recently-clicked square
     state.registerBoardClick(squareCoords);
     // Store mouseclick coords for rendering a picked-up ship
     state.shipPickedUp.mouseX = e.pageX;
@@ -226,7 +229,7 @@ function renderBoards (state, renderMode = 'normal') {
 
   }
   
-  // Refresh board bindings
+  // Set left-click handlers
   $('.board').on('click', '.board-square', function (e) {
     clickHandler(e, this);
     requestTransition('click');
@@ -275,8 +278,7 @@ function setReadyButton(text, type) {
 }
 // Set the text/style on the screen message area
 function setMessageArea(text, type) {
-  let message = $('#message-area > div');
-  message.text(text);
+  $('#message-area > div').text(text);
 }
 
 // Insert a shot in the on-screen shot log

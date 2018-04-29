@@ -14,7 +14,7 @@ Please note: original Lighthous Labs eslint settings have been overridden to all
 # Features
 
 # Issues
-- Ship placement should use drag instead of click-toggle
+- Name input should be handled on keypress-enter (eg. hide the box?)
 
 # Roadmap
 

@@ -1,13 +1,12 @@
 * {
-  /* font-family: 'Share Tech Mono', monospace; */
   font-family: 'VT323', monospace;
   box-sizing: border-box;
 }
 body {
-  /* background-color: #222; */
   padding: 0px;
 }
 
+/* Use CSS Grid to layout game area */
 #game-container {
   display: grid;
   grid-template-columns: 1fr 200px auto 200px 1fr;
@@ -40,6 +39,7 @@ body {
   grid-area: ready-button;
 }
 
+/* Name input container floats above opponent board when visible */
 #name-input-container{
   position: absolute;
   left: 50%;

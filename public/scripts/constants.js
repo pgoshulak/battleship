@@ -42,7 +42,5 @@ const ROW_LETTER = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 // AI shot delay (ms)
 const AI_SHOT_DELAY = 100;
 
-const DEBUG_AI = true;
-
 // Log state transitions to console for debugging
 const DEBUG_STATE_TRANSITIONS = false;

@@ -3,6 +3,7 @@ define((require, exports, module) => {
     game: function (state, render) {
       return {
         // Map of states with {transition:nextState} pairs
+        // Run `node write-chart.js` and open statemap.md to visualize these better
         stateMap: {
           /* Game entry */
           'gameEntry': {
@@ -157,6 +158,7 @@ define((require, exports, module) => {
           },
           gameSetupAi() {
             state.gameType = 'ai';
+            state.userNames[0] = 'anonymous';
             state.userNames[1] = 'EvilAI';
             state.aiGameInit();
             this.requestTransition('next');
@@ -391,7 +393,6 @@ define((require, exports, module) => {
 
             // If the shot is a 'sink', add a dramatic delay to show the explosion
             if (explosionType === STATUS.SUNK) {
-              console.log('sinking');
               setTimeout(goToNext, 1000);
             } else {
               goToNext();
@@ -423,21 +424,23 @@ define((require, exports, module) => {
           },
           // End of game - reveal both boards
           gameOver() {
+            // Reveal all ships for all players (and explode final ship)
             render.renderBoards(state, 'allVisible');
             let explosionType = state.getSquareInfo(state.lastSquareClicked).status;
             render.renderExplodeLastSquare(explosionType);
             
+            // Get the game score as the losing player's number of squares alive
             let scoreUser0 = state.playerBoards[0].shipSquaresAlive.total;
             let scoreUser1 = state.playerBoards[1].shipSquaresAlive.total;
             let scoreDiff = scoreUser0 - scoreUser1;
-            render.setMessageArea(`Victory for ${state.userNames[state.currentPlayer]}
-            , (${Math.abs(scoreDiff)} squares remaining)`);
+            render.setMessageArea(`Victory for ${state.userNames[state.currentPlayer]},
+             (${Math.abs(scoreDiff)} squares remaining)`);
 
-
+            // End the game for 2P local
             if (state.gameType === 'local') {
               render.setReadyButton('Game over', 'disabled');
             } else {
-              // Register the highscore
+              // AI game -> Register the highscore
               $.post('/scores', {
                 userName: state.userNames[0],
                 scoreDiff: scoreDiff
@@ -445,7 +448,7 @@ define((require, exports, module) => {
               render.setReadyButton('Leaderboard', 'go');
             }
           },
-          // Go to leaderboard
+          // Go to leaderboard and highlight current player
           viewLeaderBoard() {
             window.location = `/scores/${state.userNames[0]}`;
           }
