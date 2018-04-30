@@ -11,6 +11,8 @@ A browser-based battleship implementation. This project was started as a stretch
 # Getting started
 Clone the repository and run `npm install` to install necessary files. To begin the game, navigate to the downloaded directory and run `npm run start`. In your browser, go to `http://localhost:8080` or whichever port is shown.
 
+Please note that the game uses CSS Grid, and may not be compatible with all browsers.
+
 # Gameplay
 ## Battleship Rules
 - Each player is given a 10 x 10 board on which they secretly place five ships of lengths 2, 3, 3, 4, and 5
@@ -47,6 +49,7 @@ The game AI is based on a three-state system:
 - `random`, where the AI takes random shots in a diagonal pattern to find the smallest remaining ship
 - `targeting`, for when the AI has made a hit and starts exploring surroundng squares to determine which way the ship lays
 - `striking`, for when the AI has made two adjacent hits and will continue shooting in that direction (or backtracking when necessary)
+
 Once a ship has been sunk, the AI reverts to `random`.
 
 The AI does not 'cheat' by checking if a shot would be a 'hit' before making it. It always uses the same information given to the player (despite interfacing with the game engine's internal state).
@@ -76,7 +79,7 @@ Please also note: the original project requirements stated only HTML, CSS, Javas
 
 # Issues
 - Name input should be handled on keypress-enter (eg. hide the box?)
-- AI is weaker when ships are clustered together - could better integrate the hitStack[] array
+- AI is weaker when ships are clustered together - could better integrate the `hitStack[]` array
 - Once many shots have been made, AI slows down as it retries already-made shots more often. This end-game will likely be irrelevant once clustering is addressed
 
 # Roadmap
