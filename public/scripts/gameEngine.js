@@ -440,8 +440,8 @@ define((require, exports, module) => {
             render.setMessageArea(`Victory for ${state.userNames[state.currentPlayer]},
              (${Math.abs(scoreDiff)} squares remaining)`);
 
-            // End the game for 2P local
-            if (state.gameType === 'local') {
+            // End the game for 2P local or static GitHub Pages hosting (ie. no leaderboard server)
+            if (state.gameType === 'local' || window.location === 'https://pgoshulak.github.io/battleship/public/') {
               render.setReadyButton('Game over', 'disabled');
             } else {
               // AI game -> Register the highscore
