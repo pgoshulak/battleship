@@ -1,7 +1,7 @@
 # About
 A browser-based battleship implementation. This project was started as a stretch-project for LighthouseLabs.
 
-[Working Demo](https://pgoshulak.github.io/battleship/public/)
+[Working Demo](https://pgoshulak.github.io/battleship/public/) (Leaderboard disabled due to static hosting)
 
 # Screenshots
 ![Game setup](/docs/1-setup.png)
